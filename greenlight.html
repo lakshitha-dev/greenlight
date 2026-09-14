@@ -1,0 +1,1218 @@
+<title>GreenLight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#f7f8f8; --surface:#ffffff; --surface-2:#f1f3f3;
+  --line:#e2e6e6; --line-soft:#edf0f0;
+  --ink:#14191a; --ink-2:#3d4749; --muted:#677577; --faint:#93a1a3;
+  --signal:#0f7a4d; --signal-soft:#e6f4ed; --signal-line:#a8d5bf;
+  --crit:#b42318; --crit-soft:#fdeceb; --crit-line:#f2b8b4;
+  --warn:#b54708; --warn-soft:#fdf2e7; --warn-line:#f0c39a;
+  --info:#175cd3; --info-soft:#eaf1fd; --info-line:#b3cbf5;
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --rail:246px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0b0f10; --surface:#141a1b; --surface-2:#1b2223; --line:#283132; --line-soft:#202829;
+    --ink:#e9eeed; --ink-2:#c2cccc; --muted:#8b9a9b; --faint:#6b7a7b;
+    --signal:#3fbe86; --signal-soft:#122b21; --signal-line:#1f5c43;
+    --crit:#f5817a; --crit-soft:#2e1614; --crit-line:#6b2b25;
+    --warn:#e9a765; --warn-soft:#2b1d10; --warn-line:#6b4520;
+    --info:#7aa9f7; --info-soft:#121e33; --info-line:#2a4a80;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0b0f10; --surface:#141a1b; --surface-2:#1b2223; --line:#283132; --line-soft:#202829;
+  --ink:#e9eeed; --ink-2:#c2cccc; --muted:#8b9a9b; --faint:#6b7a7b;
+  --signal:#3fbe86; --signal-soft:#122b21; --signal-line:#1f5c43;
+  --crit:#f5817a; --crit-soft:#2e1614; --crit-line:#6b2b25;
+  --warn:#e9a765; --warn-soft:#2b1d10; --warn-line:#6b4520;
+  --info:#7aa9f7; --info-soft:#121e33; --info-line:#2a4a80;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-.012em}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px;border-radius:3px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+/* shell */
+.shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);min-height:100vh}
+.rail{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px;padding:18px 12px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:9px;padding:4px 8px 16px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 3px var(--signal-soft);flex:none}
+.brand b{font-size:15.5px;letter-spacing:-.02em}
+.brand span{display:block;font-size:10.5px;color:var(--faint);letter-spacing:.04em}
+.navitem{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:7px 9px;border-radius:6px;color:var(--muted);font-size:13.5px;font-weight:500}
+.navitem:hover{background:var(--surface-2);color:var(--ink)}
+.navitem[aria-current="true"]{background:var(--surface-2);color:var(--ink);font-weight:600}
+.navitem .ct{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint)}
+.navsec{padding:16px 9px 6px}
+.railfoot{margin-top:auto;padding:12px 9px 0;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--faint);line-height:1.45}
+
+main{min-width:0;padding:26px 30px 64px;max-width:1220px}
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:18px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.topbar h1{font-size:22px}
+.topbar .sub{color:var(--muted);font-size:13px;margin-top:3px}
+
+/* pills + chips */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:600;border:1px solid;white-space:nowrap}
+.p-ok{color:var(--signal);background:var(--signal-soft);border-color:var(--signal-line)}
+.p-crit{color:var(--crit);background:var(--crit-soft);border-color:var(--crit-line)}
+.p-warn{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
+.p-info{color:var(--info);background:var(--info-soft);border-color:var(--info-line)}
+.p-mute{color:var(--muted);background:var(--surface-2);border-color:var(--line)}
+.ent{font-family:var(--mono);font-size:10.5px;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);padding:1.5px 6px;border-radius:4px;white-space:nowrap}
+
+/* routing strip */
+.routing{border:1px solid var(--line);border-radius:9px;background:var(--surface);overflow:hidden;margin-bottom:20px}
+.routing .rtop{padding:14px 18px 12px;border-bottom:1px solid var(--line-soft)}
+.routing .rtop h2{font-size:15px;margin-bottom:2px}
+.routing .rtop p{font-size:12.8px;color:var(--muted)}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.tier{padding:14px 18px;border-left:1px solid var(--line-soft);display:flex;gap:12px;align-items:flex-start}
+.tier:first-child{border-left:none}
+.tier .bar{width:3px;align-self:stretch;border-radius:2px;flex:none}
+.t0 .bar{background:var(--signal)} .t1 .bar{background:var(--info)} .t2 .bar{background:var(--warn)}
+.tier .n{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.t0 .n{color:var(--signal)} .t1 .n{color:var(--info)} .t2 .n{color:var(--warn)}
+.tier .tl{font-size:12.8px;font-weight:600;margin-top:3px}
+.tier .td{font-size:11.8px;color:var(--muted);margin-top:2px;line-height:1.45}
+
+/* queue */
+.qgroup{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);padding:14px 16px 8px;background:var(--surface-2);border-bottom:1px solid var(--line-soft)}
+.queue{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+.qrow{display:grid;grid-template-columns:minmax(0,1fr) 148px 172px 96px;gap:14px;align-items:center;padding:11px 16px;width:100%;text-align:left;border-bottom:1px solid var(--line-soft);position:relative}
+.qrow:last-child{border-bottom:none}
+.qrow:hover{background:var(--surface-2)}
+.qrow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent}
+.qrow.sev-crit::before{background:var(--crit)}
+.qrow.sev-warn::before{background:var(--warn)}
+.qrow.sev-ok::before{background:var(--signal)}
+.qrow.sev-info::before{background:var(--info)}
+.qsub{font-weight:600;font-size:14px;margin-bottom:2px}
+.qmeta{font-size:12px;color:var(--muted);display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.qage{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
+.qage b{display:block;color:var(--crit);font-weight:600}
+
+/* panels */
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:9px}
+.panel>header{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel>header h2{font-size:13px;letter-spacing:.01em}
+.panel .body{padding:16px}
+.stack{display:flex;flex-direction:column;gap:20px}
+
+.reqhead{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:18px 20px;display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap;align-items:flex-start}
+.reqhead h1{font-size:19px;margin-bottom:5px}
+.reqmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.backlink{font-size:12.5px;color:var(--muted);font-weight:500;margin-bottom:12px;display:inline-block}
+.backlink:hover{color:var(--ink)}
+.email{font-size:13.2px;line-height:1.62;color:var(--ink-2);white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:7px;padding:13px 15px}
+
+/* research */
+.research{display:flex;flex-direction:column;gap:0}
+.rstep{display:grid;grid-template-columns:18px minmax(0,1fr);gap:11px;padding:8px 0;border-bottom:1px solid var(--line-soft);align-items:start}
+.rstep:last-child{border-bottom:none}
+.rstep .ico{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);margin-top:2px;display:grid;place-items:center;font-size:9px;flex:none}
+.rstep.done .ico{border-color:var(--signal-line);background:var(--signal-soft);color:var(--signal)}
+.rstep.hit .ico{border-color:var(--crit-line);background:var(--crit-soft);color:var(--crit)}
+.rstep.miss .ico{border-color:var(--warn-line);background:var(--warn-soft);color:var(--warn)}
+.rstep .ico.spin{border-top-color:var(--signal);animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rstep .src{font-size:13px;font-weight:500}
+.rstep .res{font-size:12.2px;color:var(--muted);margin-top:2px}
+@media (prefers-reduced-motion:reduce){.rstep .ico.spin{animation:none}}
+
+/* facts */
+.facts{display:flex;flex-direction:column}
+.fact{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 14px;padding:9px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
+.fact:last-child{border-bottom:none}
+.fact .k{font-size:12.5px;color:var(--muted)}
+.fact .v{font-size:13.2px;font-weight:600;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.fact .v.na{color:var(--faint);font-weight:500;font-style:italic;font-family:var(--sans)}
+.prov{font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;border-radius:3px;border:1px solid;margin-left:7px;vertical-align:1px}
+.pv-verified{color:var(--signal);background:var(--signal-soft);border-color:var(--signal-line)}
+.pv-sourced{color:var(--info);background:var(--info-soft);border-color:var(--info-line)}
+.pv-claimed{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
+.pv-none{color:var(--muted);background:var(--surface-2);border-color:var(--line)}
+
+/* checks */
+.check{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:11px;padding:10px 0;border-bottom:1px solid var(--line-soft);align-items:start}
+.check:last-child{border-bottom:none}
+.check.off{opacity:.42}
+.mark{width:17px;height:17px;border-radius:4px;display:grid;place-items:center;font-size:10px;font-weight:700;margin-top:1px;border:1px solid}
+.m-pass{color:var(--signal);background:var(--signal-soft);border-color:var(--signal-line)}
+.m-fail{color:var(--crit);background:var(--crit-soft);border-color:var(--crit-line)}
+.m-miss{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
+.m-off{color:var(--faint);background:var(--surface-2);border-color:var(--line)}
+.check .lbl{font-size:13.2px;font-weight:500;line-height:1.42}
+.check .why{font-size:12px;color:var(--muted);margin-top:3px}
+.check .rid{font-family:var(--mono);font-size:11px;color:var(--faint);margin-right:6px}
+
+/* verdict */
+.verdict{border-radius:9px;border:1px solid;padding:16px 18px;display:flex;gap:16px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.v-APPROVE{background:var(--signal-soft);border-color:var(--signal-line)}
+.v-CONDITIONS{background:var(--warn-soft);border-color:var(--warn-line)}
+.v-REJECT{background:var(--crit-soft);border-color:var(--crit-line)}
+.v-MORE_INFO{background:var(--info-soft);border-color:var(--info-line)}
+.verdict .vt{font-size:17.5px;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
+.v-APPROVE .vt{color:var(--signal)} .v-CONDITIONS .vt{color:var(--warn)}
+.v-REJECT .vt{color:var(--crit)} .v-MORE_INFO .vt{color:var(--info)}
+.verdict .vw{font-size:12.8px;color:var(--ink-2);max-width:62ch}
+.verdict .vsrc{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink)}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--signal);border-color:var(--signal);color:#fff}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.danger{color:var(--crit);border-color:var(--crit-line);background:var(--crit-soft)}
+.btn.sm{padding:5px 10px;font-size:12px}
+
+.callout{display:flex;gap:11px;padding:12px 14px;border-radius:7px;border:1px solid var(--warn-line);background:var(--warn-soft);font-size:12.8px;line-height:1.5;color:var(--ink-2)}
+.callout b{color:var(--warn)}
+.callout.info{border-color:var(--info-line);background:var(--info-soft)} .callout.info b{color:var(--info)}
+.callout.ok{border-color:var(--signal-line);background:var(--signal-soft)} .callout.ok b{color:var(--signal)}
+
+/* self-service receipt */
+.receipt{background:var(--surface);border:1px solid var(--signal-line);border-radius:9px;overflow:hidden}
+.receipt .rhead{background:var(--signal-soft);padding:20px 22px;border-bottom:1px solid var(--signal-line);display:flex;gap:14px;align-items:center}
+.receipt .tick{width:34px;height:34px;border-radius:50%;background:var(--signal);color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700;flex:none}
+.receipt .rhead h2{font-size:17px;color:var(--signal);margin-bottom:2px}
+.receipt .rhead p{font-size:12.8px;color:var(--ink-2)}
+.receipt .rbody{padding:18px 22px}
+.kv{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;padding:8px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
+.kv:last-child{border-bottom:none}
+.kv .k{font-size:12.5px;color:var(--muted)}
+.kv .v{font-size:13.2px;font-weight:600;text-align:right}
+
+/* rule editor */
+.rule{display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-soft);align-items:center}
+.rule:last-child{border-bottom:none}
+.rule .rl{font-size:13.2px;font-weight:500}
+.rule .ra{font-size:11.5px;color:var(--faint);font-family:var(--mono);margin-top:2px}
+select,input[type=number]{font:inherit;font-size:12.5px;padding:5px 8px;border-radius:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+input[type=number]{font-family:var(--mono);text-align:right}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.scroll{overflow-x:auto}
+.seatbar{display:block;height:6px;border-radius:3px;background:var(--surface-2);position:relative;overflow:hidden;min-width:74px;margin-top:5px}
+.seatbar i{position:absolute;inset:0;border-radius:3px;background:var(--signal)}
+.seatbar.full i{background:var(--warn)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:15px 17px}
+.stat .n{font-size:25px;font-weight:600;letter-spacing:-.03em;font-family:var(--mono);font-variant-numeric:tabular-nums;margin:5px 0 2px}
+.stat .d{font-size:11.8px;color:var(--muted)}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:none;border-bottom:1px solid var(--line);padding:12px 16px;gap:4px}
+  .brand{padding:0 12px 0 0} .navsec,.railfoot{display:none}
+  main{padding:20px 16px 48px}
+  .split{grid-template-columns:1fr}
+  .tiers{grid-template-columns:1fr}
+  .tier{border-left:none;border-top:1px solid var(--line-soft)}
+  .qrow{grid-template-columns:1fr;gap:8px;padding:14px 16px}
+  .qage{text-align:left}
+  .rule{grid-template-columns:1fr;gap:8px}
+}
+</style>
+
+<div class="shell">
+  <nav class="rail">
+    <div class="brand">
+      <span class="dot"></span>
+      <span><b>GreenLight</b><span>BISTEC Global · Ops</span></span>
+    </div>
+    <div class="navsec eyebrow">Decisions</div>
+    <button class="navitem" data-nav="queue">Request queue <span class="ct" id="ct-queue">9</span></button>
+    <button class="navitem" data-nav="catalog">Software catalog <span class="ct">5</span></button>
+    <div class="navsec eyebrow">Governance</div>
+    <button class="navitem" data-nav="privacy">Privacy assessments <span class="ct" id="ct-dpia">3</span></button>
+    <button class="navitem" data-nav="rules">Rule packs <span class="ct" id="ct-ver">v2.1</span></button>
+    <button class="navitem" data-nav="audit">Audit trail <span class="ct" id="ct-audit">0</span></button>
+    <button class="navitem" data-nav="dash">Dashboard</button>
+    <div class="railfoot">
+      Signed in as <b>Sajith</b><br>Head of Operations &amp; IT<br>
+      <span class="mono" style="font-size:10.5px">Approver · all entities</span>
+    </div>
+  </nav>
+  <main id="view"></main>
+</div>
+
+<script>
+const TODAY = "2026-09-14";
+
+/* ─────────── software catalog — the deflection layer ─────────── */
+const catalog = [
+ {name:"Zoom", vendor:"Zoom Communications", seats:180, used:157, approved:"2026-01-22", review:"2027-01-22",
+  entities:["BISTEC Solutions","BISTEC Global (SL)","BISTEC Australia"], kev:0, kevSince:0,
+  owner:"IT Infrastructure", cost:"LKR 2,160,000 / yr"},
+ {name:"Confluence", vendor:"Atlassian", seats:142, used:118, approved:"2025-06-18", review:"2027-06-18",
+  entities:["BISTEC Solutions","BISTEC Global (SL)"], kev:13, kevSince:0,
+  owner:"Delivery", cost:"LKR 1,704,000 / yr"},
+ {name:"Figma", vendor:"Figma Inc", seats:26, used:26, approved:"2026-02-10", review:"2027-02-10",
+  entities:["BISTEC Solutions"], kev:0, kevSince:0,
+  owner:"Design", cost:"LKR 936,000 / yr"},
+ {name:"Slack", vendor:"Salesforce", seats:210, used:187, approved:"2025-11-04", review:"2026-09-14",
+  entities:["BISTEC Solutions","BISTEC Global (SL)"], kev:0, kevSince:0,
+  owner:"IT Infrastructure", cost:"LKR 5,040,000 / yr"},
+ {name:"Microsoft 365", vendor:"Microsoft", seats:340, used:311, approved:"2025-03-02", review:"2026-09-30",
+  entities:["BISTEC Solutions","BISTEC Global (SL)","BISTEC Australia","BISTEC Accounting","BISTEC Care"],
+  kev:388, kevSince:6, owner:"IT Infrastructure", cost:"LKR 12,240,000 / yr"}
+];
+
+/* catalog hit alone is not approval — the entry must still hold */
+function route(product, entity){
+  const c = catalog.find(x=>x.name.toLowerCase()===String(product).toLowerCase());
+  if(!c) return {tier:2, cause:"absent", label:"Not in catalog",
+    note:"No prior assessment exists. Full review required before anyone can use it."};
+  const fails=[];
+  if(!c.entities.includes(entity))
+    fails.push(`Approved for ${c.entities.join(", ")} — not ${entity}. Different jurisdiction, different residency rules.`);
+  if(c.review <= TODAY)
+    fails.push(`Review date ${c.review} has lapsed. The assessment is no longer current.`);
+  if(c.kevSince > 0)
+    fails.push(`${c.kevSince} new actively-exploited vulnerabilities published since approval on ${c.approved}.`);
+  if(fails.length) return {tier:2, cause:"stale", entry:c, fails, label:"Catalog entry no longer valid"};
+  const free = c.seats - c.used;
+  if(free <= 0) return {tier:1, cause:"seats", entry:c, free:0, label:"Seat purchase required",
+    note:`All ${c.seats} seats are assigned. The security assessment is current to ${c.review} — only the spend decision is open.`};
+  return {tier:0, entry:c, free, label:"Self-service",
+    note:`${free} of ${c.seats} seats unassigned. Assessment current to ${c.review}.`};
+}
+
+/* ─────────── rule pack ─────────── */
+const pack = {
+  id:"software-approval", version:"2.1", entity:"BISTEC Solutions", jurisdiction:"Sri Lanka",
+  rules:[
+    {id:"R1", field:"kevEntries",   label:"No actively-exploited vulnerabilities", op:"eq",   value:0,   severity:"blocking", authority:"ISO 27001 A.8.8"},
+    {id:"R2", field:"soc2",         label:"SOC 2 Type II report obtainable",       op:"exists",          severity:"blocking", authority:"ISO 27001 A.5.19"},
+    {id:"R3", field:"dpa",          label:"Data Processing Agreement available",   op:"exists",          severity:"blocking", authority:"PDPA 2022 · GDPR Art.28"},
+    {id:"R4", field:"criticalCves", label:"Critical CVEs at or below threshold",   op:"lte",  value:5,   severity:"warning",  authority:"ISO 27001 A.8.8"},
+    {id:"R5", field:"privacyGrade", label:"Privacy grade C or better",             op:"grade",value:"C", severity:"warning",  authority:"ISO 27701"},
+    {id:"R6", field:"annualCost",   label:"Within delegated spend authority",      op:"lte",  value:500000, severity:"warning", authority:"Finance DoA §4.2", breach:"Escalate to Yohan — signatory, BISTEC Solutions"},
+    {id:"R7", field:"sso",          label:"SSO / SAML enforcement supported",      op:"true",            severity:"warning",  authority:"ISO 27001 A.5.16"},
+    {id:"R8", field:"subprocessors",label:"Sub-processor list disclosed",          op:"exists",          severity:"warning",  authority:"ISO 27701 §7.2.7"}
+  ]
+};
+const GRADES={A:1,B:2,C:3,D:4,E:5};
+const F=(v,p,s)=>({value:v,prov:p,src:s||""});
+
+/* ─────────── requests ─────────── */
+const requests = [
+{ id:"SR-1050", kind:"software", product:"Zoom", subject:"Zoom — licence for new support hire",
+  requester:"Prabath Senanayake", team:"Support Team", entity:"BISTEC Solutions", age:"4s", overdue:false,
+  body:`Hi,
+
+New technician starting Monday on the BDO Australia desk. She needs a Zoom licence for customer calls.
+
+Prabath`},
+
+{ id:"SR-1051", kind:"software", product:"Confluence", subject:"Confluence — access for two new engineers",
+  requester:"Nilantha Bandara", team:"Delivery", entity:"BISTEC Global (SL)", age:"7s", overdue:false,
+  body:`Two engineers joined the platform team this week and need Confluence access for the delivery documentation space.
+
+Nilantha`},
+
+{ id:"SR-1052", kind:"software", product:"Figma", subject:"Figma — seat for incoming designer",
+  requester:"Anuka Perera", team:"Marketing", entity:"BISTEC Solutions", age:"22m", overdue:false,
+  body:`We have a designer starting on the 21st and need a Figma seat for her.
+
+Anuka`},
+
+{ id:"SR-1045", kind:"software", product:"Slack", subject:"Slack — scheduled re-review",
+  requester:"GreenLight (automatic)", team:"System", entity:"BISTEC Solutions", age:"3h", overdue:false,
+  body:`Scheduled re-review. Slack was approved on 2025-11-04 with a ten-month review interval.
+
+The catalog entry lapsed today. Until it is renewed, Slack requests no longer self-serve.`,
+  vendor:"Salesforce",
+  facts:{
+    kevEntries:F(0,"verified","CISA KEV catalog 2026.09.11"), kevLatest:F(null,"none",""),
+    criticalCves:F(1,"verified","NIST NVD"), privacyGrade:F("B","verified","ToSDR"),
+    soc2:F(true,"sourced","slack.com/trust/compliance"), iso27001:F(true,"sourced","slack.com/trust/compliance"),
+    dpa:F(true,"sourced","slack.com/legal/dpa"), residency:F("EU + US","sourced","Trust centre"),
+    annualCost:F(420000,"sourced","Renewal quote 2026-08"), sso:F(true,"sourced","Enterprise Grid"),
+    subprocessors:F(true,"sourced","slack.com/subprocessors")},
+  steps:[
+    {src:"Resolving vendor identity", res:"Salesforce Inc → product Slack", kind:"done"},
+    {src:"CISA Known Exploited Vulnerabilities", res:"No entries — clean", kind:"done"},
+    {src:"NIST NVD", res:"1 critical CVE, patched 2026-04", kind:"done"},
+    {src:"ToSDR privacy grading", res:"Grade B", kind:"done"},
+    {src:"Vendor trust centre", res:"Full compliance pack published and current", kind:"done"},
+    {src:"Breach disclosure monitoring", res:"No incidents since last review", kind:"done"},
+    {src:"Software catalog", res:"Existing licence — 187 of 210 seats assigned", kind:"done"}]},
+
+{ id:"SR-1042", kind:"software", product:"ScreenConnect", subject:"ConnectWise ScreenConnect — remote support tooling",
+  requester:"Prabath Senanayake", team:"Support Team", entity:"BISTEC Solutions", age:"2d 4h", overdue:true,
+  body:`Hi Sajith,
+
+The support team needs a remote-access tool so we can take over customer machines during BDO Australia service desk calls. ScreenConnect is what the outgoing provider used, so the team already knows it.
+
+Looking at 12 technician seats. Can we get this approved this week? The desk goes live on the 28th.
+
+Thanks,
+Prabath`,
+  vendor:"ConnectWise", seats:12,
+  dataProfile:{ personalData:true, specialCategory:false, subjectCount:null,
+    subjects:"Customer end-users on supported machines — population not bounded",
+    categories:["Screen contents during support sessions","Device identifiers","Session recordings"],
+    purpose:"Remote technical support for the BDO Australia service desk",
+    retention:"Session recordings retained 90 days (vendor default)",
+    crossBorder:true, monitoring:true, automated:false },
+  facts:{
+    kevEntries:F(4,"verified","CISA KEV catalog 2026.09.11"),
+    kevLatest:F("CVE-2026-84869 · added 2026-09-11","verified","CISA KEV"),
+    criticalCves:F(9,"verified","NIST NVD"), privacyGrade:F("C","verified","ToSDR"),
+    soc2:F(true,"sourced","connectwise.com/trust"), iso27001:F(true,"sourced","connectwise.com/trust"),
+    dpa:F(true,"sourced","connectwise.com/legal/dpa"), residency:F("United States","claimed","Vendor marketing page"),
+    annualCost:F(612000,"sourced","Vendor pricing page · 12 seats"), sso:F(true,"sourced","Product docs"),
+    subprocessors:F(null,"none","")},
+  steps:[
+    {src:"Resolving vendor identity", res:"ConnectWise LLC → product ScreenConnect (CPE match)", kind:"done"},
+    {src:"CISA Known Exploited Vulnerabilities", res:"4 entries. Most recent added 2026-09-11 — three days ago.", kind:"hit"},
+    {src:"NIST NVD", res:"9 critical CVEs in the last 24 months", kind:"hit"},
+    {src:"ToSDR privacy grading", res:"Grade C — retains data after account closure", kind:"done"},
+    {src:"Vendor trust centre", res:"SOC 2 Type II and ISO 27001 published; DPA located", kind:"done"},
+    {src:"Sub-processor disclosure", res:"No published sub-processor list found", kind:"miss"},
+    {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
+
+{ id:"SR-1043", kind:"software", product:"Notion", subject:"Notion — team workspace for Marketing",
+  requester:"Anuka Perera", team:"Marketing", entity:"BISTEC Solutions", age:"1d 2h", overdue:false,
+  body:`Hi,
+
+Marketing would like Notion for campaign planning and the content calendar. We're currently running everything out of spreadsheets and it isn't holding up.
+
+18 users on the Business plan. Budget is approved by our department.
+
+Anuka`,
+  vendor:"Notion Labs", seats:18,
+  dataProfile:{ personalData:true, specialCategory:false, subjectCount:4200,
+    subjects:"Marketing contacts and prospects",
+    categories:["Name","Business email","Campaign engagement history"],
+    purpose:"Campaign planning and content calendar",
+    retention:"Until account closure — vendor retains after termination",
+    crossBorder:true, monitoring:false, automated:false },
+  duplicate:"BISTEC already licenses Confluence (142 seats, 24 unassigned, renews Mar 2027) with overlapping capability.",
+  facts:{
+    kevEntries:F(0,"verified","CISA KEV catalog 2026.09.11"), kevLatest:F(null,"none",""),
+    criticalCves:F(2,"verified","NIST NVD"), privacyGrade:F("C","verified","ToSDR"),
+    soc2:F(true,"sourced","notion.so/security"), iso27001:F(true,"sourced","notion.so/security"),
+    dpa:F(true,"sourced","notion.so/legal/dpa"), residency:F("United States","claimed","Vendor security page"),
+    annualCost:F(648000,"sourced","Vendor pricing · 18 × Business"), sso:F(false,"sourced","SAML requires Enterprise tier"),
+    subprocessors:F(true,"sourced","notion.so/subprocessors")},
+  steps:[
+    {src:"Resolving vendor identity", res:"Notion Labs Inc → product Notion", kind:"done"},
+    {src:"CISA Known Exploited Vulnerabilities", res:"No entries — clean", kind:"done"},
+    {src:"NIST NVD", res:"2 critical CVEs in the last 24 months, both patched", kind:"done"},
+    {src:"ToSDR privacy grading", res:"Grade C", kind:"done"},
+    {src:"Vendor trust centre", res:"SOC 2 Type II, ISO 27001, DPA and sub-processors all published", kind:"done"},
+    {src:"Tier capability check", res:"SAML SSO not available on the requested Business tier", kind:"miss"},
+    {src:"Software catalog", res:"Capability overlap detected with Confluence", kind:"miss"}]},
+
+{ id:"SR-1044", kind:"software", product:"Flowtrace AI", subject:"Flowtrace AI — automated test-case generation",
+  requester:"Nilantha Bandara", team:"QA", entity:"BISTEC Global (SL)", age:"6h", overdue:false,
+  body:`Requesting Flowtrace AI for the QA team — it generates regression test cases from Jira tickets. Saw it demoed at a conference.
+
+Small vendor, 4 seats to trial.`,
+  vendor:"Flowtrace Labs", seats:4,
+  dataProfile:{ personalData:true, specialCategory:false, subjectCount:null,
+    subjects:"Anyone named in a Jira ticket — customers and staff",
+    categories:["Free-text defect descriptions","Customer data pasted into tickets"],
+    purpose:"Automated regression test-case generation",
+    retention:"Unknown — no published retention policy",
+    crossBorder:null, monitoring:false, automated:false },
+  facts:{
+    kevEntries:F(0,"verified","CISA KEV catalog 2026.09.11"), kevLatest:F(null,"none",""),
+    criticalCves:F(null,"none",""), privacyGrade:F(null,"none",""),
+    soc2:F(null,"none",""), iso27001:F(null,"none",""), dpa:F(null,"none",""),
+    residency:F(null,"none",""), annualCost:F(180000,"claimed","Requester-stated"),
+    sso:F(null,"none",""), subprocessors:F(null,"none","")},
+  steps:[
+    {src:"Resolving vendor identity", res:"Flowtrace Labs — no CPE entry, no registered company record found", kind:"miss"},
+    {src:"CISA Known Exploited Vulnerabilities", res:"No entries (product not catalogued)", kind:"done"},
+    {src:"NIST NVD", res:"No CVE history — vendor not present in database", kind:"miss"},
+    {src:"ToSDR privacy grading", res:"Service not rated", kind:"miss"},
+    {src:"Vendor trust centre", res:"No security page, SOC 2, ISO certification or DPA located", kind:"miss"},
+    {src:"Sub-processor disclosure", res:"Not published", kind:"miss"},
+    {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
+
+{ id:"SR-1046", kind:"software", product:"FortiClient", subject:"Fortinet FortiClient VPN — remote workforce",
+  requester:"Ishara Fonseka", team:"IT Infrastructure", entity:"BISTEC Australia", age:"11h", overdue:false,
+  body:`Requesting FortiClient for the Australian team's VPN access. 40 seats.`,
+  vendor:"Fortinet", seats:40,
+  dataProfile:{ personalData:true, specialCategory:false, subjectCount:40,
+    subjects:"BISTEC Australia employees",
+    categories:["Employee identifier","Connection logs","Source IP address"],
+    purpose:"VPN access control for the remote workforce",
+    retention:"Connection logs retained 12 months",
+    crossBorder:false, monitoring:false, automated:false },
+  facts:{
+    kevEntries:F(30,"verified","CISA KEV catalog 2026.09.11"),
+    kevLatest:F("Multiple Products · added 2026-09-09","verified","CISA KEV"),
+    criticalCves:F(22,"verified","NIST NVD"), privacyGrade:F("C","verified","ToSDR"),
+    soc2:F(true,"sourced","fortinet.com/trust"), iso27001:F(true,"sourced","fortinet.com/trust"),
+    dpa:F(true,"sourced","fortinet.com/legal"), residency:F("Australia","sourced","Regional datacentre"),
+    annualCost:F(392000,"sourced","Reseller quote"), sso:F(true,"sourced","Product docs"),
+    subprocessors:F(true,"sourced","Trust centre")},
+  steps:[
+    {src:"Resolving vendor identity", res:"Fortinet Inc → FortiClient", kind:"done"},
+    {src:"CISA Known Exploited Vulnerabilities", res:"30 entries. Most recent added 2026-09-09.", kind:"hit"},
+    {src:"NIST NVD", res:"22 critical CVEs in the last 24 months", kind:"hit"},
+    {src:"ToSDR privacy grading", res:"Grade C", kind:"done"},
+    {src:"Vendor trust centre", res:"Full compliance pack published", kind:"done"},
+    {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
+
+{ id:"AR-0318", kind:"iso", subject:"ISO document approval — Asset Management Procedure v4",
+  requester:"Dinusha Weerasinghe", team:"Quality", entity:"BISTEC Global (SL)", age:"3d 1h", overdue:true,
+  body:`Dear Sajith,
+
+Please find attached the revised Asset Management Procedure (v4) for your approval ahead of the internal audit.
+
+Attachment: BG-QMS-PR-014-AssetManagement-v4.docx
+
+Regards,
+Dinusha`,
+  isoChecks:[
+    {id:"R1", label:"Business justification stated", status:"fail", why:"No business outcome or driver given for the revision. Required before IT sign-off.", severity:"blocking"},
+    {id:"R2", label:"Risk owner named", status:"fail", why:"Document lists no accountable owner for the asset register.", severity:"blocking"},
+    {id:"R3", label:"ISO clause reference", status:"pass", why:"Cites ISO 27001 A.5.9 in the header.", severity:"warning"},
+    {id:"R4", label:"Change summary vs. previous version", status:"pass", why:"Revision history table present, v3 → v4 deltas listed.", severity:"warning"},
+    {id:"R5", label:"Review date within 12 months", status:"pass", why:"Next review 2027-03-01.", severity:"blocking"}]}
+];
+
+const FACT_ROWS=[["kevEntries","Actively-exploited vulnerabilities (KEV)"],["kevLatest","Most recent KEV entry"],
+ ["criticalCves","Critical CVEs, last 24 months"],["privacyGrade","Privacy grade (ToSDR)"],["soc2","SOC 2 Type II"],
+ ["iso27001","ISO 27001 certification"],["dpa","Data Processing Agreement"],["subprocessors","Sub-processor list"],
+ ["residency","Data residency"],["sso","SSO / SAML support"],["annualCost","Annual cost"]];
+
+/* ─────────── rule engine ─────────── */
+function evaluate(facts, rules){
+  const checks = rules.map(r=>{
+    if(r.severity==="off") return {...r, status:"off", why:"Requirement disabled by Operations."};
+    const f = facts[r.field];
+    if(!f || f.prov==="none" || f.value===null)
+      return {...r, status:"miss", why:"Not found in any source. This is a finding, not a failure of the search."};
+    let ok=false, why="";
+    switch(r.op){
+      case "eq": ok=f.value===r.value; why=ok?"None found in the CISA catalogue.":`${f.value} entries in the CISA catalogue.`; break;
+      case "lte": ok=f.value<=r.value;
+        why=ok?`${fmt(f.value,r.field)} — within the ${fmt(r.value,r.field)} limit.`:`${fmt(f.value,r.field)} exceeds the ${fmt(r.value,r.field)} limit.`; break;
+      case "exists": ok=!!f.value; why=ok?"Located and verifiable.":"Not published."; break;
+      case "true": ok=f.value===true; why=ok?"Supported.":"Not supported on the requested tier."; break;
+      case "grade": ok=(GRADES[f.value]||9)<=GRADES[r.value]; why=`Grade ${f.value} against a minimum of ${r.value}.`; break;
+    }
+    return {...r, status:ok?"pass":"fail", why};
+  });
+  const live = checks.filter(c=>c.status!=="off");
+  const blockFail = live.some(c=>c.severity==="blocking"&&c.status==="fail");
+  const blockMiss = live.some(c=>c.severity==="blocking"&&c.status==="miss");
+  const warns = live.filter(c=>c.severity==="warning"&&c.status!=="pass");
+  let outcome="APPROVE";
+  if(blockFail) outcome="REJECT"; else if(blockMiss) outcome="MORE_INFO"; else if(warns.length) outcome="CONDITIONS";
+  return {checks, outcome, warns, live};
+}
+const VERDICT={
+  APPROVE:{t:"Approve",w:"Every blocking requirement is satisfied against verified sources."},
+  CONDITIONS:{t:"Approve with conditions",w:"All blocking requirements pass. The conditions below are the warning-level rules that did not."},
+  REJECT:{t:"Reject",w:"A blocking requirement failed against a verified source."},
+  MORE_INFO:{t:"More information required",w:"A blocking requirement could not be evaluated — the evidence does not exist publicly."}};
+function fmt(v,field){ return field==="annualCost" ? "LKR "+v.toLocaleString("en-LK") : String(v); }
+
+/* ─────────── DPIA — screening, then generation from evidence already gathered ─────────── */
+const REGIME = {
+  "BISTEC Solutions":"PDPA No. 9 of 2022 (Sri Lanka)",
+  "BISTEC Global (SL)":"PDPA No. 9 of 2022 (Sri Lanka)",
+  "BISTEC Australia":"Privacy Act 1988 and the Australian Privacy Principles"
+};
+const dpiaPack = {id:"dpia-screening", version:"1.0"};
+
+function screenDpia(r){
+  const dp = r.dataProfile;
+  if(!dp) return null;
+  if(!dp.personalData) return {required:false, triggers:[], note:"No personal data is processed."};
+  const t=[];
+  if(dp.specialCategory) t.push({id:"D1", label:"Special category data processed", authority:"GDPR Art.35(3)(b)"});
+  if(dp.subjectCount && dp.subjectCount>5000)
+    t.push({id:"D2", label:`Large-scale processing — ${dp.subjectCount.toLocaleString()} data subjects`, authority:"GDPR Art.35(3)(b)"});
+  if(dp.crossBorder===true)
+    t.push({id:"D3", label:"Personal data leaves the controlling jurisdiction", authority:"PDPA 2022 · GDPR Ch.V"});
+  if(dp.crossBorder===null)
+    t.push({id:"D3", label:"Transfer destination could not be established", authority:"PDPA 2022 · GDPR Ch.V"});
+  if(dp.automated) t.push({id:"D4", label:"Automated decision-making with legal or similar effect", authority:"GDPR Art.35(3)(a)"});
+  if(dp.monitoring) t.push({id:"D5", label:"Systematic monitoring of individuals", authority:"GDPR Art.35(3)(c)"});
+  return {required:t.length>0, triggers:t,
+    note: t.length ? "" : "Personal data is processed, but no Article 35(3) trigger is met."};
+}
+
+const LK={Remote:1,Possible:2,Probable:3}, SV={Limited:1,Significant:2,Severe:3};
+const residual=(l,s)=>{const n=LK[l]*SV[s]; return n>=6?"High":n>=3?"Medium":"Low";};
+
+/* severity of a data-handling risk scales with what is actually being handled */
+function sensitivity(dp){
+  if(dp.specialCategory || dp.monitoring) return "Severe";
+  if(dp.subjectCount===null) return "Significant";   // unbounded population
+  return "Limited";
+}
+
+/* every risk below cites the research finding that produced it — none are invented */
+function dpiaRisks(r){
+  const f=r.facts, dp=r.dataProfile, out=[];
+  const add=(id,risk,source,l,s,mit)=>out.push({id,risk,source,l,s,mit,residual:residual(l,s)});
+
+  if(!f.subprocessors.value)
+    add("P1","Onward transfers to sub-processors cannot be verified",
+      "Sub-processor list not found during research","Possible","Significant",
+      "Require full sub-processor disclosure as a contractual condition before onboarding, re-verified annually.");
+
+  if(dp.crossBorder===true)
+    add("P2","Personal data leaves the controlling jurisdiction",
+      `Data residency: ${f.residency.value||"undisclosed"}${f.residency.prov==="claimed"?" (vendor claim, unverified)":""}`,
+      "Probable", f.dpa.value?"Limited":"Severe",
+      f.dpa.value
+        ? "Executed DPA with standard contractual clauses covers the transfer. Verify the residency claim independently."
+        : "No DPA located — the transfer currently has no lawful mechanism. Must be executed before any processing begins.");
+
+  if(dp.crossBorder===null)
+    add("P2","Transfer destination unknown",
+      "Vendor publishes no data residency information","Probable","Severe",
+      "Cannot be mitigated on the available information. Obtain written residency and sub-processor disclosure before processing.");
+
+  if(["C","D","E"].includes(f.privacyGrade.value))
+    add("P3","Personal data retained after account termination",
+      `ToSDR privacy grade ${f.privacyGrade.value} — severity scaled to ${sensitivity(dp).toLowerCase()} given the data handled`,
+      "Probable", sensitivity(dp),
+      "Contractual deletion obligation on termination, with written confirmation of erasure within 30 days.");
+
+  if(f.sso.value===false)
+    add("P4","Access control weaker than the BISTEC standard",
+      "SSO / SAML not available on the requested tier","Possible","Significant",
+      "Enforce application-level MFA, or move to the tier supporting SAML before rollout.");
+
+  if(dp.monitoring)
+    add("P5","Support sessions may capture data beyond the fault being diagnosed",
+      "Systematic monitoring — remote screen takeover","Probable","Severe",
+      "Session recording off by default; explicit end-user consent prompt before takeover; recordings purged at 30 days.");
+
+  if(!f.soc2.value)
+    add("P6","Vendor security posture cannot be independently verified",
+      "No SOC 2 Type II report located","Possible","Severe",
+      "Do not process personal data until an independent assurance report is provided.");
+
+  return out;
+}
+const worstResidual = rs => rs.some(x=>x.residual==="High") ? "High"
+                        : rs.some(x=>x.residual==="Medium") ? "Medium" : "Low";
+
+/* ─────────── state ─────────── */
+let state={view:"queue", req:null, researched:{}, decisions:{}, audit:[], packVersion:"2.1", edits:0};
+const el=document.getElementById("view");
+function logAudit(action,detail,ref){
+  state.audit.unshift({ts:new Date().toISOString().replace("T"," ").slice(0,19),action,detail,ref,
+    actor:"Sajith",pack:`${pack.id}@${state.packVersion}`});
+  const n=document.getElementById("ct-audit"); if(n) n.textContent=state.audit.length;
+}
+function go(v,id){ state.view=v; state.req=id||null; render(); window.scrollTo(0,0); }
+
+/* seed the two self-service events so the audit trail reflects what already happened */
+["SR-1050","SR-1051"].forEach(id=>{
+  const r=requests.find(x=>x.id===id), rt=route(r.product,r.entity);
+  state.audit.push({ts:"2026-09-14 09:41:0"+(id==="SR-1050"?"4":"7"), action:"Provisioned automatically",
+    detail:`${r.product} · catalog entry current to ${rt.entry.review} · no approver required`, ref:id,
+    actor:"GreenLight", pack:"catalog-gate@1.0"});
+});
+
+/* ─────────── queue ─────────── */
+function viewQueue(){
+  const routed = requests.map(r=>({r, rt: r.kind==="iso" ? {tier:2,cause:"iso"} : route(r.product,r.entity)}));
+  const t0=routed.filter(x=>x.rt.tier===0), t1=routed.filter(x=>x.rt.tier===1), t2=routed.filter(x=>x.rt.tier===2);
+
+  const row = ({r,rt})=>{
+    const d=state.decisions[r.id];
+    let sev="warn", pill=`<span class="pill p-mute">Awaiting research</span>`;
+    if(rt.tier===0){ sev="ok"; pill=`<span class="pill p-ok">Provisioned · ${r.age}</span>`; }
+    else if(rt.tier===1){ sev="info"; pill=`<span class="pill p-info">Budget owner · ${rt.entry.owner}</span>`; }
+    else if(r.kind==="iso"){ sev="crit"; pill=`<span class="pill p-crit">Returned — 2 gaps</span>`; }
+    else if(d){ sev=d==="REJECT"?"crit":d==="APPROVE"?"ok":d==="CONDITIONS"?"warn":"info";
+      pill=`<span class="pill p-${sev}">${VERDICT[d].t}</span>`; }
+    else if(state.researched[r.id]){
+      const o=evaluate(r.facts,pack.rules).outcome;
+      sev=o==="REJECT"?"crit":o==="APPROVE"?"ok":o==="CONDITIONS"?"warn":"info";
+      pill=`<span class="pill p-${sev}">${VERDICT[o].t} — recommended</span>`; }
+    else if(rt.cause==="stale"){ pill=`<span class="pill p-warn">Re-escalated</span>`; }
+    return `<button class="qrow sev-${sev}" data-open="${r.id}">
+      <div><div class="qsub">${r.subject}</div>
+        <div class="qmeta"><span class="mono">${r.id}</span> · ${r.requester} · ${r.team}</div></div>
+      <div><span class="ent">${r.entity}</span></div>
+      <div>${pill}</div>
+      <div class="qage">${r.overdue?`<b>${r.age}</b><span style="font-size:10.5px">past SLA</span>`:r.age}</div>
+    </button>`;
+  };
+
+  return `<div class="topbar">
+      <div><h1>Request queue</h1><div class="sub">Nine requests arrived today. Three were resolved before anyone read them.</div></div>
+      <div class="actions"><button class="btn sm" data-nav="rules">Rule pack ${state.packVersion}</button></div>
+    </div>
+
+    <div class="routing">
+      <div class="rtop"><h2>Catalog gate</h2>
+        <p>Every request is checked against the software catalog first. Only what the catalog cannot settle reaches the Head of Operations.</p></div>
+      <div class="tiers">
+        <div class="tier t0"><span class="bar"></span><div>
+          <div class="n">${t0.length}</div><div class="tl">Self-service</div>
+          <div class="td">In catalog, assessment current, seats free. Provisioned in seconds. No approver.</div></div></div>
+        <div class="tier t1"><span class="bar"></span><div>
+          <div class="n">${t1.length}</div><div class="tl">Spend decision only</div>
+          <div class="td">Security already settled. Only the seat purchase is open — routed to the budget owner, not Ops.</div></div></div>
+        <div class="tier t2"><span class="bar"></span><div>
+          <div class="n">${t2.length}</div><div class="tl">Full review</div>
+          <div class="td">Not in catalog, or the entry no longer holds. These need Sajith.</div></div></div>
+      </div>
+    </div>
+
+    <div class="queue">
+      ${t0.length?`<div class="qgroup">Resolved without an approver</div>${t0.map(row).join("")}`:""}
+      ${t1.length?`<div class="qgroup">Routed to the budget owner</div>${t1.map(row).join("")}`:""}
+      ${t2.length?`<div class="qgroup">Waiting on the Head of Operations</div>${t2.map(row).join("")}`:""}
+    </div>
+
+    <div style="margin-top:16px" class="callout ok"><span>◆</span><div>
+      <b>Every approval shrinks the next queue.</b> When Sajith approves something new, it enters the catalog — and every future request for it self-serves. The decision he makes today is one he never makes again.</div></div>`;
+}
+
+/* ─────────── request router ─────────── */
+function viewRequest(){
+  const r=requests.find(x=>x.id===state.req);
+  if(r.kind==="iso") return viewIso(r);
+  const rt=route(r.product,r.entity);
+  if(rt.tier===0) return viewSelfService(r,rt);
+  if(rt.tier===1) return viewSpendOnly(r,rt);
+  return viewFullReview(r,rt);
+}
+
+function reqHead(r, right){
+  return `<div class="reqhead">
+    <div><h1>${r.subject}</h1>
+      <div class="reqmeta"><span class="mono">${r.id}</span><span>·</span>${r.requester} · ${r.team}
+      <span class="ent">${r.entity}</span>${r.seats?`<span class="ent">${r.seats} seats</span>`:""}</div></div>
+    <div class="actions">${right||""}</div></div>`;
+}
+
+/* Tier 0 — what the requester received */
+function viewSelfService(r,rt){
+  const c=rt.entry;
+  return `<button class="backlink" data-nav="queue">← Request queue</button>
+  <div class="stack">
+    ${reqHead(r, `<span class="pill p-ok">Tier 0 · no approver required</span>`)}
+    <div class="split">
+      <div class="stack">
+        <div class="panel"><header><h2>The request</h2><span class="eyebrow">received 09:41:00</span></header>
+          <div class="body"><div class="email">${r.body}</div></div></div>
+        <div class="panel"><header><h2>Why no one was asked</h2><span class="eyebrow mono">catalog-gate@1.0</span></header>
+          <div class="body">
+            <div class="check"><span class="mark m-pass">✓</span><div>
+              <div class="lbl"><span class="rid">C1</span>Product is in the software catalog</div>
+              <div class="why">${c.name} · approved ${c.approved} · owner ${c.owner}</div></div></div>
+            <div class="check"><span class="mark m-pass">✓</span><div>
+              <div class="lbl"><span class="rid">C2</span>Assessment still current</div>
+              <div class="why">Next review ${c.review}. No new actively-exploited vulnerabilities since approval.</div></div></div>
+            <div class="check"><span class="mark m-pass">✓</span><div>
+              <div class="lbl"><span class="rid">C3</span>Approved for this entity</div>
+              <div class="why">${r.entity} is in scope for this catalog entry.</div></div></div>
+            <div class="check"><span class="mark m-pass">✓</span><div>
+              <div class="lbl"><span class="rid">C4</span>Seat available in the existing pool</div>
+              <div class="why">${rt.free} of ${c.seats} seats unassigned — no new spend.</div></div></div>
+          </div></div>
+      </div>
+      <div class="stack">
+        <div class="receipt">
+          <div class="rhead"><span class="tick">✓</span>
+            <div><h2>Access granted</h2><p>What ${r.requester.split(" ")[0]} saw, ${r.age} after sending the request.</p></div></div>
+          <div class="rbody">
+            <div class="kv"><span class="k">Software</span><span class="v">${c.name}</span></div>
+            <div class="kv"><span class="k">Licence</span><span class="v">From the existing ${c.name} pool</span></div>
+            <div class="kv"><span class="k">Internal owner</span><span class="v">${c.owner}</span></div>
+            <div class="kv"><span class="k">Additional cost</span><span class="v">None</span></div>
+            <div class="kv"><span class="k">Approval required</span><span class="v" style="color:var(--signal)">None</span></div>
+            <div class="kv"><span class="k">Time to access</span><span class="v mono">${r.age}</span></div>
+          </div></div>
+        <div class="callout ok"><span>◆</span><div><b>We already have this.</b> The security question was answered on ${c.approved} and the answer is still good. Asking it again would have cost ${r.requester.split(" ")[0]} three days and Sajith four minutes, and changed nothing.</div></div>
+        <div class="callout info"><span>◆</span><div><b>Automatic does not mean unrecorded.</b> This provisioning is in the audit trail with the catalog version that authorised it — the evidence an ISO auditor asks for.</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* Tier 1 — security settled, spend open */
+function viewSpendOnly(r,rt){
+  const c=rt.entry;
+  return `<button class="backlink" data-nav="queue">← Request queue</button>
+  <div class="stack">
+    ${reqHead(r, `<span class="pill p-info">Tier 1 · spend decision only</span>`)}
+    <div class="verdict v-MORE_INFO">
+      <div><div class="vt">Routed to ${c.owner}</div>
+        <div class="vw">${rt.note} This never needed the Head of Operations — it is a purchase, not a security question.</div>
+        <div class="vsrc">catalog-gate@1.0 · ${c.name} · assessment current to ${c.review}</div></div>
+    </div>
+    <div class="split">
+      <div class="panel"><header><h2>The request</h2><span class="eyebrow">${r.age} in queue</span></header>
+        <div class="body"><div class="email">${r.body}</div></div></div>
+      <div class="stack">
+        <div class="panel"><header><h2>Two questions, two owners</h2><span class="eyebrow">the unbundling</span></header>
+          <div class="body">
+            <div class="check"><span class="mark m-pass">✓</span><div>
+              <div class="lbl">Is this software safe to use?</div>
+              <div class="why"><b style="color:var(--signal)">Already answered</b> — assessed ${c.approved}, current to ${c.review}. Nothing to re-review.</div></div>
+              <span class="pill p-ok">settled</span></div>
+            <div class="check"><span class="mark m-miss">?</span><div>
+              <div class="lbl">Will we spend money on another seat?</div>
+              <div class="why">All ${c.seats} seats assigned. A new seat costs money, so it needs the budget owner — <b>${c.owner}</b>.</div></div>
+              <span class="pill p-info">open</span></div>
+          </div></div>
+        <div class="panel"><header><h2>Catalog position</h2></header>
+          <div class="body">
+            <div class="kv"><span class="k">Seats</span><span class="v mono">${c.used} / ${c.seats} assigned</span></div>
+            <div class="kv"><span class="k">Current spend</span><span class="v mono">${c.cost}</span></div>
+            <div class="kv"><span class="k">Internal owner</span><span class="v">${c.owner}</span></div>
+            <div class="kv"><span class="k">Next review</span><span class="v mono">${c.review}</span></div>
+          </div></div>
+        <div class="callout info"><span>◆</span><div><b>Today both questions land on Sajith.</b> Only one of them is his.</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* Tier 2 — full review */
+function viewFullReview(r,rt){
+  const done=state.researched[r.id], decided=state.decisions[r.id];
+  const ev=done?evaluate(r.facts,pack.rules):null;
+
+  const factRows=FACT_ROWS.map(([k,label])=>{
+    const f=r.facts[k]; if(!f) return "";
+    const none=f.prov==="none"||f.value===null;
+    const v=none?"Not found":f.value===true?"Published":f.value===false?"Not supported":k==="annualCost"?fmt(f.value,k):String(f.value);
+    const pv={verified:"pv-verified",sourced:"pv-sourced",claimed:"pv-claimed",none:"pv-none"}[f.prov];
+    const pl={verified:"verified",sourced:"sourced",claimed:"vendor claim",none:"not found"}[f.prov];
+    return `<div class="fact">
+      <div class="k">${label}${f.src?`<div style="font-size:11px;color:var(--faint);margin-top:2px" class="mono">${f.src}</div>`:""}</div>
+      <div class="v ${none?"na":""}">${v}<span class="prov ${pv}">${pl}</span></div></div>`;
+  }).join("");
+
+  const checkRows=ev?ev.checks.map(c=>{
+    const m={pass:["m-pass","✓"],fail:["m-fail","✕"],miss:["m-miss","?"],off:["m-off","–"]}[c.status];
+    return `<div class="check ${c.status==="off"?"off":""}"><span class="mark ${m[0]}">${m[1]}</span>
+      <div><div class="lbl"><span class="rid">${c.id}</span>${c.label}</div>
+      <div class="why">${c.why}${c.status!=="pass"&&c.status!=="off"&&c.breach?` <b style="color:var(--warn)">${c.breach}</b>`:""}</div></div>
+      <span class="pill ${c.severity==="blocking"?"p-crit":c.severity==="warning"?"p-warn":"p-mute"}">${c.severity}</span></div>`;
+  }).join(""):"";
+
+  const conditions = ev&&ev.outcome==="CONDITIONS" ? `
+    <div class="panel"><header><h2>Conditions on approval</h2><span class="eyebrow">derived from failed warnings</span></header>
+    <div class="body"><ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:13.2px;color:var(--ink-2)">
+      ${ev.warns.map(w=>`<li><b>${w.id}</b> — ${w.breach?w.breach:w.label+". "+w.why}</li>`).join("")}
+    </ol></div></div>` : "";
+
+  const gate = rt.cause==="stale" ? `
+    <div class="callout"><span>◆</span><div><b>${r.product} is in the catalog — and that was not enough.</b>
+      ${rt.fails.map(f=>f).join(" ")} A catalog that never expires is just an allowlist, so this one does.</div></div>`
+    : `<div class="callout info"><span>◆</span><div><b>Not in the catalog.</b> No prior assessment exists, so this is the expensive path — and the one Sajith should actually be spending his attention on.</div></div>`;
+
+  return `<button class="backlink" data-nav="queue">← Request queue</button>
+    <div class="stack">
+      ${reqHead(r, !done?`<button class="btn primary" id="run">Research this software</button>`
+                       :`<span class="pill p-ok">Research complete · 7 sources</span>`)}
+      ${gate}
+      ${done&&ev?`
+        <div class="verdict v-${decided||ev.outcome}">
+          <div><div class="vt">${VERDICT[decided||ev.outcome].t}${decided?" — decided by Sajith":" — recommended"}</div>
+            <div class="vw">${VERDICT[decided||ev.outcome].w}</div>
+            <div class="vsrc">${pack.id}@${state.packVersion} · ${pack.entity} · evaluated ${ev.live.length} of ${pack.rules.length} requirements</div></div>
+          ${!decided?`<div class="actions">
+            <button class="btn primary" data-decide="APPROVE">Approve</button>
+            <button class="btn" data-decide="CONDITIONS">Approve with conditions</button>
+            <button class="btn" data-decide="MORE_INFO">Request more info</button>
+            <button class="btn danger" data-decide="REJECT">Reject</button></div>`
+          :`<span class="pill p-ok">Decision recorded · added to catalog</span>`}
+        </div>`:""}
+      ${decided==="APPROVE"||decided==="CONDITIONS"?`<div class="callout ok"><span>◆</span><div>
+        <b>${r.product} has entered the catalog.</b> The next person who asks for it self-serves. Sajith will not see this request again.</div></div>`:""}
+      ${r.duplicate&&done?`<div class="callout"><span>◆</span><div><b>Duplicate capability.</b> ${r.duplicate}</div></div>`:""}
+      <div class="split">
+        <div class="stack">
+          <div class="panel"><header><h2>The request</h2><span class="eyebrow">${r.age} in queue</span></header>
+            <div class="body"><div class="email">${r.body}</div></div></div>
+          <div class="panel"><header><h2>Research</h2>${done?`<span class="eyebrow">7 sources · 4 verified</span>`:""}</header>
+            <div class="body"><div class="research" id="research">
+              ${done?r.steps.map(s=>stepHtml(s,true)).join("")
+                    :`<p style="color:var(--muted);font-size:13px;margin:4px 0">A support engineer spends two to three hours on this. Press <b>Research this software</b> to watch it run against live sources.</p>`}
+            </div></div></div>
+        </div>
+        <div class="stack">
+          ${done?`<div class="panel"><header><h2>Findings</h2><span class="eyebrow">every field carries its provenance</span></header>
+            <div class="body"><div class="facts">${factRows}</div></div></div>`:""}
+          ${done?`<div class="panel"><header><h2>Rule pack check</h2><span class="eyebrow mono">${pack.id}@${state.packVersion}</span></header>
+            <div class="body">${checkRows}</div></div>`:""}
+          ${conditions}
+          ${done?dpiaPanel(r):""}
+        </div>
+      </div>
+    </div>`;
+}
+
+function dpiaPanel(r){
+  const sc=screenDpia(r); if(!sc) return "";
+  if(!sc.required) return `<div class="panel"><header><h2>Privacy screening</h2>
+      <span class="eyebrow mono">${dpiaPack.id}@${dpiaPack.version}</span></header>
+    <div class="body"><div class="check"><span class="mark m-pass">✓</span><div>
+      <div class="lbl">No impact assessment required</div>
+      <div class="why">${sc.note} Screened against ${REGIME[r.entity]||"the applicable regime"}.</div></div></div>
+    </div></div>`;
+  const risks=dpiaRisks(r), worst=worstResidual(risks);
+  const cls = worst==="High"?"p-crit":worst==="Medium"?"p-warn":"p-ok";
+  return `<div class="panel"><header><h2>Privacy screening</h2>
+      <span class="eyebrow mono">${dpiaPack.id}@${dpiaPack.version}</span></header>
+    <div class="body">
+      ${sc.triggers.map(t=>`<div class="check"><span class="mark m-miss">!</span><div>
+        <div class="lbl"><span class="rid">${t.id}</span>${t.label}</div>
+        <div class="why">${t.authority}</div></div></div>`).join("")}
+      <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft)">
+        <div><div style="font-size:13.2px;font-weight:600">Impact assessment required</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">${risks.length} risks identified · residual <b>${worst}</b></div></div>
+        <button class="btn sm" data-dpia="${r.id}">Open DPIA</button>
+      </div>
+    </div></div>`;
+}
+
+/* the generated assessment */
+function viewDpia(){
+  const r=requests.find(x=>x.id===state.req);
+  const sc=screenDpia(r), dp=r.dataProfile, f=r.facts;
+  const risks=dpiaRisks(r), worst=worstResidual(risks);
+  const rc = v => v==="High"?"p-crit":v==="Medium"?"p-warn":"p-ok";
+  return `<button class="backlink" data-back="${r.id}">← ${r.subject}</button>
+  <div class="stack">
+    <div class="reqhead">
+      <div><h1>Data Protection Impact Assessment</h1>
+        <div class="reqmeta"><span class="mono">DPIA-${r.id.split("-")[1]}</span><span>·</span>${r.product}
+          <span class="ent">${r.entity}</span><span class="ent">${REGIME[r.entity]||"—"}</span></div></div>
+      <div class="actions"><span class="pill ${rc(worst)}">Residual risk · ${worst}</span></div></div>
+
+    <div class="callout ok"><span>◆</span><div><b>Seven of the eleven fields below came from the software research.</b>
+      Only the processing description was supplied by a person — the rest is evidence GreenLight already held, which is why this took seconds rather than a week.</div></div>
+
+    <div class="split">
+      <div class="stack">
+        <div class="panel"><header><h2>1 · Description of processing</h2><span class="eyebrow">declared by requester</span></header>
+          <div class="body">
+            <div class="kv"><span class="k">Purpose</span><span class="v">${dp.purpose}</span></div>
+            <div class="kv"><span class="k">Data subjects</span><span class="v">${dp.subjects}</span></div>
+            <div class="kv"><span class="k">Volume</span><span class="v mono">${dp.subjectCount?dp.subjectCount.toLocaleString():"Not bounded"}</span></div>
+            <div class="kv"><span class="k">Special category</span><span class="v">${dp.specialCategory?"Yes":"No"}</span></div>
+            <div class="kv"><span class="k">Retention</span><span class="v">${dp.retention}</span></div>
+            <div style="margin-top:12px"><div class="eyebrow" style="margin-bottom:6px">Categories of data</div>
+              ${dp.categories.map(c=>`<span class="ent" style="margin:0 5px 5px 0;display:inline-block">${c}</span>`).join("")}</div>
+          </div></div>
+
+        <div class="panel"><header><h2>2 · Transfers and recipients</h2><span class="eyebrow">from research</span></header>
+          <div class="body">
+            <div class="kv"><span class="k">Processor</span><span class="v">${r.vendor}</span></div>
+            <div class="kv"><span class="k">Data residency</span><span class="v ${f.residency.prov==="none"?"na":""}">${f.residency.value||"Not found"}
+              <span class="prov ${f.residency.prov==="verified"?"pv-verified":f.residency.prov==="sourced"?"pv-sourced":f.residency.prov==="claimed"?"pv-claimed":"pv-none"}">${f.residency.prov==="claimed"?"vendor claim":f.residency.prov==="none"?"not found":f.residency.prov}</span></span></div>
+            <div class="kv"><span class="k">Sub-processors disclosed</span><span class="v ${!f.subprocessors.value?"na":""}">${f.subprocessors.value?"Published":"Not found"}</span></div>
+            <div class="kv"><span class="k">Transfer mechanism (DPA)</span><span class="v ${!f.dpa.value?"na":""}">${f.dpa.value?"Executed DPA available":"None located"}</span></div>
+            <div class="kv"><span class="k">Independent assurance</span><span class="v ${!f.soc2.value?"na":""}">${f.soc2.value?"SOC 2 Type II":"Not found"}</span></div>
+          </div></div>
+
+        <div class="panel"><header><h2>3 · Necessity and proportionality</h2></header>
+          <div class="body"><p style="font-size:13.2px;color:var(--ink-2);line-height:1.6">
+            Processing is limited to ${dp.categories.length} categories of data for a single stated purpose${r.duplicate?`. <b style="color:var(--warn)">A less intrusive option exists:</b> ${r.duplicate}`:". No less intrusive alternative was identified in the catalog."}</p></div></div>
+      </div>
+
+      <div class="stack">
+        <div class="panel"><header><h2>4 · Risk register</h2><span class="eyebrow">likelihood × severity</span></header>
+          <div class="body" style="padding:0"><div class="scroll"><table class="tbl">
+            <thead><tr><th>Risk</th><th>L</th><th>S</th><th>Residual</th></tr></thead>
+            <tbody>${risks.map(x=>`<tr>
+              <td><b>${x.id}</b> ${x.risk}
+                <div style="font-size:11.5px;color:var(--faint);margin-top:3px">Source: ${x.source}</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:5px"><b>Mitigation:</b> ${x.mit}</div></td>
+              <td style="font-size:12px">${x.l}</td><td style="font-size:12px">${x.s}</td>
+              <td><span class="pill ${rc(x.residual)}">${x.residual}</span></td></tr>`).join("")}</tbody>
+          </table></div></div></div>
+
+        <div class="panel"><header><h2>5 · Outcome</h2></header>
+          <div class="body">
+            <div class="kv"><span class="k">Highest residual risk</span><span class="v"><span class="pill ${rc(worst)}">${worst}</span></span></div>
+            <div class="kv"><span class="k">Regime</span><span class="v">${REGIME[r.entity]||"—"}</span></div>
+            <div class="kv"><span class="k">Prior consultation</span><span class="v">${worst==="High"?"Required before processing":"Not required"}</span></div>
+            <div class="kv"><span class="k">Reviewer</span><span class="v">Dinusha Weerasinghe · Quality</span></div>
+            <div class="kv"><span class="k">Next review</span><span class="v mono">2027-09-14</span></div>
+            <div style="margin-top:14px" class="actions">
+              <button class="btn primary" data-dpia-sign="${r.id}">Send to Quality for sign-off</button></div>
+          </div></div>
+
+        ${worst==="High"?`<div class="callout"><span>◆</span><div><b>Residual risk remains High after mitigation.</b>
+          Processing should not begin until the outstanding items are closed — and under GDPR Art.36 a transfer at this risk level would require prior consultation with the supervisory authority.</div></div>`:""}
+      </div>
+    </div>
+  </div>`;
+}
+
+function viewPrivacy(){
+  const rows=requests.filter(r=>r.dataProfile).map(r=>{
+    const sc=screenDpia(r);
+    const risks=sc.required?dpiaRisks(r):[];
+    const worst=risks.length?worstResidual(risks):"—";
+    const rc = v => v==="High"?"p-crit":v==="Medium"?"p-warn":"p-ok";
+    return `<tr>
+      <td><b>${r.product}</b><div style="font-size:11.5px;color:var(--faint);margin-top:2px">${r.id} · ${r.team}</div></td>
+      <td style="font-size:12px">${r.entity}<div style="font-size:11px;color:var(--faint);margin-top:2px">${REGIME[r.entity]||"—"}</div></td>
+      <td class="mono">${r.dataProfile.subjectCount?r.dataProfile.subjectCount.toLocaleString():"unbounded"}</td>
+      <td>${sc.required?sc.triggers.map(t=>`<span class="ent" style="margin:0 4px 4px 0;display:inline-block">${t.id}</span>`).join(""):`<span style="color:var(--faint);font-size:12px">none met</span>`}</td>
+      <td>${sc.required?`<span class="pill ${rc(worst)}">${worst}</span>`:`<span class="pill p-mute">Not required</span>`}</td>
+      <td>${sc.required?`<button class="btn sm" data-dpia="${r.id}">Open</button>`:""}</td></tr>`;
+  }).join("");
+  return `<div class="topbar"><div><h1>Privacy assessments</h1>
+    <div class="sub">Screened automatically against the regime that applies to the requesting entity. A DPIA is drafted only when an Article 35(3) trigger is actually met.</div></div></div>
+    <div class="panel"><div class="scroll"><table class="tbl">
+      <thead><tr><th>Software</th><th>Entity &amp; regime</th><th>Subjects</th><th>Triggers</th><th>Residual risk</th><th></th></tr></thead>
+      <tbody>${rows}</tbody></table></div></div>
+    <div class="callout info" style="margin-top:16px"><span>◆</span><div>
+      <b>FortiClient needed no assessment and Notion did</b> — same screening, different answer, because the Australian entity keeps its data onshore and the Sri Lankan one does not. The regime follows the entity, which is why this cannot be one global rule.</div></div>`;
+}
+
+function stepHtml(s,done){
+  const ico=done?(s.kind==="hit"?"!":s.kind==="miss"?"?":"✓"):"";
+  return `<div class="rstep ${done?s.kind:""}"><span class="ico ${done?"":"spin"}">${ico}</span>
+    <div><div class="src">${s.src}</div><div class="res">${done?s.res:"querying…"}</div></div></div>`;
+}
+
+function viewIso(r){
+  const blocked=r.isoChecks.filter(c=>c.severity==="blocking"&&c.status==="fail");
+  return `<button class="backlink" data-nav="queue">← Request queue</button>
+    <div class="stack">
+      ${reqHead(r,"")}
+      <div class="verdict v-MORE_INFO">
+        <div><div class="vt">Returned to requester</div>
+          <div class="vw">Two blocking requirements are unmet. This was detected eleven seconds after the email arrived — not three days later.</div>
+          <div class="vsrc">iso-document-approval@1.4 · BISTEC Global (SL)</div></div>
+        <div class="actions"><button class="btn primary" data-send="${r.id}">Send reply</button></div></div>
+      <div class="split">
+        <div class="panel"><header><h2>The request</h2><span class="eyebrow">${r.age} in queue</span></header>
+          <div class="body"><div class="email">${r.body}</div></div></div>
+        <div class="stack">
+          <div class="panel"><header><h2>Rule pack check</h2><span class="eyebrow mono">iso-document-approval@1.4</span></header>
+            <div class="body">${r.isoChecks.map(c=>{
+              const m=c.status==="pass"?["m-pass","✓"]:["m-fail","✕"];
+              return `<div class="check"><span class="mark ${m[0]}">${m[1]}</span>
+                <div><div class="lbl"><span class="rid">${c.id}</span>${c.label}</div><div class="why">${c.why}</div></div>
+                <span class="pill ${c.severity==="blocking"?"p-crit":"p-warn"}">${c.severity}</span></div>`;}).join("")}
+          </div></div>
+          <div class="panel"><header><h2>Drafted reply</h2><span class="eyebrow">human presses send</span></header>
+            <div class="body"><div class="email">Dear Dinusha,
+
+Thank you for submitting the Asset Management Procedure v4. Before I can sign off, two items are required under our document approval standard:
+
+  • ${blocked[0].label} (${blocked[0].id}) — please state the business driver for this revision.
+  • ${blocked[1].label} (${blocked[1].id}) — the asset register needs a named accountable owner.
+
+The ISO clause reference, revision history and review date are all in order.
+
+Regards,
+Sajith</div></div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function viewRules(){
+  const sample=requests.find(x=>x.id==="SR-1043");
+  const ev=evaluate(sample.facts,pack.rules);
+  return `<div class="topbar">
+      <div><h1>Rule packs</h1><div class="sub">Policy owned by Operations, not engineering. Change a requirement and every decision from this moment carries the new version.</div></div>
+      <div><span class="pill p-ok mono">${pack.id}@${state.packVersion}</span></div></div>
+    <div class="split">
+      <div class="panel"><header><h2>software-approval · ${pack.entity}</h2><span class="eyebrow">${pack.jurisdiction}</span></header>
+        <div class="body">${pack.rules.map(r=>`
+          <div class="rule">
+            <div><div class="rl"><span class="rid mono" style="color:var(--faint);margin-right:6px">${r.id}</span>${r.label}</div>
+              <div class="ra">${r.authority}</div></div>
+            <select data-rule="${r.id}" aria-label="Severity for ${r.id}">
+              <option value="blocking"${r.severity==="blocking"?" selected":""}>blocking</option>
+              <option value="warning"${r.severity==="warning"?" selected":""}>warning</option>
+              <option value="off"${r.severity==="off"?" selected":""}>disabled</option></select>
+            ${typeof r.value==="number"
+              ? `<input type="number" data-val="${r.id}" value="${r.value}" aria-label="Threshold for ${r.id}">`
+              : `<span class="mono" style="font-size:11.5px;color:var(--faint);text-align:right">${r.value??"—"}</span>`}
+          </div>`).join("")}</div></div>
+      <div class="stack">
+        <div class="panel"><header><h2>Live effect</h2><span class="eyebrow">SR-1043 · Notion</span></header>
+          <div class="body">
+            <div class="verdict v-${ev.outcome}" style="border-radius:7px">
+              <div><div class="vt">${VERDICT[ev.outcome].t}</div>
+              <div class="vsrc">re-evaluated against ${pack.id}@${state.packVersion}</div></div></div>
+            <p style="font-size:12.8px;color:var(--muted);margin-top:14px;line-height:1.55">
+              Change a severity on the left and this verdict re-derives immediately. The model supplies facts and their provenance; the rule pack supplies the verdict. Neither can overrule the other, and neither approves anything.</p>
+          </div></div>
+        <div class="callout info"><span>◆</span><div><b>Try it.</b> Set <b>R5 — Privacy grade C or better</b> to <b>blocking</b>. Notion moves from <i>Approve with conditions</i> to <i>Reject</i>, the pack version increments, and every decision after this point is stamped with it. No developer. No deploy.</div></div>
+      </div></div>`;
+}
+
+function viewCatalog(){
+  return `<div class="topbar"><div><h1>Software catalog</h1>
+    <div class="sub">The deflection layer. A request that matches a valid entry never reaches an approver — and every entry expires, so the catalog cannot rot into an allowlist.</div></div></div>
+    <div class="panel"><div class="scroll"><table class="tbl">
+      <thead><tr><th>Software</th><th>Vendor</th><th>Seats</th><th>Entities</th><th>Approved</th><th>Next review</th><th>KEV</th><th>Gate</th></tr></thead>
+      <tbody>${catalog.map(c=>{
+        const free=c.seats-c.used, lapsed=c.review<=TODAY, pct=Math.round(c.used/c.seats*100);
+        const status = lapsed ? `<span class="pill p-warn">Re-review due</span>`
+          : c.kevSince>0 ? `<span class="pill p-crit">Monitoring · ${c.kevSince} new KEV</span>`
+          : free<=0 ? `<span class="pill p-info">Seats exhausted</span>`
+          : `<span class="pill p-ok">Self-service</span>`;
+        return `<tr>
+          <td><b>${c.name}</b><div style="font-size:11.5px;color:var(--faint);margin-top:2px">${c.owner}</div></td>
+          <td>${c.vendor}</td>
+          <td class="mono">${c.used}/${c.seats}
+            <span class="seatbar ${free<=0?"full":""}"><i style="width:${pct}%"></i></span>
+            <div style="font-size:11px;color:var(--faint);margin-top:3px">${free} free</div></td>
+          <td style="font-size:11.5px;color:var(--muted)">${c.entities.length===5?"All five entities":c.entities.join("<br>")}</td>
+          <td class="mono">${c.approved}</td>
+          <td class="mono" style="color:${lapsed?"var(--warn)":"var(--muted)"}">${c.review}</td>
+          <td class="mono" style="color:${c.kev>0?"var(--crit)":"var(--muted)"}">${c.kev}</td>
+          <td>${status}</td></tr>`;}).join("")}</tbody>
+    </table></div></div>
+    <div class="callout" style="margin-top:16px"><span>◆</span><div>
+      <b>Slack lapsed today and Microsoft 365 has six new KEV entries since approval.</b> Neither self-serves any more — both re-escalate until reassessed. A catalog that never expires is just an allowlist with better manners.</div></div>`;
+}
+
+function viewAudit(){
+  return `<div class="topbar"><div><h1>Audit trail</h1>
+    <div class="sub">${state.audit.length} events · automatic provisioning is recorded exactly like a human decision</div></div>
+    <div class="actions"><button class="btn sm" id="export">Export evidence pack</button></div></div>
+    <div class="panel"><div class="scroll"><table class="tbl">
+      <thead><tr><th>Timestamp</th><th>Event</th><th>Detail</th><th>Reference</th><th>Authority</th><th>Actor</th></tr></thead>
+      <tbody>${state.audit.map(a=>`<tr>
+        <td class="mono" style="font-size:11.5px;white-space:nowrap">${a.ts}</td>
+        <td><b>${a.action}</b></td><td style="color:var(--muted)">${a.detail}</td>
+        <td class="mono" style="font-size:11.5px">${a.ref}</td>
+        <td class="mono" style="font-size:11.5px">${a.pack}</td>
+        <td>${a.actor}</td></tr>`).join("")}</tbody></table></div></div>`;
+}
+
+function viewDash(){
+  const routed=requests.map(r=>r.kind==="iso"?{tier:2}:route(r.product,r.entity));
+  const deflected=routed.filter(x=>x.tier<2).length;
+  const decided=Object.keys(state.decisions).length;
+  return `<div class="topbar"><div><h1>Dashboard</h1>
+    <div class="sub">Today's queue · figures marked <i>estimated</i> need validation with Operations</div></div></div>
+    <div class="stats">
+      <div class="stat"><div class="eyebrow">Never reached an approver</div>
+        <div class="n" style="color:var(--signal)">${deflected} of ${requests.length}</div>
+        <div class="d">settled by the catalog gate</div></div>
+      <div class="stat"><div class="eyebrow">Time to access, Tier 0</div><div class="n">4s</div><div class="d">measured · was 3.1 days</div></div>
+      <div class="stat"><div class="eyebrow">Research time saved</div><div class="n">2.5h</div><div class="d">per full review · estimated</div></div>
+      <div class="stat"><div class="eyebrow">Decided this session</div><div class="n">${decided}</div><div class="d">of ${requests.length-deflected} needing a person</div></div>
+    </div>
+    <div class="panel" style="margin-top:20px"><header><h2>Where requests go</h2><span class="eyebrow">today</span></header>
+      <div class="body">${[
+        ["Self-service — no approver",routed.filter(x=>x.tier===0).length,"signal"],
+        ["Budget owner",routed.filter(x=>x.tier===1).length,"info"],
+        ["Head of Operations",routed.filter(x=>x.tier===2).length,"warn"]
+      ].map(([l,n,c])=>`
+        <div style="display:grid;grid-template-columns:210px 1fr 32px;gap:12px;align-items:center;padding:8px 0">
+          <span style="font-size:13px">${l}</span>
+          <span style="height:7px;border-radius:4px;background:var(--surface-2);display:block;position:relative;overflow:hidden">
+            <span style="position:absolute;inset:0;width:${n/requests.length*100}%;background:var(--${c});border-radius:4px"></span></span>
+          <span class="mono" style="font-size:13px;text-align:right">${n}</span></div>`).join("")}</div></div>
+    <div class="callout info" style="margin-top:16px"><span>◆</span><div>
+      <b>The deflection figure is real; the rest are estimates.</b> Three numbers from Operations would settle them: requests per week, share already in the catalog, and average round-trip time.</div></div>`;
+}
+
+/* ─────────── render + events ─────────── */
+function render(){
+  const v={queue:viewQueue,request:viewRequest,rules:viewRules,catalog:viewCatalog,
+           audit:viewAudit,dash:viewDash,privacy:viewPrivacy,dpia:viewDpia}[state.view];
+  el.innerHTML=v();
+  document.querySelectorAll(".navitem").forEach(b=>
+    b.setAttribute("aria-current",String(b.dataset.nav===state.view
+      ||(state.view==="request"&&b.dataset.nav==="queue")
+      ||(state.view==="dpia"&&b.dataset.nav==="privacy"))));
+  document.getElementById("ct-ver").textContent="v"+state.packVersion;
+  document.getElementById("ct-audit").textContent=state.audit.length;
+  document.getElementById("ct-dpia").textContent=
+    requests.filter(r=>r.dataProfile&&screenDpia(r).required).length;
+}
+
+document.addEventListener("click",e=>{
+  const nav=e.target.closest("[data-nav]"); if(nav) return go(nav.dataset.nav);
+  const open=e.target.closest("[data-open]"); if(open) return go("request",open.dataset.open);
+  const dpia=e.target.closest("[data-dpia]"); if(dpia) return go("dpia",dpia.dataset.dpia);
+  const back=e.target.closest("[data-back]"); if(back) return go("request",back.dataset.back);
+  const sign=e.target.closest("[data-dpia-sign]");
+  if(sign){ const r=requests.find(x=>x.id===sign.dataset.dpiaSign);
+    const w=worstResidual(dpiaRisks(r));
+    logAudit("DPIA sent for sign-off",`${r.product} · residual ${w} · ${REGIME[r.entity]}`,`DPIA-${r.id.split("-")[1]}`);
+    sign.outerHTML=`<span class="pill p-ok">Sent to Quality · Dinusha Weerasinghe</span>`; return; }
+  if(e.target.id==="run") return runResearch();
+  const dec=e.target.closest("[data-decide]"); if(dec) return decide(dec.dataset.decide);
+  const send=e.target.closest("[data-send]");
+  if(send){ logAudit("Reply sent","Returned to requester — R1, R2 unmet",send.dataset.send);
+    send.outerHTML=`<span class="pill p-ok">Reply sent · 11s after arrival</span>`; return; }
+  if(e.target.id==="export"){ logAudit("Evidence pack exported",`${state.audit.length} events · ISO 27001 A.5.19`,"AUDIT-EXPORT"); render(); }
+});
+
+document.addEventListener("change",e=>{
+  const rs=e.target.closest("[data-rule]"), rv=e.target.closest("[data-val]");
+  if(!rs&&!rv) return;
+  const id=(rs||rv).dataset.rule||(rs||rv).dataset.val;
+  const rule=pack.rules.find(r=>r.id===id);
+  if(rs) rule.severity=rs.value; else rule.value=Number(rv.value);
+  state.edits++; state.packVersion="2."+(1+state.edits);
+  logAudit("Rule pack amended",`${id} — ${rule.label} · now ${rule.severity}${rs?"":" at "+rule.value}`,`${pack.id}@${state.packVersion}`);
+  render();
+});
+
+function runResearch(){
+  const r=requests.find(x=>x.id===state.req);
+  const host=document.getElementById("research"), btn=document.getElementById("run");
+  btn.disabled=true; btn.textContent="Researching…"; host.innerHTML="";
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  r.steps.forEach((s,i)=>{
+    setTimeout(()=>{
+      host.insertAdjacentHTML("beforeend",stepHtml(s,false));
+      const node=host.lastElementChild;
+      setTimeout(()=>{ node.outerHTML=stepHtml(s,true); },reduce?0:420);
+      if(i===r.steps.length-1) setTimeout(()=>{
+        state.researched[r.id]=true;
+        const ev=evaluate(r.facts,pack.rules);
+        logAudit("Research completed",`${r.product} · 7 sources · recommended ${VERDICT[ev.outcome].t}`,r.id);
+        render();
+      },reduce?60:700);
+    },reduce?i*40:i*620);
+  });
+}
+
+function decide(outcome){
+  const r=requests.find(x=>x.id===state.req);
+  state.decisions[r.id]=outcome;
+  logAudit("Decision recorded",`${r.product} — ${VERDICT[outcome].t} by Sajith`,r.id);
+  if(outcome==="APPROVE"||outcome==="CONDITIONS"){
+    logAudit("Added to software catalog",`${r.product} · future requests self-serve · review in 12 months`,r.id);
+  }
+  render();
+}
+
+render();
+</script>

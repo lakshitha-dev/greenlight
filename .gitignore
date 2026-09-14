@@ -1,0 +1,17 @@
+node_modules/
+.next/
+coverage/
+
+# secrets — never commit
+.env
+.env*.local
+
+# local database and build artefacts
+*.db
+*.db-journal
+tsconfig.tsbuildinfo
+
+# scratch
+.devlog
+.palog
+_*.ts

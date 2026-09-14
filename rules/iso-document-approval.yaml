@@ -1,0 +1,28 @@
+id: iso-document-approval
+version: "1.4"
+entity: all
+owner: Head of Operations & IT
+notes: Applied to ISO document approvals arriving by email.
+
+requirements:
+  - id: R1
+    label: Business justification stated
+    severity: blocking
+    authority: ISO 9001 §8.1
+    hint: A stated business outcome and the cost of not proceeding.
+  - id: R2
+    label: Risk owner named
+    severity: blocking
+    authority: ISO 27001 A.5.9
+  - id: R3
+    label: ISO clause reference
+    severity: warning
+    authority: ISO 27001 A.5.9
+  - id: R4
+    label: Change summary against previous version
+    severity: warning
+    authority: ISO 9001 §7.5.3
+  - id: R5
+    label: Review date within 12 months
+    severity: blocking
+    authority: ISO 9001 §7.5.2

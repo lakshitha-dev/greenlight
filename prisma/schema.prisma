@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Request {
+  id          String   @id
+  kind        String   // software | iso
+  subject     String
+  product     String?
+  vendor      String?
+  seats       Int?
+  requester   String
+  team        String
+  entity      String
+  body        String
+  receivedAt  DateTime @default(now())
+
+  status      String   @default("new")   // new | routed | researched | decided
+  tier        Int?                        // 0 self-service | 1 spend | 2 full review
+  routeCause  String?                     // absent | stale | seats | ok
+  routeNote   String?
+
+  // declared processing profile — the only DPIA inputs a human must supply
+  personalData Boolean @default(false)
+  specialCat   Boolean @default(false)
+  subjectCount Int?
+  subjects     String?
+  categories   String?                    // JSON string[]
+  purpose      String?
+  retention    String?
+  crossBorder  String?                    // "true" | "false" | "unknown"
+  monitoring   Boolean @default(false)
+  automated    Boolean @default(false)
+
+  dossier   Dossier?
+  decision  Decision?
+  events    AuditEvent[]
+}
+
+model Dossier {
+  id        String   @id @default(cuid())
+  requestId String   @unique
+  request   Request  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  facts     String                        // JSON: field -> {value, prov, src, url}
+  sources   String                        // JSON: [{source, result, kind, url}]
+  model     String?
+  elapsedMs Int?
+  createdAt DateTime @default(now())
+}
+
+model CatalogEntry {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  vendor    String
+  seats     Int
+  used      Int
+  approved  String
+  review    String
+  entities  String                        // JSON string[]
+  kev       Int      @default(0)
+  kevSince  Int      @default(0)
+  owner     String
+  cost      String
+  /** process names this product runs as on an endpoint. Empty for web-only
+   *  software, which is the honest answer — a browser tab has no process. */
+  processNames String?
+  createdAt DateTime @default(now())
+}
+
+/** A Process Analyzer scan of one host. GreenLight knows what was approved;
+ *  this is what is actually running. The gap between them is shadow IT. */
+model Scan {
+  id        String   @id @default(cuid())
+  host      String
+  source    String   @default("process-analyzer")
+  processes String                        // JSON: ProcessRecord[]
+  total     Int      @default(0)          // cached count, so listing scans need not parse the JSON
+  scannedAt DateTime @default(now())
+}
+
+model Decision {
+  id          String   @id @default(cuid())
+  requestId   String   @unique
+  request     Request  @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  outcome     String                      // APPROVE | CONDITIONS | REJECT | MORE_INFO
+  actor       String
+  comment     String?
+  packId      String
+  packVersion String
+  createdAt   DateTime @default(now())
+}
+
+model AuditEvent {
+  id        String   @id @default(cuid())
+  requestId String?
+  request   Request? @relation(fields: [requestId], references: [id], onDelete: SetNull)
+  action    String
+  detail    String
+  actor     String
+  authority String                        // rulepack@version that governed the step
+  createdAt DateTime @default(now())
+}

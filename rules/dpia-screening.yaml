@@ -1,0 +1,51 @@
+id: dpia-screening
+version: "1.0"
+owner: Quality / Data Protection
+notes: >
+  Screening only. A DPIA is drafted when personal data is processed AND at
+  least one trigger fires. Mirrors GDPR Art.35(3) and the PDPA obligation.
+
+regimes:
+  BISTEC Solutions: PDPA No. 9 of 2022 (Sri Lanka)
+  BISTEC Global (SL): PDPA No. 9 of 2022 (Sri Lanka)
+  BISTEC Australia: Privacy Act 1988 and the Australian Privacy Principles
+  BISTEC Accounting: PDPA No. 9 of 2022 (Sri Lanka)
+  BISTEC Care: PDPA No. 9 of 2022 (Sri Lanka)
+
+gate: personalData
+
+triggers:
+  - id: D1
+    when: specialCategory
+    label: Special category data processed
+    authority: GDPR Art.35(3)(b)
+  - id: D2
+    when: subjectCount
+    op: gt
+    value: 5000
+    label: Large-scale processing
+    authority: GDPR Art.35(3)(b)
+  - id: D3
+    when: crossBorder
+    equals: "true"
+    label: Personal data leaves the controlling jurisdiction
+    authority: PDPA 2022 · GDPR Ch.V
+  - id: D3
+    when: crossBorder
+    equals: unknown
+    label: Transfer destination could not be established
+    authority: PDPA 2022 · GDPR Ch.V
+  - id: D4
+    when: automated
+    label: Automated decision-making with legal or similar effect
+    authority: GDPR Art.35(3)(a)
+  - id: D5
+    when: monitoring
+    label: Systematic monitoring of individuals
+    authority: GDPR Art.35(3)(c)
+
+# likelihood x severity -> residual
+matrix:
+  likelihood: { Remote: 1, Possible: 2, Probable: 3 }
+  severity:   { Limited: 1, Significant: 2, Severe: 3 }
+  bands:      { High: 6, Medium: 3 }

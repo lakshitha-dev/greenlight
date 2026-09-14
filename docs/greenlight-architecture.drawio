@@ -1,0 +1,204 @@
+<mxfile host="65bd71144e">
+    <diagram name="Decision flow" id="flow-1">
+        <mxGraphModel dx="747" dy="463" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="GreenLight — how a request becomes a decision" style="text;html=1;align=left;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#14191a;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="24" width="700" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="subtitle" value="Most requests never reach a person. The ones that do arrive with the evidence already gathered." style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontColor=#677577;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="50" width="800" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="intake" value="&lt;b&gt;Intake&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;form · seeded queue&lt;br&gt;· endpoint finding&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=12;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="360" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="gate" value="&lt;b&gt;CATALOG GATE&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;in catalog?&lt;br&gt;entry still valid?&lt;br&gt;in entity scope?&lt;br&gt;seat free?&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;strokeWidth=2;fontSize=12;fontColor=#0f4d31;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="340" width="170" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="tier0" value="&lt;b&gt;Tier 0 — Self-service&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;no approver. provisioned&lt;br&gt;and logged in seconds.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#a8d5bf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="235" y="180" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="tier1" value="&lt;b&gt;Tier 1 — Spend only&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;security already settled.&lt;br&gt;budget owner decides.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#b3cbf5;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="235" y="555" width="180" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="research" value="&lt;b&gt;RESEARCH&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;every fact carries&lt;br&gt;its provenance&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#b54708;fontSize=12;fontColor=#7a3005;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="360" width="160" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="srcbox" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#cbd2d2;dashed=1;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="110" width="220" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="srclabel" value="sources — 4 keyless, 1 synthesised" style="text;html=1;align=center;fontSize=10;fontColor=#93a1a3;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="112" width="220" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="s1" value="CISA KEV&lt;font style=&quot;color:#93a1a3&quot;&gt;  exploited now&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="485" y="134" width="190" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="s2" value="NIST NVD&lt;font style=&quot;color:#93a1a3&quot;&gt;  CVE history&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="485" y="168" width="190" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="s3" value="ToSDR&lt;font style=&quot;color:#93a1a3&quot;&gt;  privacy grade&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="485" y="202" width="190" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="s4" value="OSV.dev&lt;font style=&quot;color:#93a1a3&quot;&gt;  OSS advisories&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="485" y="236" width="190" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="s5" value="Claude + web search&lt;font style=&quot;color:#93a1a3&quot;&gt;  SOC 2, DPA&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f1f3f3;strokeColor=#e2e6e6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="485" y="270" width="190" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="rules" value="&lt;b&gt;RULE PACK&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;versioned YAML,&lt;br&gt;one per entity.&lt;br&gt;&lt;b&gt;derives&lt;/b&gt; the verdict&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#175cd3;strokeWidth=2;fontSize=12;fontColor=#0f3d8f;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="350" width="160" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="dpia" value="&lt;b&gt;DPIA screening&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;only if an Art. 35(3)&lt;br&gt;trigger actually fires&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;dashed=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="525" width="160" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="human" value="&lt;b&gt;HUMAN DECIDES&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;Approve · Conditions&lt;br&gt;Reject · More info&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#14191a;strokeWidth=3;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="990" y="350" width="170" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="catalog" value="&lt;b&gt;Software catalog&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;entity-scoped.&lt;br&gt;every entry expires.&lt;/font&gt;" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=12;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1265" y="160" width="160" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="pa" value="&lt;b&gt;process-analyzer&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;endpoints — what is&lt;br&gt;actually running&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#b42318;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1265" y="530" width="160" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="audit" value="&lt;b&gt;AUDIT TRAIL&lt;/b&gt;  —  every step above, stamped with the rule pack version that governed it. Automatic provisioning is recorded exactly like a human decision." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f3f3;strokeColor=#cbd2d2;dashed=1;fontSize=11;align=left;spacingLeft=14;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="700" width="920" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#677577;" parent="1" source="intake" target="gate" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" value="hit + valid + seat free" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0f7a4d;fontSize=10;fontColor=#0f7a4d;" parent="1" source="gate" target="tier0" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" value="hit + valid, no seat" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#175cd3;fontSize=10;fontColor=#175cd3;" parent="1" source="gate" target="tier1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" value="&lt;b&gt;Tier 2&lt;/b&gt; — absent,&lt;br&gt;lapsed or out of scope" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b54708;strokeWidth=2;fontSize=10;fontColor=#b54708;" parent="1" source="gate" target="research" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" value="facts + provenance" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#677577;fontSize=10;" parent="1" source="research" target="rules" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e6" value="recommendation,&lt;br&gt;never a decision" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#677577;fontSize=10;" parent="1" source="rules" target="human" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#93a1a3;dashed=1;" parent="1" source="rules" target="dpia" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" value="in parallel" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#93a1a3;fontSize=10;fontColor=#93a1a3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="srcbox" target="research" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="l1" value="approval writes the entry" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0f7a4d;strokeWidth=2;fontSize=10;fontColor=#0f7a4d;" parent="1" source="human" target="catalog" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="l2" value="&lt;b&gt;the next request for it self-serves&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0f7a4d;strokeWidth=2;dashed=1;fontSize=10;fontColor=#0f7a4d;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="catalog" target="gate" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1345" y="90"/>
+                            <mxPoint x="325" y="90"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="l3" value="allow / deny pushed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b42318;strokeWidth=2;fontSize=10;fontColor=#b42318;" parent="1" source="human" target="pa" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="l4" value="&lt;b&gt;shadow IT raises a request&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b42318;strokeWidth=2;dashed=1;fontSize=10;fontColor=#b42318;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="pa" target="intake" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1345" y="820"/>
+                            <mxPoint x="110" y="820"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#cbd2d2;dashed=1;endArrow=none;" parent="1" source="tier0" target="audit" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="200" y="215"/>
+                            <mxPoint x="200" y="725"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#cbd2d2;dashed=1;endArrow=none;" parent="1" source="human" target="audit" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="note" value="The model gathers.&lt;br&gt;The rule pack decides.&lt;br&gt;The human approves.&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;No step can overrule the next.&lt;/font&gt;" style="text;html=1;align=left;fontSize=11;fontColor=#14191a;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="460" width="220" height="70" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram name="Evidence to verdict" id="flow-2">
+        <mxGraphModel dx="896" dy="555" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+            <root>
+                <mxCell id="20"/>
+                <mxCell id="21" parent="20"/>
+                <mxCell id="t2" value="How a fact becomes a verdict" style="text;html=1;align=left;fontSize=20;fontStyle=1;fontColor=#14191a;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="24" width="600" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="st2" value="The separation is the point: a value with no provenance never reaches a rule, and a rule never invents a value." style="text;html=1;align=left;fontSize=12;fontColor=#677577;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="50" width="900" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="pv" value="PROVENANCE — every field is tagged" style="text;html=1;align=left;fontSize=11;fontStyle=1;fontColor=#93a1a3;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="110" width="300" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1" value="&lt;b&gt;verified&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;structured source anyone can re-query&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#a8d5bf;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="140" width="260" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2" value="&lt;b&gt;sourced&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;found on an identifiable page, URL kept&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#b3cbf5;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="200" width="260" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3" value="&lt;b&gt;claimed&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;the vendor asserts it, nothing confirms it&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#f0c39a;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="260" width="260" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p4" value="&lt;b&gt;not found&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;could not be established — a finding, not a failure&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f3f3;strokeColor=#cbd2d2;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="320" width="260" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="rule" value="&lt;b&gt;RULE&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;field · operator · threshold&lt;br&gt;severity · authority&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#175cd3;strokeWidth=2;fontSize=12;fontColor=#0f3d8f;" parent="21" vertex="1">
+                    <mxGeometry x="420" y="215" width="180" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="guard" value="a &lt;b&gt;claimed&lt;/b&gt; fact cannot satisfy&lt;br&gt;a &lt;b&gt;blocking&lt;/b&gt; requirement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#b42318;fontSize=11;fontColor=#8a1b12;" parent="21" vertex="1">
+                    <mxGeometry x="400" y="330" width="220" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="oc" value="OUTCOME — derived, not chosen" style="text;html=1;align=left;fontSize=11;fontStyle=1;fontColor=#93a1a3;" parent="21" vertex="1">
+                    <mxGeometry x="730" y="110" width="300" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1" value="&lt;b&gt;Approve&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;every blocking rule passes&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="730" y="140" width="250" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2" value="&lt;b&gt;Approve with conditions&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;conditions ARE the failed warnings&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#b54708;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="730" y="200" width="250" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="o3" value="&lt;b&gt;More information required&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;a blocking rule could not be evaluated&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#175cd3;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="730" y="260" width="250" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="o4" value="&lt;b&gt;Reject&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;a blocking rule failed on a verified fact&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#b42318;fontSize=11;align=left;spacingLeft=10;" parent="21" vertex="1">
+                    <mxGeometry x="730" y="320" width="250" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="hum2" value="&lt;b&gt;HUMAN APPROVES&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#677577&quot;&gt;GreenLight never decides.&lt;br&gt;It makes the decision possible.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#14191a;strokeWidth=3;fontSize=12;" parent="21" vertex="1">
+                    <mxGeometry x="1080" y="215" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="ep1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#93a1a3;" parent="21" source="p1" target="rule" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ep2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#93a1a3;" parent="21" source="p2" target="rule" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ep3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#93a1a3;" parent="21" source="p3" target="rule" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ep4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#93a1a3;" parent="21" source="p4" target="rule" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eo" value="severity decides which" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#677577;fontSize=10;" parent="21" source="rule" target="o2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eh" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#14191a;strokeWidth=2;" parent="21" source="o2" target="hum2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="note2" value="&lt;font style=&quot;color:#677577&quot;&gt;Because the verdict is derived from rule severity rather than chosen by the model, changing a severity in the YAML changes every decision that follows — and each one is stamped with the pack version that produced it.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;fontSize=11;" parent="21" vertex="1">
+                    <mxGeometry x="40" y="430" width="620" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
