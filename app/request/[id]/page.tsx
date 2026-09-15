@@ -7,6 +7,9 @@ import { FACT_ROWS, displayValue, PROV_LABEL } from "@/lib/research";
 import { screen, risks, worst } from "@/lib/dpia";
 import { ResearchButton, DecideButtons, AckButton } from "@/components/Actions";
 import { Panel, KV } from "@/components/ui";
+import { ClaudeResearch } from "@/components/ClaudeResearch";
+import { researchPrompt } from "@/lib/findings";
+import { hasKey } from "@/lib/research";
 import type { Fact, Step } from "@/lib/sources/http";
 import { expect, isArray, isObject } from "@/lib/json";
 import type { Request as Req } from "@prisma/client";
@@ -371,6 +374,25 @@ function FullReview({
                 {ev.checks.map((c) => (
                   <CheckRow key={c.id} c={c} />
                 ))}
+              </Panel>
+            )}
+
+            {!hasKey() && (
+              <Panel
+                title="Compliance research in Claude"
+                eyebrow="software-compliance-research"
+              >
+                <p style={{ fontSize: "13.2px", color: "var(--ink-2)", lineHeight: 1.6, marginBottom: 14 }}>
+                  Vulnerabilities and privacy grades come from structured sources
+                  automatically. Whether a vendor has a SOC 2 report, a DPA or a
+                  published sub-processor list has no public API — that evidence
+                  lives on trust centres as prose, so a person researches it in
+                  Claude and brings it back.
+                </p>
+                <ClaudeResearch
+                  requestId={r.id}
+                  prompt={researchPrompt(r.product ?? "", r.vendor, r.seats)}
+                />
               </Panel>
             )}
 

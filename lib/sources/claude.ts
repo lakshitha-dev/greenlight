@@ -19,7 +19,35 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { fact, notFound, type Fact, type Step } from "./http";
 
-const MODEL = "claude-opus-5";
+/** Claude is reachable two ways, and the app takes whichever is configured.
+ *
+ *  1. Directly, with an ANTHROPIC_API_KEY from console.anthropic.com.
+ *  2. Through Vercel AI Gateway, which speaks the same Messages API — so the
+ *     SDK stays exactly as it is and only the base URL and model prefix
+ *     change. On Vercel the gateway authenticates with the deployment's own
+ *     OIDC token, so there is no key to manage at all.
+ *
+ *  Same model, same price either way. */
+const GATEWAY_URL = "https://ai-gateway.vercel.sh";
+
+function useGateway(): boolean {
+  if (process.env.ANTHROPIC_API_KEY) return false; // a direct key wins
+  return Boolean(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN);
+}
+
+/** The gateway namespaces model ids by provider; direct Anthropic does not. */
+function modelId(): string {
+  return useGateway() ? "anthropic/claude-opus-5" : "claude-opus-5";
+}
+
+function makeClient(): Anthropic {
+  if (!useGateway()) return new Anthropic();
+  return new Anthropic({
+    baseURL: GATEWAY_URL,
+    // the gateway takes its own credential; on Vercel that is the OIDC token
+    apiKey: process.env.AI_GATEWAY_API_KEY ?? process.env.VERCEL_OIDC_TOKEN ?? "",
+  });
+}
 
 export type ComplianceFacts = {
   soc2: Fact<boolean>;
@@ -43,8 +71,25 @@ const EMPTY: ComplianceFacts = {
   summary: null,
 };
 
+/** The SDK resolves credentials in order: ANTHROPIC_API_KEY, then
+ *  ANTHROPIC_AUTH_TOKEN, then an OAuth profile on disk. Checking only the
+ *  first meant a configured OAuth token was ignored and the whole compliance
+ *  layer silently skipped — so ask the same question the SDK will. */
 export function hasKey(): boolean {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
+  return Boolean(
+    process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN || useGateway()
+  );
+}
+
+/** Which credential is in play. An API key is the supported way to back an
+ *  application; an OAuth token is issued for the Claude Code CLI against a
+ *  personal subscription, so it may be refused here and is not the right thing
+ *  to run a deployed service on. */
+export function credentialKind(): "api-key" | "vercel-gateway" | "oauth-token" | "none" {
+  if (process.env.ANTHROPIC_API_KEY) return "api-key";
+  if (useGateway()) return "vercel-gateway";
+  if (process.env.ANTHROPIC_AUTH_TOKEN) return "oauth-token";
+  return "none";
 }
 
 const FINDINGS_SCHEMA = {
@@ -132,20 +177,21 @@ export async function researchCompliance(
     push({
       source: "Vendor trust centre & legal pages",
       result:
-        "Skipped — no ANTHROPIC_API_KEY configured. Compliance evidence is recorded as not found rather than assumed.",
+        "Skipped — no Anthropic credential configured (set ANTHROPIC_API_KEY). " +
+        "Compliance evidence is recorded as not found rather than assumed.",
       kind: "miss",
     });
     return { facts: EMPTY, steps };
   }
 
-  const client = new Anthropic();
+  const client = makeClient();
   const who = vendor ? `${product} (vendor: ${vendor})` : product;
   const t0 = Date.now();
 
   try {
     // ── 1. gather ────────────────────────────────────────────────────────────
     const research = await client.messages.create({
-      model: MODEL,
+      model: modelId(),
       max_tokens: 6000,
       thinking: { type: "adaptive" },
       output_config: { effort: "medium" },
@@ -188,7 +234,7 @@ export async function researchCompliance(
 
     // ── 2. type it ───────────────────────────────────────────────────────────
     const typed = await client.messages.create({
-      model: MODEL,
+      model: modelId(),
       max_tokens: 2000,
       thinking: { type: "adaptive" },
       output_config: { effort: "low", format: { type: "json_schema", schema: FINDINGS_SCHEMA } },
@@ -206,7 +252,7 @@ export async function researchCompliance(
     const raw = extractJson<RawFindings>(typed);
     if (!raw) {
       push({ source: "Findings extraction", result: "Could not parse structured findings.", kind: "miss" });
-      return { facts: EMPTY, steps, model: MODEL };
+      return { facts: EMPTY, steps, model: modelId() };
     }
 
     const toFact = <T>(f: { value: T | null; provenance: string; source: string | null }): Fact<T> =>
@@ -237,7 +283,7 @@ export async function researchCompliance(
       kind: missing.length ? "miss" : "done",
     });
 
-    return { facts, steps, model: MODEL };
+    return { facts, steps, model: modelId() };
   } catch (err) {
     push({
       source: "Vendor trust centre & legal pages",

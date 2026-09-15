@@ -9,7 +9,7 @@ import { checkKev } from "./sources/kev";
 import { checkNvd } from "./sources/nvd";
 import { checkTosdr } from "./sources/tosdr";
 import { checkOsv } from "./sources/osv";
-import { researchCompliance, hasKey } from "./sources/claude";
+import { researchCompliance, hasKey, credentialKind } from "./sources/claude";
 import { fact, notFound, type Fact, type Step } from "./sources/http";
 
 export type Facts = Record<string, Fact<unknown>>;
@@ -104,7 +104,7 @@ export async function research(
   };
 }
 
-export { hasKey };
+export { hasKey, credentialKind };
 
 /** Ordered for display. Label is what a person reads; the key is what rules bind to. */
 export const FACT_ROWS: [string, string][] = [

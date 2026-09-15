@@ -59,7 +59,7 @@ Reset the demo at any time with `npm run seed`.
 ## Verifying it
 
 ```bash
-npm run verify     # typecheck, then 167 tests, then a production build
+npm run verify     # typecheck, then 186 tests, then a production build
 npm test           # the suite alone, ~1s, no network
 npm run test:coverage
 ```
@@ -120,7 +120,7 @@ made again.
 | **NIST NVD** | optional | CVE history, severity-banded, last 24 months. |
 | **ToSDR** | none | Human-reviewed privacy grade A–E. |
 | **OSV.dev** | none | Open-source advisories, queried across four ecosystems. |
-| **Claude + web search** | `ANTHROPIC_API_KEY` | SOC 2, ISO 27001, DPA, sub-processors, residency, SSO tier, pricing. |
+| **Claude** | a subscription, or a key | SOC 2, ISO 27001, DPA, sub-processors, residency, SSO tier, pricing. |
 
 Every field carries its provenance:
 
@@ -135,6 +135,32 @@ be evaluated produces *More information required*, never a guess. And a
 itself is not evidence.
 
 ---
+
+## Compliance research in Claude
+
+Vulnerabilities and privacy grades come from structured sources automatically.
+Whether a vendor has a SOC 2 report, a DPA or a published sub-processor list has
+no public API — that evidence lives on trust centres as prose. So a person
+researches it in Claude and brings it back:
+
+```
+GreenLight                        Claude (your subscription)
+Copy research prompt  ──────────▶  skills/software-compliance-research
+                                   returns JSON in a fixed shape
+Paste findings back   ◀──────────
+```
+
+The paste is validated strictly — it is untrusted input arriving at a
+compliance decision. A field marked `none` becomes **not found**, never a
+silent `false`, because the rule pack treats those differently: not-found asks
+for more information, false fails outright. And a `claimed` value still cannot
+satisfy a blocking requirement, however it arrived.
+
+The audit trail records who researched it.
+
+Set `ANTHROPIC_API_KEY` (or deploy behind Vercel AI Gateway) and the same step
+runs automatically instead. Nothing else changes — the rule pack cannot tell
+which path produced a fact, and does not need to.
 
 ## Rule packs
 
