@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GreenLight — HeartForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#f7f8f8; --surface:#fff; --surface-2:#f1f3f3;
+  --line:#e2e6e6; --line-soft:#edf0f0;
+  --ink:#14191a; --ink-2:#3d4749; --muted:#677577; --faint:#93a1a3;
+  --signal:#0f7a4d; --signal-soft:#e6f4ed; --signal-line:#a8d5bf;
+  --crit:#b42318; --crit-soft:#fdeceb; --crit-line:#f2b8b4;
+  --warn:#b54708; --warn-soft:#fdf2e7; --warn-line:#f0c39a;
+  --info:#175cd3; --info-soft:#eaf1fd; --info-line:#b3cbf5;
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+
+.slide{position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;
+  padding:6vh 8vw;opacity:0;transition:opacity .22s ease}
+.slide.on{display:flex;opacity:1}
+@media (prefers-reduced-motion:reduce){.slide{transition:none}}
+
+h1{font-size:clamp(30px,4.6vw,62px);line-height:1.08;letter-spacing:-.03em;margin:0 0 .5em;
+  font-weight:600;text-wrap:balance;max-width:20ch}
+h2{font-size:clamp(20px,2.3vw,32px);line-height:1.2;letter-spacing:-.02em;margin:0 0 .7em;font-weight:600}
+p{font-size:clamp(15px,1.45vw,21px);line-height:1.55;color:var(--ink-2);margin:0 0 .8em;max-width:60ch}
+.lede{font-size:clamp(18px,1.9vw,27px);line-height:1.5;color:var(--ink-2);max-width:40ch}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:1.6em}
+.dim{color:var(--muted)}
+.tiny{font-size:clamp(11px,.92vw,13.5px);color:var(--faint);line-height:1.5;max-width:70ch}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+b{font-weight:600;color:var(--ink)}
+.sig{color:var(--signal)} .cri{color:var(--crit)} .wrn{color:var(--warn)} .inf{color:var(--info)}
+
+.grid{display:grid;gap:clamp(14px,1.6vw,26px);margin-top:.6em}
+.g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:11px;
+  padding:clamp(16px,1.7vw,26px)}
+.card.ok{background:var(--signal-soft);border-color:var(--signal-line)}
+.card.bad{background:var(--crit-soft);border-color:var(--crit-line)}
+.card.warn{background:var(--warn-soft);border-color:var(--warn-line)}
+.card.info{background:var(--info-soft);border-color:var(--info-line)}
+.card h3{font-size:clamp(14px,1.25vw,18px);margin:0 0 .45em;font-weight:600}
+.card p{font-size:clamp(13px,1.05vw,16px);margin:0;color:var(--ink-2)}
+.num{font-family:var(--mono);font-size:clamp(30px,3.6vw,52px);font-weight:600;
+  letter-spacing:-.03em;line-height:1;margin-bottom:.18em}
+
+.pill{display:inline-block;padding:3px 11px;border-radius:100px;font-size:clamp(11px,.95vw,13px);
+  font-weight:600;border:1px solid;white-space:nowrap}
+.p-ok{color:var(--signal);background:var(--signal-soft);border-color:var(--signal-line)}
+.p-bad{color:var(--crit);background:var(--crit-soft);border-color:var(--crit-line)}
+.p-wrn{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
+.p-inf{color:var(--info);background:var(--info-soft);border-color:var(--info-line)}
+
+.rows{display:flex;flex-direction:column;gap:.55em;margin-top:.5em}
+.row{display:flex;gap:.9em;align-items:baseline;font-size:clamp(13px,1.15vw,18px);color:var(--ink-2)}
+.row .k{font-family:var(--mono);color:var(--faint);flex:none;min-width:2.6em}
+
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);
+  font-size:clamp(11px,.92vw,13.5px);background:var(--surface-2);border:1px solid var(--line);
+  padding:3px 9px;border-radius:5px;color:var(--muted)}
+
+.nav{position:fixed;bottom:2.4vh;right:3vw;display:flex;gap:14px;align-items:center;
+  font-size:12px;color:var(--faint);font-family:var(--mono);z-index:10}
+.nav button{border:1px solid var(--line);background:var(--surface);color:var(--muted);
+  border-radius:6px;width:30px;height:26px;cursor:pointer;font-size:13px;line-height:1}
+.nav button:hover{color:var(--ink)}
+.brandmark{position:fixed;top:2.6vh;left:3vw;display:flex;align-items:center;gap:8px;
+  font-size:12.5px;color:var(--faint);z-index:10}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--signal);
+  box-shadow:0 0 0 3px var(--signal-soft)}
+.bar{position:fixed;top:0;left:0;height:2px;background:var(--signal);z-index:11;transition:width .22s ease}
+
+@media print{
+  body{overflow:visible;background:#fff}
+  .slide{position:relative;display:flex!important;opacity:1!important;
+    height:100vh;page-break-after:always;padding:8vh 8vw;border-bottom:1px solid #eee}
+  .nav,.bar{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bar" id="bar"></div>
+<div class="brandmark"><span class="dot"></span><span>GreenLight</span></div>
+
+<!-- 1 ─────────────────────────────────────────────────────────── -->
+<section class="slide on">
+  <div class="eyebrow">HeartForge 2026</div>
+  <h1>Last month the support team asked to install a remote-access tool.</h1>
+  <p class="lede">
+    It has <b class="cri">four vulnerabilities being exploited right now</b>.
+    The most recent was published <b class="cri">three days before they asked</b>.
+  </p>
+  <p class="lede" style="margin-top:.6em">Nobody at BISTEC could have known.</p>
+  <p class="tiny" style="margin-top:2.2em">
+    ConnectWise ScreenConnect · CVE-2026-84869 · CISA Known Exploited Vulnerabilities catalogue, checked live
+  </p>
+</section>
+
+<!-- 2 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">Today</div>
+  <h2>Every software request in the company lands on one desk.</h2>
+  <div class="grid g3">
+    <div class="card"><h3>It waits</h3><p>Every operational request needs IT sign-off. They queue.</p></div>
+    <div class="card warn"><h3>It's unusable when opened</h3><p>No justification, no security answer, no cost, no legal position.</p></div>
+    <div class="card bad"><h3>The approver becomes the researcher</h3><p>Two to three hours of vendor research, per tool, by hand.</p></div>
+  </div>
+  <p style="margin-top:1.4em">
+    <b>Nobody did anything wrong.</b> The requester didn't know what to include.
+    The approver wasn't slow — they were buried.
+  </p>
+  <p class="tiny">Elapsed time is an estimate and is marked as one throughout. The
+    missing-justification case is real: it happened to an ISO approval last month.</p>
+</section>
+
+<!-- 3 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">The first idea</div>
+  <h2>Most requests shouldn't reach a person at all.</h2>
+  <p class="lede">Before anything else, GreenLight asks one question: <b>do we already own this?</b></p>
+  <div class="grid g3" style="margin-top:1.2em">
+    <div class="card ok">
+      <div class="num sig">Nobody</div>
+      <p>We own it and a licence is spare. Access in seconds, logged. No approver.</p>
+    </div>
+    <div class="card info">
+      <div class="num inf">Finance</div>
+      <p>We own it, no spare seat. A purchase, not a security question — so it never reaches IT.</p>
+    </div>
+    <div class="card warn">
+      <div class="num wrn">IT</div>
+      <p>New to us, or the last answer has expired. This is the one worth attention.</p>
+    </div>
+  </div>
+  <p class="tiny" style="margin-top:1.4em">
+    A catalog hit is not approval. An entry re-escalates when its review date passes,
+    when it drifts out of a legal entity's scope, or when new exploited vulnerabilities
+    appear after the approval. A catalog that never expires is just an allowlist.
+  </p>
+</section>
+
+<!-- 4 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">What Claude does</div>
+  <h2>The question no database can answer.</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Machines answer this</h3>
+      <p class="dim" style="margin-bottom:.7em">Is anyone attacking it right now? How many critical CVEs? What's the privacy grade?</p>
+      <span class="chip">CISA KEV</span> <span class="chip">NIST NVD</span>
+      <span class="chip">ToSDR</span> <span class="chip">OSV.dev</span>
+      <p style="margin-top:.9em;font-size:.92em"><b>Four sources, about one second.</b></p>
+    </div>
+    <div class="card ok">
+      <h3>Only Claude answers this</h3>
+      <p style="margin-bottom:.7em">Does this vendor hold a current SOC 2? Is there a DPA? Where does our data actually go? Does SSO exist on the tier we're buying?</p>
+      <p><b>There is no API for any of it.</b> It lives as prose on trust centres and
+        legal pages, in a different shape for every vendor.</p>
+    </div>
+  </div>
+  <p style="margin-top:1.3em">
+    Claude reads those pages and returns <b>typed facts with a source URL for each one</b> —
+    and states plainly what it could not find.
+  </p>
+</section>
+
+<!-- 5 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">The rule that makes it trustworthy</div>
+  <h2>Every fact carries where it came from.</h2>
+  <div class="rows" style="margin-bottom:1.3em">
+    <div class="row"><span class="k">1</span><span><span class="pill p-ok">verified</span> &nbsp;from a structured source anyone can re-query</span></div>
+    <div class="row"><span class="k">2</span><span><span class="pill p-inf">sourced</span> &nbsp;found on an identifiable page, URL kept</span></div>
+    <div class="row"><span class="k">3</span><span><span class="pill p-wrn">claimed</span> &nbsp;the vendor says so about itself, nothing confirms it</span></div>
+    <div class="row"><span class="k">4</span><span><span class="pill p-bad">not found</span> &nbsp;could not be established</span></div>
+  </div>
+  <div class="grid g2">
+    <div class="card bad">
+      <h3>A vendor's word is not evidence</h3>
+      <p>A <b>claimed</b> fact cannot satisfy a blocking requirement — however it arrived.</p>
+    </div>
+    <div class="card info">
+      <h3>Not found is a finding</h3>
+      <p>A requirement that can't be evaluated returns <b>more information required</b>. Never a guess.</p>
+    </div>
+  </div>
+  <p class="tiny" style="margin-top:1.3em">
+    This is the failure mode that sinks AI tools: confident synthesis of things nobody verified.
+    GreenLight is built so it structurally cannot happen.
+  </p>
+</section>
+
+<!-- 6 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">Policy</div>
+  <h2>Same software. Two entities. Two answers.</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>BISTEC Solutions <span class="chip" style="margin-left:6px">Sri Lanka</span></h3>
+      <p class="dim mono" style="font-size:.85em">software-approval@2.1</p>
+      <p style="margin-top:.6em">PDPA No. 9 of 2022. Eight requirements.</p>
+      <p style="margin-top:.8em"><span class="pill p-wrn">Approve with conditions</span></p>
+    </div>
+    <div class="card">
+      <h3>BISTEC Australia <span class="chip" style="margin-left:6px">Australia</span></h3>
+      <p class="dim mono" style="font-size:.85em">software-approval@1.3</p>
+      <p style="margin-top:.6em">Privacy Act 1988. Nine — it adds <b>APP 8 data residency</b>.</p>
+      <p style="margin-top:.8em"><span class="pill p-bad">More information required</span></p>
+    </div>
+  </div>
+  <p style="margin-top:1.4em">
+    Policy is a <b>versioned file</b>, one per entity. Change a rule, no code changes and
+    nothing is deployed — and every decision is stamped with the version that governed it.
+  </p>
+  <p class="tiny">Adding a whole new approval domain is also just a file. Software approvals and
+    ISO document approvals already run through the same engine.</p>
+</section>
+
+<!-- 7 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">The part I'd show a security lead</div>
+  <h2>Approvals expire. On their own.</h2>
+  <div class="rows">
+    <div class="row"><span class="k">→</span><span>Slack was approved in November with a ten-month review interval.</span></div>
+    <div class="row"><span class="k">→</span><span>That interval <b>ran out today</b>.</span></div>
+    <div class="row"><span class="k">→</span><span>So <span class="mono">slack.exe</span> <b class="cri">dropped off the endpoint allow list by itself</b> — no ticket, no restart, nobody notified.</span></div>
+  </div>
+  <div class="card warn" style="margin-top:1.5em">
+    <h3>And Microsoft 365 is being watched</h3>
+    <p>Six new actively-exploited vulnerabilities have been published <b>since it was approved</b>.
+      It stops self-serving until someone looks again.</p>
+  </div>
+  <p class="tiny" style="margin-top:1.3em">
+    The same validity rule governs both the approval queue and what endpoints are permitted to run,
+    so policy and enforcement cannot disagree.
+  </p>
+</section>
+
+<!-- 8 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">Why the queue shrinks</div>
+  <h1 style="max-width:26ch">Every decision made today is one that is never made again.</h1>
+  <p class="lede">Approve something new and it joins the catalog. The next person who
+    asks for it gets it in seconds, and the approver never sees the request.</p>
+  <p class="tiny" style="margin-top:2em">
+    A person still decides — GreenLight never approves anything. What it removes is the
+    research, the chasing, and every request that should never have been asked twice.
+  </p>
+</section>
+
+<!-- 9 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">What it's worth</div>
+  <h2>Honestly, split in two.</h2>
+  <div class="grid g2">
+    <div class="card ok">
+      <h3 class="sig">Demonstrable today</h3>
+      <div class="rows">
+        <div class="row"><span class="k">·</span><span>Exploited software caught <b>before</b> anyone installs it</span></div>
+        <div class="row"><span class="k">·</span><span>Approvals that revoke themselves when they expire</span></div>
+        <div class="row"><span class="k">·</span><span>Unapproved software found running on real machines</span></div>
+        <div class="row"><span class="k">·</span><span>An ISO audit trail that builds itself — every decision, who, when, under which policy version</span></div>
+        <div class="row"><span class="k">·</span><span><b>898 seats</b> tracked; the unused ones are money</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="wrn">Still to be measured</h3>
+      <div class="rows">
+        <div class="row"><span class="k">1</span><span>How many software requests arrive in a week?</span></div>
+        <div class="row"><span class="k">2</span><span>What share come back incomplete?</span></div>
+        <div class="row"><span class="k">3</span><span>How long does that round trip really take?</span></div>
+      </div>
+      <p style="margin-top:1em" class="dim">Ten minutes with Operations turns the time
+        savings from an estimate into evidence. Until then I'm presenting them as estimates.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 ────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">It's not a mockup</div>
+  <h2>Built to be used, not demonstrated.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="num">202</div><p>tests, weighted at the rules where a bug means a wrong approval. Three are regressions for defects that actually happened.</p></div>
+    <div class="card"><div class="num">4</div><p>live security sources, queried in about a second. No API key, no mock data.</p></div>
+    <div class="card"><div class="num">3</div><p>roles. A requester pressing Approve is refused and told why.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:1.2em">
+    <div class="card info"><h3>Deployed and running</h3><p>Postgres, sign-in, CI on every push. Not a laptop demo.</p></div>
+    <div class="card ok"><h3>Built with Claude</h3><p>Claude does the research the app can't. The Skill ships with it, so it runs on an ordinary subscription.</p></div>
+  </div>
+</section>
+
+<!-- 11 ────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">GreenLight</div>
+  <h1 style="max-width:24ch">GreenLight never approves anything.</h1>
+  <h1 class="sig" style="max-width:24ch;margin-top:-.2em">It makes sure a person can.</h1>
+  <p class="tiny" style="margin-top:2.6em">
+    github.com/lakshitha-dev/greenlight &nbsp;·&nbsp; HeartForge 2026
+  </p>
+</section>
+
+<div class="nav">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <span id="count">1 / 11</span>
+  <button id="next" aria-label="Next slide">→</button>
+</div>
+
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+const bar = document.getElementById('bar');
+const count = document.getElementById('count');
+let i = 0;
+
+function show(n){
+  i = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, k) => s.classList.toggle('on', k === i));
+  bar.style.width = ((i + 1) / slides.length * 100) + '%';
+  count.textContent = (i + 1) + ' / ' + slides.length;
+  try { location.hash = String(i + 1); } catch {}
+}
+
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)) { e.preventDefault(); show(i + 1); }
+  else if (['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+  else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+});
+document.getElementById('next').onclick = () => show(i + 1);
+document.getElementById('prev').onclick = () => show(i - 1);
+document.addEventListener('click', e => { if (!e.target.closest('.nav')) show(i + 1); });
+
+const start = parseInt(location.hash.slice(1), 10);
+show(Number.isFinite(start) && start > 0 ? start - 1 : 0);
+</script>
+</body>
+</html>
