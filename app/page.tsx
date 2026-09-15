@@ -6,13 +6,18 @@ import type { Request, CatalogEntry, Decision } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
-function age(from: Date): { text: string; overdue: boolean } {
+/** Elapsed time only. Whether that elapsed time is *late* depends on whether
+ *  anyone still owes the request an answer, which is the caller's question —
+ *  this previously flagged anything two days old as "past SLA", including
+ *  tier-0 rows that self-provisioned and needed nobody. Red on already-resolved
+ *  work is how people learn to stop reading red. */
+function age(from: Date): { text: string; days: number } {
   const s = Math.max(0, Math.floor((Date.now() - from.getTime()) / 1000));
-  if (s < 60) return { text: `${s}s`, overdue: false };
-  if (s < 3600) return { text: `${Math.floor(s / 60)}m`, overdue: false };
-  if (s < 86400) return { text: `${Math.floor(s / 3600)}h`, overdue: false };
+  if (s < 60) return { text: `${s}s`, days: 0 };
+  if (s < 3600) return { text: `${Math.floor(s / 60)}m`, days: 0 };
+  if (s < 86400) return { text: `${Math.floor(s / 3600)}h`, days: 0 };
   const d = Math.floor(s / 86400);
-  return { text: `${d}d ${Math.floor((s % 86400) / 3600)}h`, overdue: d >= 2 };
+  return { text: `${d}d ${Math.floor((s % 86400) / 3600)}h`, days: d };
 }
 
 type Row = Request & { decision: Decision | null; dossier: { id: string } | null };
@@ -36,7 +41,12 @@ export default async function Queue() {
 
   const t0 = routed.filter((x) => x.rt.tier === 0);
   const t1 = routed.filter((x) => x.rt.tier === 1);
-  const t2 = routed.filter((x) => x.rt.tier === 2);
+  /** Oldest first, unlike the other two groups: this is the only group anyone
+   *  still has to act on, and the row that has waited longest is the one to
+   *  pick up next. */
+  const t2 = routed
+    .filter((x) => x.rt.tier === 2)
+    .sort((a, b) => a.r.receivedAt.getTime() - b.r.receivedAt.getTime());
 
   return (
     <>
@@ -49,6 +59,9 @@ export default async function Queue() {
           </div>
         </div>
         <div className="actions">
+          <Link href="/intake/email" className="btn sm">
+            Log an email
+          </Link>
           <Link href="/intake" className="btn sm">
             Paste a request
           </Link>
@@ -78,16 +91,16 @@ export default async function Queue() {
       </div>
 
       <div className="queue">
-        {t0.length > 0 && <div className="qgroup">Resolved without an approver</div>}
-        {t0.map((x) => (
+        {t2.length > 0 && <div className="qgroup">Waiting on the Head of Operations</div>}
+        {t2.map((x) => (
           <QueueRow key={x.r.id} {...x} />
         ))}
         {t1.length > 0 && <div className="qgroup">Routed to the budget owner</div>}
         {t1.map((x) => (
           <QueueRow key={x.r.id} {...x} />
         ))}
-        {t2.length > 0 && <div className="qgroup">Waiting on the Head of Operations</div>}
-        {t2.map((x) => (
+        {t0.length > 0 && <div className="qgroup">Resolved without an approver</div>}
+        {t0.map((x) => (
           <QueueRow key={x.r.id} {...x} />
         ))}
       </div>
@@ -129,6 +142,8 @@ function Tier({
 
 function QueueRow({ r, rt }: { r: Row; rt: Route }) {
   const a = age(r.receivedAt);
+  /** Only a tier-2 row with no decision is still owed an answer. */
+  const overdue = a.days >= 2 && rt.tier === 2 && !r.decision;
   let sev = "warn";
   let pill = <span className="pill p-mute">Awaiting research</span>;
 
@@ -140,7 +155,7 @@ function QueueRow({ r, rt }: { r: Row; rt: Route }) {
     pill = <span className="pill p-info">Budget owner · {rt.entry?.owner}</span>;
   } else if (r.kind === "iso") {
     sev = "crit";
-    pill = <span className="pill p-crit">Returned — 2 gaps</span>;
+    pill = <span className="pill p-crit">Returned — gaps outstanding</span>;
   } else if (r.decision) {
     const o = r.decision.outcome as Outcome;
     sev = o === "REJECT" ? "crit" : o === "APPROVE" ? "ok" : o === "CONDITIONS" ? "warn" : "info";
@@ -165,7 +180,7 @@ function QueueRow({ r, rt }: { r: Row; rt: Route }) {
       </div>
       <div>{pill}</div>
       <div className="qage">
-        {a.overdue ? (
+        {overdue ? (
           <>
             <b>{a.text}</b>
             <span style={{ fontSize: "10.5px" }}>past SLA</span>

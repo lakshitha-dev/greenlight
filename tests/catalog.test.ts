@@ -6,7 +6,7 @@ import { describe, it, expect } from "vitest";
 import { routeRequest, entitiesOf } from "@/lib/catalog";
 import { catalogEntry, iso, TODAY, PAST } from "./factories";
 
-const ENTITY = "BISTEC Solutions";
+const ENTITY = "BISTEC Global";
 
 describe("routeRequest — the three tiers", () => {
   it("self-serves when the entry is valid, in scope and has a free seat", () => {
@@ -65,17 +65,20 @@ describe("routeRequest — a catalog hit is not approval", () => {
   });
 
   it("re-escalates when the entity is out of scope", () => {
-    const r = routeRequest("Slack", "BISTEC Australia", [
-      catalogEntry({ entities: JSON.stringify(["BISTEC Solutions"]) }),
+    /** BISTEC Global is the only entity today, so the second name here is
+     *  hypothetical — the scope check is what is being pinned, and it has to
+     *  keep working for the day a second entity exists. */
+    const r = routeRequest("Slack", "BISTEC Global", [
+      catalogEntry({ entities: JSON.stringify(["BISTEC Overseas"]) }),
     ]);
     expect(r.tier).toBe(2);
-    expect(r.fails?.[0]).toMatch(/not BISTEC Australia/);
+    expect(r.fails?.[0]).toMatch(/not BISTEC Global/);
     expect(r.fails?.[0]).toMatch(/jurisdiction/i);
   });
 
   it("reports every reason it is invalid, not just the first", () => {
-    const r = routeRequest("Slack", "BISTEC Australia", [
-      catalogEntry({ review: PAST, kevSince: 2, entities: JSON.stringify(["BISTEC Solutions"]) }),
+    const r = routeRequest("Slack", "BISTEC Global", [
+      catalogEntry({ review: PAST, kevSince: 2, entities: JSON.stringify(["BISTEC Overseas"]) }),
     ]);
     expect(r.fails).toHaveLength(3);
   });
@@ -89,7 +92,7 @@ describe("routeRequest — a catalog hit is not approval", () => {
 
 describe("entitiesOf", () => {
   it("reads a well-formed scope list", () => {
-    expect(entitiesOf(catalogEntry())).toEqual(["BISTEC Solutions"]);
+    expect(entitiesOf(catalogEntry())).toEqual(["BISTEC Global"]);
   });
 
   it("returns an empty scope for unreadable data rather than throwing", () => {

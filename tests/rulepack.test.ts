@@ -12,7 +12,7 @@ function pack(requirements: Partial<Requirement>[]): Pack {
     id: "test-pack",
     domain: "software",
     version: "1.0",
-    entity: "BISTEC Solutions",
+    entity: "BISTEC Global",
     file: "test.yaml",
     requirements: requirements.map((r, i) => ({
       id: r.id ?? `R${i + 1}`,
@@ -188,11 +188,15 @@ describe("packs on disk", () => {
     }
   });
 
-  it("gives BISTEC Australia its own pack, not the Sri Lankan one", () => {
-    const au = packFor("BISTEC Australia");
-    const sl = packFor("BISTEC Solutions");
-    expect(au.entity).toBe("BISTEC Australia");
-    expect(au.version).not.toBe(sl.version);
+  it("falls back to the BISTEC Global pack for an entity with none of its own", () => {
+    /** packFor is total by construction: an entity with no pack still gets
+     *  evaluated rather than throwing, and the fallback is named rather than
+     *  whichever file readdir happened to return first. */
+    const known = packFor("BISTEC Global");
+    const unknown = packFor("BISTEC Atlantis");
+    expect(known.entity).toBe("BISTEC Global");
+    expect(unknown.entity).toBe("BISTEC Global");
+    expect(unknown.version).toBe(known.version);
   });
 
   it("falls back rather than returning undefined for an unknown entity", () => {
@@ -202,6 +206,6 @@ describe("packs on disk", () => {
   });
 
   it("caches, so repeated lookups do not re-read the disk", () => {
-    expect(packFor("BISTEC Solutions")).toBe(packFor("BISTEC Solutions"));
+    expect(packFor("BISTEC Global")).toBe(packFor("BISTEC Global"));
   });
 });

@@ -18,3 +18,6 @@ _*.ts
 
 .vercel
 .env*
+
+# Office lock files, created when a .pptx/.docx is open
+~$*

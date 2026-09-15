@@ -2,7 +2,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { reconcile, syncPolicy, type EstateRow } from "@/lib/estate";
 import { isUp, PA_URL, type ProcessRecord } from "@/lib/sources/analyzer";
-import { Panel, Callout } from "@/components/ui";
+import { Panel, Callout, Mark } from "@/components/ui";
 import { expect, isArray } from "@/lib/json";
 import { PullScanButton, SyncPolicyButton, RaiseButton } from "@/components/EstateActions";
 
@@ -155,7 +155,7 @@ export default async function EstatePage() {
             <Panel title="Approved but never seen" eyebrow="licence spend worth checking">
               {estate.unused.map(({ entry, reason }) => (
                 <div className="check" key={entry.id}>
-                  <span className="mark m-miss">?</span>
+                  <Mark status="miss" label="Never seen on an endpoint" />
                   <div>
                     <div className="lbl">{entry.name}</div>
                     <div className="why">
@@ -235,16 +235,18 @@ function Tier({
 }
 
 function Row({ r }: { r: EstateRow }) {
+  /** Shape, not just colour, is how this is read at a glance — so the glyph
+   *  set is shared with every other status in the app rather than restated. */
   const mark =
     r.bucket === "approved"
-      ? ["m-pass", "✓"]
+      ? (["pass", "Approved"] as const)
       : r.bucket === "flagged"
-        ? ["m-fail", "!"]
-        : ["m-miss", "?"];
+        ? (["fail", "Flagged — not approved"] as const)
+        : (["miss", "Unrecognised"] as const);
 
   return (
     <div className="check">
-      <span className={`mark ${mark[0]}`}>{mark[1]}</span>
+      <Mark status={mark[0]} label={mark[1]} />
       <div>
         <div className="lbl">
           <span className="mono">{r.name}</span>

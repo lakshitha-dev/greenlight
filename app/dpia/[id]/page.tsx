@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { screen, risks, worst, categoriesOf, type Band } from "@/lib/dpia";
-import { Panel, KV, Callout } from "@/components/ui";
+import { Panel, KV, Callout, Prov } from "@/components/ui";
+import { PROV_LABEL } from "@/lib/research";
 import { AckButton } from "@/components/Actions";
 import type { Fact } from "@/lib/sources/http";
 import { expect, isObject } from "@/lib/json";
@@ -30,6 +31,23 @@ export default async function DpiaPage({ params }: { params: Promise<{ id: strin
       <Link href={`/request/${r.id}`} className="backlink">
         ← {r.subject}
       </Link>
+
+      {/** Print-only. A loose printout has no rail, no URL and no chrome, so it
+        *  has to say what it is and — just as importantly — what it is not.
+        *  GreenLight cannot approve anything, and a document that looks like an
+        *  approval when it is a record of evidence is the one failure mode this
+        *  page must not have. */}
+      <div className="printonly printmeta">
+        <b>GreenLight · BISTEC Global</b>
+        <span>
+          Data Protection Impact Assessment · DPIA-{r.id.split("-")[1]} · {r.product} ·{" "}
+          {r.entity} · {sc.regime} · pack {sc.packVersion}
+        </span>
+        <span>
+          Generated {new Date().toISOString().slice(0, 16).replace("T", " ")} UTC. GreenLight cannot
+          approve anything. This document records the evidence behind a human decision.
+        </span>
+      </div>
 
       <div className="stack">
         <div className="reqhead">
@@ -94,15 +112,10 @@ export default async function DpiaPage({ params }: { params: Promise<{ id: strin
                 v={
                   <>
                     {facts.residency?.value ? String(facts.residency.value) : "Not found"}
-                    <span
-                      className={`prov pv-${facts.residency?.prov === "claimed" ? "claimed" : facts.residency?.prov ?? "none"}`}
-                    >
-                      {facts.residency?.prov === "claimed"
-                        ? "vendor claim"
-                        : facts.residency?.prov === "none" || !facts.residency
-                          ? "not found"
-                          : facts.residency.prov}
-                    </span>
+                    <Prov
+                      prov={facts.residency?.prov ?? "none"}
+                      label={PROV_LABEL[facts.residency?.prov ?? "none"] ?? "not found"}
+                    />
                   </>
                 }
               />

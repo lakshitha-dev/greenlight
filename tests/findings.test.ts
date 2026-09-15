@@ -123,7 +123,7 @@ describe("factsFromFindings — provenance survives the round trip", () => {
 });
 
 describe("pasted findings drive the verdict exactly as the API path would", () => {
-  const pack = packFor("BISTEC Solutions");
+  const pack = packFor("BISTEC Global");
   const who = "Head of Operations";
 
   it("approves when everything is sourced and clean", () => {

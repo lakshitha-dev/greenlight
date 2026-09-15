@@ -17,7 +17,8 @@
     "db:migrate": "prisma migrate deploy",
     "check:ai": "tsx scripts/check-credential.ts",
     "mcp": "tsx mcp/server.ts",
-    "walkthrough": "tsx scripts/walkthrough.ts"
+    "walkthrough": "tsx scripts/walkthrough.ts",
+    "brand": "tsx scripts/build-brand-assets.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.72.0",

@@ -1,13 +1,13 @@
 <mxfile host="65bd71144e">
     <diagram name="Today vs GreenLight" id="biz-1">
-        <mxGraphModel dx="896" dy="0" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1000" math="0" shadow="0">
+        <mxGraphModel dx="90" dy="18" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1000" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="t" value="One request for new software" style="text;html=1;align=left;fontSize=26;fontStyle=1;fontColor=#14191a;" parent="1" vertex="1">
+                <mxCell id="t" value="One request for new software" style="text;html=1;align=left;fontSize=26;fontStyle=1;fontColor=#111827;" parent="1" vertex="1">
                     <mxGeometry x="50" y="30" width="800" height="36" as="geometry"/>
                 </mxCell>
-                <mxCell id="st" value="The same ask, before and after. What changes is not how fast the Head of Operations reads — it is how long the request waits before anyone can decide anything." style="text;html=1;align=left;fontSize=14;fontColor=#677577;" parent="1" vertex="1">
+                <mxCell id="st" value="The same ask, before and after. What changes is not how fast the Head of Operations reads — it is how long the request waits before anyone can decide anything." style="text;html=1;align=left;fontSize=14;fontColor=#4b5563;" parent="1" vertex="1">
                     <mxGeometry x="50" y="66" width="1100" height="24" as="geometry"/>
                 </mxCell>
                 <mxCell id="lane1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=none;opacity=40;" parent="1" vertex="1">
@@ -16,79 +16,79 @@
                 <mxCell id="lane1t" value="TODAY" style="text;html=1;align=left;fontSize=16;fontStyle=1;fontColor=#b42318;" parent="1" vertex="1">
                     <mxGeometry x="70" y="136" width="200" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="a1" value="&lt;b&gt;the Support Engineer needs a tool&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#677577&quot;&gt;The new service desk goes&lt;br&gt;live on the 28th&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="a1" value="&lt;b&gt;the Support Engineer needs a tool&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#4b5563&quot;&gt;The new service desk goes&lt;br&gt;live on the 28th&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e5eb;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="70" y="200" width="190" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="a2" value="&lt;b&gt;He emails the Head of Operations&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#677577&quot;&gt;He does not know what&lt;br&gt;information is required&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="a2" value="&lt;b&gt;He emails the Head of Operations&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#4b5563&quot;&gt;He does not know what&lt;br&gt;information is required&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e5eb;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="310" y="200" width="190" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="a3" value="&lt;b&gt;It waits in the inbox&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#677577&quot;&gt;Every operational request&lt;br&gt;in the company lands here&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="a3" value="&lt;b&gt;It waits in the inbox&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#4b5563&quot;&gt;Every operational request&lt;br&gt;in the company lands here&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="550" y="200" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="a3t" value="⏱ about 3 days" style="text;html=1;align=center;fontSize=13;fontStyle=1;fontColor=#b42318;" parent="1" vertex="1">
                     <mxGeometry x="550" y="298" width="190" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="a4" value="&lt;b&gt;the Head of Operations opens it&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#677577&quot;&gt;The business justification&lt;br&gt;is missing. He cannot decide.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="a4" value="&lt;b&gt;the Head of Operations opens it&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#4b5563&quot;&gt;The business justification&lt;br&gt;is missing. He cannot decide.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="790" y="200" width="190" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="a5" value="&lt;b&gt;He replies asking&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#677577&quot;&gt;the Support Engineer answers, and it&lt;br&gt;goes back to the bottom&lt;br&gt;of the queue&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="a5" value="&lt;b&gt;He replies asking&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#4b5563&quot;&gt;the Support Engineer answers, and it&lt;br&gt;goes back to the bottom&lt;br&gt;of the queue&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="1030" y="200" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="a5t" value="⏱ 1–2 days more" style="text;html=1;align=center;fontSize=13;fontStyle=1;fontColor=#b42318;" parent="1" vertex="1">
                     <mxGeometry x="1030" y="298" width="190" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="a6" value="&lt;b&gt;He researches it himself&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#677577&quot;&gt;Is the vendor safe? What&lt;br&gt;does it cost? Can we legally&lt;br&gt;use it here?&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="a6" value="&lt;b&gt;He researches it himself&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;color:#4b5563&quot;&gt;Is the vendor safe? What&lt;br&gt;does it cost? Can we legally&lt;br&gt;use it here?&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#f2b8b4;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="1270" y="200" width="190" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="a6t" value="⏱ 2–3 hours of his time" style="text;html=1;align=center;fontSize=13;fontStyle=1;fontColor=#b42318;" parent="1" vertex="1">
                     <mxGeometry x="1250" y="298" width="230" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="a7" value="&lt;b&gt;Decision&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#14191a;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="a7" value="&lt;b&gt;Decision&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#111827;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="1510" y="215" width="110" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="sum1" value="&lt;b&gt;Nearly a week gone, and nobody did anything wrong.&lt;/b&gt;  The requester did not know what to include. The approver was not slow — he was buried." style="text;html=1;align=left;fontSize=14;fontColor=#b42318;" parent="1" vertex="1">
                     <mxGeometry x="70" y="355" width="1500" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="est1" value="Elapsed time shown is illustrative and needs confirming with Operations. The missing-justification case is real — it happened to an ISO approval last month." style="text;html=1;align=left;fontSize=11;fontColor=#93a1a3;fontStyle=2;" parent="1" vertex="1">
+                <mxCell id="est1" value="Elapsed time shown is illustrative and needs confirming with Operations. The missing-justification case is real — it happened to an ISO approval last month." style="text;html=1;align=left;fontSize=11;fontColor=#656c7a;fontStyle=2;" parent="1" vertex="1">
                     <mxGeometry x="70" y="385" width="1500" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="lane2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=none;opacity=50;" parent="1" vertex="1">
+                <mxCell id="lane2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f5ea;strokeColor=none;opacity=50;" parent="1" vertex="1">
                     <mxGeometry x="50" y="470" width="1600" height="420" as="geometry"/>
                 </mxCell>
-                <mxCell id="lane2t" value="WITH GREENLIGHT" style="text;html=1;align=left;fontSize=16;fontStyle=1;fontColor=#0f7a4d;" parent="1" vertex="1">
+                <mxCell id="lane2t" value="WITH GREENLIGHT" style="text;html=1;align=left;fontSize=16;fontStyle=1;fontColor=#1e7a32;" parent="1" vertex="1">
                     <mxGeometry x="70" y="488" width="300" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="b1" value="&lt;b&gt;the Support Engineer asks&lt;br&gt;for a tool&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e6e6;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="b1" value="&lt;b&gt;the Support Engineer asks&lt;br&gt;for a tool&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e2e5eb;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="70" y="640" width="160" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="b2" value="&lt;b&gt;Do we already&lt;br&gt;own this?&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;strokeWidth=2;fontSize=14;fontColor=#0f4d31;" parent="1" vertex="1">
+                <mxCell id="b2" value="&lt;b&gt;Do we already&lt;br&gt;own this?&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#e7f5ea;strokeColor=#1e7a32;strokeWidth=2;fontSize=14;fontColor=#135822;" parent="1" vertex="1">
                     <mxGeometry x="290" y="620" width="190" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="b3" value="&lt;b&gt;Yes — and a licence is free&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px&quot;&gt;the Support Engineer gets access straight away.&lt;br&gt;&lt;b&gt;the Head of Operations never sees this request.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="b3" value="&lt;b&gt;Yes — and a licence is free&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px&quot;&gt;the Support Engineer gets access straight away.&lt;br&gt;&lt;b&gt;the Head of Operations never sees this request.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f5ea;strokeColor=#1e7a32;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="560" y="520" width="290" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="b3t" value="⏱ seconds" style="text;html=1;align=center;fontSize=14;fontStyle=1;fontColor=#0f7a4d;" parent="1" vertex="1">
+                <mxCell id="b3t" value="⏱ seconds" style="text;html=1;align=center;fontSize=14;fontStyle=1;fontColor=#1e7a32;" parent="1" vertex="1">
                     <mxGeometry x="560" y="614" width="290" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="b4" value="&lt;b&gt;We own it, but no spare licence&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px&quot;&gt;Only the purchase is open, so it goes&lt;br&gt;to whoever owns the budget — &lt;b&gt;not to IT&lt;/b&gt;.&lt;br&gt;The safety question was settled long ago.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#175cd3;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="b4" value="&lt;b&gt;We own it, but no spare licence&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px&quot;&gt;Only the purchase is open, so it goes&lt;br&gt;to whoever owns the budget — &lt;b&gt;not to IT&lt;/b&gt;.&lt;br&gt;The safety question was settled long ago.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f4f7;strokeColor=#00707f;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="560" y="655" width="290" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="b5" value="&lt;b&gt;No — this is new to us&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px&quot;&gt;GreenLight does the homework the Head of Operations&lt;br&gt;would have done by hand.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#b54708;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="560" y="790" width="290" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="b6" value="&lt;b&gt;It checks, in about a minute:&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px;color:#3d4749&quot;&gt;· Is anyone attacking this software right now?&lt;br&gt;· Who is the vendor, and can they be trusted with our data?&lt;br&gt;· What will it cost, and who has to sign for that?&lt;br&gt;· Are we allowed to use it under Sri Lankan / Australian law?&lt;br&gt;· &lt;b&gt;What could it not find out&lt;/b&gt; — and does that block us?&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b54708;fontSize=13;align=left;spacingLeft=14;" parent="1" vertex="1">
+                <mxCell id="b6" value="&lt;b&gt;It checks, in about a minute:&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px;color:#374151&quot;&gt;· Is anyone attacking this software right now?&lt;br&gt;· Who is the vendor, and can they be trusted with our data?&lt;br&gt;· What will it cost, and who has to sign for that?&lt;br&gt;· Are we allowed to use it under Sri Lankan data protection law?&lt;br&gt;· &lt;b&gt;What could it not find out&lt;/b&gt; — and does that block us?&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b54708;fontSize=13;align=left;spacingLeft=14;" parent="1" vertex="1">
                     <mxGeometry x="900" y="775" width="380" height="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="b7" value="&lt;b&gt;the Head of Operations opens one page&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px;color:#3d4749&quot;&gt;Everything above, plus a&lt;br&gt;recommendation and what he&lt;br&gt;must still check himself.&lt;br&gt;&lt;br&gt;&lt;b&gt;He decides. GreenLight does not.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#14191a;strokeWidth=3;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="b7" value="&lt;b&gt;the Head of Operations opens one page&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:12px;color:#374151&quot;&gt;Everything above, plus a&lt;br&gt;recommendation and what he&lt;br&gt;must still check himself.&lt;br&gt;&lt;br&gt;&lt;b&gt;He decides. GreenLight does not.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#111827;strokeWidth=3;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="1340" y="770" width="230" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="b7t" value="⏱ minutes, same day" style="text;html=1;align=center;fontSize=13;fontStyle=1;fontColor=#0f7a4d;" parent="1" vertex="1">
+                <mxCell id="b7t" value="⏱ minutes, same day" style="text;html=1;align=center;fontSize=13;fontStyle=1;fontColor=#1e7a32;" parent="1" vertex="1">
                     <mxGeometry x="1340" y="744" width="230" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="sum2" value="&lt;b&gt;Most requests never reach him at all. The ones that do arrive ready to decide.&lt;/b&gt;" style="text;html=1;align=left;fontSize=15;fontColor=#0f7a4d;" parent="1" vertex="1">
+                <mxCell id="sum2" value="&lt;b&gt;Most requests never reach him at all. The ones that do arrive ready to decide.&lt;/b&gt;" style="text;html=1;align=left;fontSize=15;fontColor=#1e7a32;" parent="1" vertex="1">
                     <mxGeometry x="900" y="560" width="700" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="sum3" value="In one working day of requests, &lt;b&gt;3 out of 9&lt;/b&gt; were settled without an approver ever opening them." style="text;html=1;align=left;fontSize=13;fontColor=#677577;" parent="1" vertex="1">
+                <mxCell id="sum3" value="In one working day of requests, &lt;b&gt;3 out of 9&lt;/b&gt; were settled without an approver ever opening them." style="text;html=1;align=left;fontSize=13;fontColor=#4b5563;" parent="1" vertex="1">
                     <mxGeometry x="900" y="590" width="700" height="24" as="geometry"/>
                 </mxCell>
                 <mxCell id="ea1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b42318;strokeWidth=2;" parent="1" source="a1" target="a2" edge="1">
@@ -109,107 +109,117 @@
                 <mxCell id="ea6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b42318;strokeWidth=2;" parent="1" source="a6" target="a7" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="eb1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0f7a4d;strokeWidth=2;" parent="1" source="b1" target="b2" edge="1">
+                <mxCell id="eb1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1e7a32;strokeWidth=2;" parent="1" source="b1" target="b2" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="eb2" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#0f7a4d;strokeWidth=2;fontSize=12;fontColor=#0f7a4d;" parent="1" source="b2" target="b3" edge="1">
+                <mxCell id="eb2" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#1e7a32;strokeWidth=2;fontSize=12;labelBackgroundColor=#ffffff;fontColor=#1e7a32;exitX=1;exitY=0.2083;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="b2" target="b3" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="520" y="645"/>
+                            <mxPoint x="520" y="565"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="eb3" value="yes, but" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#00707f;strokeWidth=2;fontSize=12;labelBackgroundColor=#ffffff;fontColor=#00707f;exitX=1;exitY=0.6667;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="b2" target="b4" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="eb3" value="yes, but" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#175cd3;strokeWidth=2;fontSize=12;fontColor=#175cd3;" parent="1" source="b2" target="b4" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="eb4" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b54708;strokeWidth=2;fontSize=12;fontColor=#b54708;" parent="1" source="b2" target="b5" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
+                <mxCell id="eb4" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b54708;strokeWidth=2;fontSize=12;labelBackgroundColor=#ffffff;fontColor=#b54708;exitX=1;exitY=0.9167;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="b2" target="b5" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="540" y="730"/>
+                            <mxPoint x="540" y="830"/>
+                        </Array>
+                    </mxGeometry>
                 </mxCell>
                 <mxCell id="eb5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#b54708;strokeWidth=2;" parent="1" source="b5" target="b6" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="eb6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#14191a;strokeWidth=2;" parent="1" source="b6" target="b7" edge="1">
+                <mxCell id="eb6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#111827;strokeWidth=2;" parent="1" source="b6" target="b7" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
     </diagram>
     <diagram name="Who says yes" id="biz-2">
-        <mxGraphModel dx="1062" dy="463" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
+        <mxGraphModel dx="2980" dy="696" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
             <root>
                 <mxCell id="30"/>
                 <mxCell id="31" parent="30"/>
-                <mxCell id="t2" value="Who actually needs to say yes" style="text;html=1;align=left;fontSize=26;fontStyle=1;fontColor=#14191a;" parent="31" vertex="1">
+                <mxCell id="t2" value="Who actually needs to say yes" style="text;html=1;align=left;fontSize=26;fontStyle=1;fontColor=#111827;" parent="31" vertex="1">
                     <mxGeometry x="50" y="30" width="800" height="36" as="geometry"/>
                 </mxCell>
-                <mxCell id="st2b" value="Today every one of these lands on one desk. Most of them do not belong there." style="text;html=1;align=left;fontSize=14;fontColor=#677577;" parent="31" vertex="1">
+                <mxCell id="st2b" value="Today every one of these lands on one desk. Most of them do not belong there." style="text;html=1;align=left;fontSize=14;fontColor=#4b5563;" parent="31" vertex="1">
                     <mxGeometry x="50" y="66" width="1000" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="c1" value="&lt;b style=&quot;font-size:17px&quot;&gt;Nobody&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;We already own it and a licence&lt;br&gt;is sitting unused.&lt;br&gt;&lt;br&gt;&lt;b&gt;Example&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;A new support hire needs Zoom.&lt;br&gt;We have 180 licences and 23 spare.&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color:#0f7a4d&quot;&gt;Access in seconds.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;strokeWidth=2;fontSize=13;align=left;spacingLeft=16;verticalAlign=top;spacingTop=14;" parent="31" vertex="1">
+                <mxCell id="c1" value="&lt;b style=&quot;font-size:17px&quot;&gt;Nobody&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;We already own it and a licence&lt;br&gt;is sitting unused.&lt;br&gt;&lt;br&gt;&lt;b&gt;Example&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;A new support hire needs Zoom.&lt;br&gt;We have 180 licences and 23 spare.&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color:#1e7a32&quot;&gt;Access in seconds.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f5ea;strokeColor=#1e7a32;strokeWidth=2;fontSize=13;align=left;spacingLeft=16;verticalAlign=top;spacingTop=14;" parent="31" vertex="1">
                     <mxGeometry x="50" y="140" width="330" height="290" as="geometry"/>
                 </mxCell>
-                <mxCell id="c2" value="&lt;b style=&quot;font-size:17px&quot;&gt;Finance only&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;We own it, but every licence&lt;br&gt;is taken. Buying one costs money.&lt;br&gt;&lt;br&gt;&lt;b&gt;Example&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;A designer starting on the 21st&lt;br&gt;needs Figma. All 26 seats are used.&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color:#175cd3&quot;&gt;Budget owner decides.&lt;br&gt;IT is not involved — the safety&lt;br&gt;question was settled last year.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#175cd3;strokeWidth=2;fontSize=13;align=left;spacingLeft=16;verticalAlign=top;spacingTop=14;" parent="31" vertex="1">
+                <mxCell id="c2" value="&lt;b style=&quot;font-size:17px&quot;&gt;Finance only&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;We own it, but every licence&lt;br&gt;is taken. Buying one costs money.&lt;br&gt;&lt;br&gt;&lt;b&gt;Example&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;A designer starting on the 21st&lt;br&gt;needs Figma. All 26 seats are used.&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color:#00707f&quot;&gt;Budget owner decides.&lt;br&gt;IT is not involved — the safety&lt;br&gt;question was settled last year.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f4f7;strokeColor=#00707f;strokeWidth=2;fontSize=13;align=left;spacingLeft=16;verticalAlign=top;spacingTop=14;" parent="31" vertex="1">
                     <mxGeometry x="420" y="140" width="330" height="290" as="geometry"/>
                 </mxCell>
-                <mxCell id="c3" value="&lt;b style=&quot;font-size:17px&quot;&gt;IT must review&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;New to us, or last checked so long&lt;br&gt;ago the answer no longer holds.&lt;br&gt;&lt;br&gt;&lt;b&gt;Example&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;The support team wants a remote-&lt;br&gt;access tool for the BDO desk.&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color:#b54708&quot;&gt;the Head of Operations decides — but the homework&lt;br&gt;is already done and in front of him.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#b54708;strokeWidth=2;fontSize=13;align=left;spacingLeft=16;verticalAlign=top;spacingTop=14;" parent="31" vertex="1">
+                <mxCell id="c3" value="&lt;b style=&quot;font-size:17px&quot;&gt;IT must review&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;New to us, or last checked so long&lt;br&gt;ago the answer no longer holds.&lt;br&gt;&lt;br&gt;&lt;b&gt;Example&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;The support team wants a remote-&lt;br&gt;access tool for the BDO desk.&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color:#b54708&quot;&gt;the Head of Operations decides — but the homework&lt;br&gt;is already done and in front of him.&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#b54708;strokeWidth=2;fontSize=13;align=left;spacingLeft=16;verticalAlign=top;spacingTop=14;" parent="31" vertex="1">
                     <mxGeometry x="790" y="140" width="330" height="290" as="geometry"/>
                 </mxCell>
-                <mxCell id="vol" value="&lt;b&gt;One working day of requests&lt;/b&gt;" style="text;html=1;align=left;fontSize=15;fontColor=#14191a;" parent="31" vertex="1">
+                <mxCell id="vol" value="&lt;b&gt;One working day of requests&lt;/b&gt;" style="text;html=1;align=left;fontSize=15;fontColor=#111827;" parent="31" vertex="1">
                     <mxGeometry x="50" y="480" width="500" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="v1" value="2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0f7a4d;strokeColor=none;fontColor=#ffffff;fontSize=18;fontStyle=1;" parent="31" vertex="1">
+                <mxCell id="v1" value="2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e7a32;strokeColor=none;fontColor=#ffffff;fontSize=18;fontStyle=1;" parent="31" vertex="1">
                     <mxGeometry x="50" y="515" width="220" height="54" as="geometry"/>
                 </mxCell>
-                <mxCell id="v2" value="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#175cd3;strokeColor=none;fontColor=#ffffff;fontSize=18;fontStyle=1;" parent="31" vertex="1">
+                <mxCell id="v2" value="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00707f;strokeColor=none;fontColor=#ffffff;fontSize=18;fontStyle=1;" parent="31" vertex="1">
                     <mxGeometry x="270" y="515" width="110" height="54" as="geometry"/>
                 </mxCell>
                 <mxCell id="v3" value="6" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b54708;strokeColor=none;fontColor=#ffffff;fontSize=18;fontStyle=1;" parent="31" vertex="1">
                     <mxGeometry x="380" y="515" width="660" height="54" as="geometry"/>
                 </mxCell>
-                <mxCell id="vlab" value="&lt;font style=&quot;color:#0f7a4d&quot;&gt;■ nobody&lt;/font&gt;    &lt;font style=&quot;color:#175cd3&quot;&gt;■ finance only&lt;/font&gt;    &lt;font style=&quot;color:#b54708&quot;&gt;■ IT must review&lt;/font&gt;        &lt;font style=&quot;color:#677577&quot;&gt;— a third of them never reached an approver&lt;/font&gt;" style="text;html=1;align=left;fontSize=13;" parent="31" vertex="1">
+                <mxCell id="vlab" value="&lt;font style=&quot;color:#1e7a32&quot;&gt;■ nobody&lt;/font&gt;    &lt;font style=&quot;color:#00707f&quot;&gt;■ finance only&lt;/font&gt;    &lt;font style=&quot;color:#b54708&quot;&gt;■ IT must review&lt;/font&gt;        &lt;font style=&quot;color:#4b5563&quot;&gt;— a third of them never reached an approver&lt;/font&gt;" style="text;html=1;align=left;fontSize=13;" parent="31" vertex="1">
                     <mxGeometry x="50" y="578" width="1000" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="loop" value="&lt;b style=&quot;font-size:16px&quot;&gt;And the pile shrinks on its own&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:14px&quot;&gt;When the Head of Operations approves something new, it joins the list of what we own.&lt;br&gt;&lt;b&gt;The next person who asks for it gets it in seconds.&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;Every decision he makes today is one he never has to make again.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;strokeWidth=2;fontSize=13;align=left;spacingLeft=20;verticalAlign=middle;" parent="31" vertex="1">
+                <mxCell id="loop" value="&lt;b style=&quot;font-size:16px&quot;&gt;And the pile shrinks on its own&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:14px&quot;&gt;When the Head of Operations approves something new, it joins the list of what we own.&lt;br&gt;&lt;b&gt;The next person who asks for it gets it in seconds.&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;Every decision he makes today is one he never has to make again.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f5ea;strokeColor=#1e7a32;strokeWidth=2;fontSize=13;align=left;spacingLeft=20;verticalAlign=middle;" parent="31" vertex="1">
                     <mxGeometry x="50" y="650" width="700" height="160" as="geometry"/>
                 </mxCell>
-                <mxCell id="guard" value="&lt;b style=&quot;font-size:16px&quot;&gt;Nothing approves itself&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:14px&quot;&gt;The only requests that skip a person are ones a person&lt;br&gt;&lt;b&gt;already approved&lt;/b&gt; — and that approval expires.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;When it lapses, or the software turns out to be under attack,&lt;br&gt;it stops being automatic and comes back to the Head of Operations.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#14191a;strokeWidth=2;fontSize=13;align=left;spacingLeft=20;verticalAlign=middle;" parent="31" vertex="1">
+                <mxCell id="guard" value="&lt;b style=&quot;font-size:16px&quot;&gt;Nothing approves itself&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:14px&quot;&gt;The only requests that skip a person are ones a person&lt;br&gt;&lt;b&gt;already approved&lt;/b&gt; — and that approval expires.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;When it lapses, or the software turns out to be under attack,&lt;br&gt;it stops being automatic and comes back to the Head of Operations.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#111827;strokeWidth=2;fontSize=13;align=left;spacingLeft=20;verticalAlign=middle;" parent="31" vertex="1">
                     <mxGeometry x="790" y="650" width="660" height="160" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
     </diagram>
     <diagram name="What the business gets" id="biz-3">
-        <mxGraphModel dx="1062" dy="463" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
+        <mxGraphModel grid="0" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
             <root>
                 <mxCell id="40"/>
                 <mxCell id="41" parent="40"/>
-                <mxCell id="t3" value="What BISTEC gets out of it" style="text;html=1;align=left;fontSize=26;fontStyle=1;fontColor=#14191a;" parent="41" vertex="1">
+                <mxCell id="t3" value="What BISTEC gets out of it" style="text;html=1;align=left;fontSize=26;fontStyle=1;fontColor=#111827;" parent="41" vertex="1">
                     <mxGeometry x="50" y="30" width="800" height="36" as="geometry"/>
                 </mxCell>
-                <mxCell id="st3" value="Split honestly: what we can already show, and what still needs a real number from Operations." style="text;html=1;align=left;fontSize=14;fontColor=#677577;" parent="41" vertex="1">
+                <mxCell id="st3" value="Split honestly: what we can already show, and what still needs a real number from Operations." style="text;html=1;align=left;fontSize=14;fontColor=#4b5563;" parent="41" vertex="1">
                     <mxGeometry x="50" y="66" width="1000" height="24" as="geometry"/>
                 </mxCell>
-                <mxCell id="h1" value="WE CAN SHOW THIS TODAY" style="text;html=1;align=left;fontSize=13;fontStyle=1;fontColor=#0f7a4d;" parent="41" vertex="1">
+                <mxCell id="h1" value="WE CAN SHOW THIS TODAY" style="text;html=1;align=left;fontSize=13;fontStyle=1;fontColor=#1e7a32;" parent="41" vertex="1">
                     <mxGeometry x="50" y="120" width="500" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="f1" value="&lt;b style=&quot;font-size:15px&quot;&gt;Danger caught before it lands&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;The remote-access tool the support team asked for has &lt;b&gt;four vulnerabilities being actively exploited right now&lt;/b&gt; — the most recent published three days before they asked.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;Nobody at BISTEC would have known. It takes GreenLight one second.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#b42318;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
+                <mxCell id="f1" value="&lt;b style=&quot;font-size:15px&quot;&gt;Danger caught before it lands&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;The remote-access tool the support team asked for has &lt;b&gt;four vulnerabilities being actively exploited right now&lt;/b&gt; — the most recent published three days before they asked.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;Nobody at BISTEC would have known. It takes GreenLight one second.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdeceb;strokeColor=#b42318;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
                     <mxGeometry x="50" y="150" width="440" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="f2" value="&lt;b style=&quot;font-size:15px&quot;&gt;Software running that nobody approved&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;GreenLight compares what we approved against what is actually installed on our machines.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;Unapproved remote-access software, unsigned programs running from temporary folders — surfaced, not guessed at.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#b54708;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
+                <mxCell id="f2" value="&lt;b style=&quot;font-size:15px&quot;&gt;Software running that nobody approved&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;GreenLight compares what we approved against what is actually installed on our machines.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;Unapproved remote-access software, unsigned programs running from temporary folders — surfaced, not guessed at.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2e7;strokeColor=#b54708;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
                     <mxGeometry x="520" y="150" width="440" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="f3" value="&lt;b style=&quot;font-size:15px&quot;&gt;The audit file builds itself&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;Internal and external ISO audits are due early next year.&lt;br&gt;&lt;br&gt;Every decision — including the ones nobody touched — is recorded with who, when, and which version of our policy applied.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;That is the evidence an auditor asks for first.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f4ed;strokeColor=#0f7a4d;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
+                <mxCell id="f3" value="&lt;b style=&quot;font-size:15px&quot;&gt;The audit file builds itself&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;Internal and external ISO audits are due early next year.&lt;br&gt;&lt;br&gt;Every decision — including the ones nobody touched — is recorded with who, when, and which version of our policy applied.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;That is the evidence an auditor asks for first.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f5ea;strokeColor=#1e7a32;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
                     <mxGeometry x="990" y="150" width="440" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="f4" value="&lt;b style=&quot;font-size:15px&quot;&gt;Licences nobody is using&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;898 seats are tracked across five products. GreenLight shows which are paid for and never opened — and stops us buying a second tool that does what one we own already does.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eaf1fd;strokeColor=#175cd3;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
+                <mxCell id="f4" value="&lt;b style=&quot;font-size:15px&quot;&gt;Licences nobody is using&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;898 seats are tracked across five products. GreenLight shows which are paid for and never opened — and stops us buying a second tool that does what one we own already does.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f4f7;strokeColor=#00707f;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
                     <mxGeometry x="50" y="400" width="440" height="170" as="geometry"/>
                 </mxCell>
-                <mxCell id="f5" value="&lt;b style=&quot;font-size:15px&quot;&gt;One person stops being the bottleneck&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;Every operational request in the company needs IT sign-off, and it all reaches one desk.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;GreenLight keeps the control and removes the queue — and it works when the Head of Operations is on leave.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#14191a;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
+                <mxCell id="f5" value="&lt;b style=&quot;font-size:15px&quot;&gt;One person stops being the bottleneck&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:13px&quot;&gt;Every operational request in the company needs IT sign-off, and it all reaches one desk.&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;GreenLight keeps the control and removes the queue — and it works when the Head of Operations is on leave.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#111827;strokeWidth=2;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
                     <mxGeometry x="520" y="400" width="440" height="170" as="geometry"/>
                 </mxCell>
                 <mxCell id="h2" value="STILL TO BE MEASURED — three questions for Operations" style="text;html=1;align=left;fontSize=13;fontStyle=1;fontColor=#b54708;" parent="41" vertex="1">
                     <mxGeometry x="990" y="400" width="500" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="f6" value="&lt;font style=&quot;font-size:13px&quot;&gt;1 · How many software requests arrive in a week?&lt;br&gt;&lt;br&gt;2 · What share of them come back incomplete?&lt;br&gt;&lt;br&gt;3 · How long does that round trip actually take?&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#677577&quot;&gt;Ten minutes with the Head of Operations turns the time savings from an estimate into evidence. Until then we present them as estimates.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f3f3;strokeColor=#cbd2d2;dashed=1;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
+                <mxCell id="f6" value="&lt;font style=&quot;font-size:13px&quot;&gt;1 · How many software requests arrive in a week?&lt;br&gt;&lt;br&gt;2 · What share of them come back incomplete?&lt;br&gt;&lt;br&gt;3 · How long does that round trip actually take?&lt;br&gt;&lt;br&gt;&lt;font style=&quot;color:#4b5563&quot;&gt;Ten minutes with the Head of Operations turns the time savings from an estimate into evidence. Until then we present them as estimates.&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f3f6;strokeColor=#c8cdd6;dashed=1;fontSize=13;align=left;spacingLeft=18;verticalAlign=top;spacingTop=16;" parent="41" vertex="1">
                     <mxGeometry x="990" y="430" width="440" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="close" value="&lt;b style=&quot;font-size:18px&quot;&gt;GreenLight never approves anything. It makes sure a person can.&lt;/b&gt;" style="text;html=1;align=center;fontSize=18;fontColor=#0f7a4d;" parent="41" vertex="1">
+                <mxCell id="close" value="&lt;b style=&quot;font-size:18px&quot;&gt;GreenLight never approves anything. It makes sure a person can.&lt;/b&gt;" style="text;html=1;align=center;fontSize=18;fontColor=#1e7a32;" parent="41" vertex="1">
                     <mxGeometry x="50" y="630" width="1380" height="30" as="geometry"/>
                 </mxCell>
             </root>

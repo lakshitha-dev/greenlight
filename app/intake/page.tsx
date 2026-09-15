@@ -6,13 +6,10 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
-const ENTITIES = [
-  "BISTEC Solutions",
-  "BISTEC Global (SL)",
-  "BISTEC Australia",
-  "BISTEC Accounting",
-  "BISTEC Care",
-];
+/** One legal entity today. The engine keys policy by entity and
+ *  packFor() still selects on it, so adding a second is a new YAML file
+ *  and one more line here — not a code change. */
+const ENTITIES = ["BISTEC Global"];
 
 async function submit(formData: FormData) {
   "use server";

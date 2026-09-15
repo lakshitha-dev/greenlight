@@ -2,13 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { routeRequest, type Route } from "@/lib/catalog";
-import { packFor, evaluate, VERDICT, type Outcome, type Check } from "@/lib/rulepack";
+import { packFor, evaluate, VERDICT, blockersOf, isOverride, type Outcome, type Check } from "@/lib/rulepack";
 import { FACT_ROWS, displayValue, PROV_LABEL } from "@/lib/research";
 import { screen, risks, worst } from "@/lib/dpia";
 import { ResearchButton, DecideButtons, AckButton } from "@/components/Actions";
-import { Panel, KV } from "@/components/ui";
+import { Panel, KV, Mark, Prov } from "@/components/ui";
 import { ClaudeResearch } from "@/components/ClaudeResearch";
 import { researchPrompt } from "@/lib/findings";
+import type { Gap } from "@/lib/email";
 import { hasKey } from "@/lib/research";
 import type { Fact, Step } from "@/lib/sources/http";
 import { expect, isArray, isObject } from "@/lib/json";
@@ -36,19 +37,77 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
 
 function Head({ r, right }: { r: Req; right?: React.ReactNode }) {
   return (
-    <div className="reqhead">
-      <div>
-        <h1>{r.subject}</h1>
-        <div className="reqmeta">
-          <span className="mono">{r.id}</span>
-          <span>·</span>
-          {r.requester} · {r.team}
-          <span className="ent">{r.entity}</span>
-          {r.seats ? <span className="ent">{r.seats} seats</span> : null}
+    <>
+      <div className="reqhead">
+        <div>
+          <h1>{r.subject}</h1>
+          <div className="reqmeta">
+            <span className="mono">{r.id}</span>
+            <span>·</span>
+            {r.requester} · {r.team}
+            <span className="ent">{r.entity || "entity not established"}</span>
+            {r.seats ? <span className="ent">{r.seats} seats</span> : null}
+          </div>
         </div>
+        <div className="actions">{right}</div>
       </div>
-      <div className="actions">{right}</div>
-    </div>
+      <EmailOrigin r={r} />
+    </>
+  );
+}
+
+/** An emailed request shows the message it came from, and what the message did
+ *  not say.
+ *
+ *  Both halves matter. The original is kept verbatim so an approver can check
+ *  the reading against the words — extraction is a convenience, not a source of
+ *  truth. And a gap is shown as the question it is, with the reply already
+ *  written, because the alternative to asking is guessing. */
+function EmailOrigin({ r }: { r: Req }) {
+  if (r.source !== "email") return null;
+  const gaps = expect<Gap[]>(r.gaps, isArray, []);
+
+  return (
+    <>
+      <Panel
+        title="How this arrived"
+        eyebrow={gaps.length ? `${gaps.length} question${gaps.length > 1 ? "s" : ""} unanswered` : "read in full"}
+      >
+        <KV k="From" v={<span className="mono">{r.emailFrom ?? "—"}</span>} />
+        {r.emailReceivedAt && <KV k="Sent" v={r.emailReceivedAt} />}
+        {r.rawEmail && (
+          <div className="email" style={{ marginTop: 14, whiteSpace: "pre-wrap" }}>
+            {r.rawEmail}
+          </div>
+        )}
+        <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 14, lineHeight: 1.6 }}>
+          Kept as written. The requester is taken from the sender, never from the
+          message — anyone can type anyone&rsquo;s name in a body.
+        </p>
+      </Panel>
+
+      {gaps.length > 0 && (
+        <Panel title="What the email does not say" eyebrow="ask before deciding">
+          {gaps.map((g) => (
+            <KV key={g.field} k={g.label} v={g.why} />
+          ))}
+          {r.draftReply && (
+            <>
+              <div
+                className="email"
+                style={{ marginTop: 16, whiteSpace: "pre-wrap", fontSize: 12.8 }}
+              >
+                {r.draftReply}
+              </div>
+              <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 12, lineHeight: 1.6 }}>
+                Drafted, not sent. GreenLight does not email colleagues by itself,
+                for the same reason it does not approve anything by itself.
+              </p>
+            </>
+          )}
+        </Panel>
+      )}
+    </>
   );
 }
 
@@ -82,7 +141,7 @@ function SelfService({ r, rt }: { r: Req; rt: Route }) {
             <Panel title="Why no one was asked" eyebrow="catalog-gate@1.0">
               {checks.map(([id, label, why]) => (
                 <div className="check" key={id}>
-                  <span className="mark m-pass">✓</span>
+                  <Mark status="pass" />
                   <div>
                     <div className="lbl">
                       <span className="rid">{id}</span>
@@ -162,7 +221,7 @@ function SpendOnly({ r, rt }: { r: Req; rt: Route }) {
           <div className="stack">
             <Panel title="Two questions, two owners" eyebrow="the unbundling">
               <div className="check">
-                <span className="mark m-pass">✓</span>
+                <Mark status="pass" />
                 <div>
                   <div className="lbl">Is this software safe to use?</div>
                   <div className="why">
@@ -173,7 +232,7 @@ function SpendOnly({ r, rt }: { r: Req; rt: Route }) {
                 <span className="pill p-ok">settled</span>
               </div>
               <div className="check">
-                <span className="mark m-miss">?</span>
+                <Mark status="miss" label="Open question" />
                 <div>
                   <div className="lbl">Will we spend money on another seat?</div>
                   <div className="why">
@@ -222,6 +281,12 @@ function FullReview({
   const ev = dossier ? evaluate(facts, pack) : null;
   const shown = (decision?.outcome ?? ev?.outcome) as Outcome | undefined;
   const verified = Object.values(facts).filter((f) => f.prov === "verified").length;
+  /** A human decision that disagrees with the engine — the engine's reasoning
+   *  does not transfer to it. */
+  const overridden = isOverride(decision?.outcome, ev?.outcome);
+  /** Named, next to the verdict that rests on them. These were previously three
+   *  scroll-lengths away, behind a severity pill at the right edge of each row. */
+  const blockers = ev ? blockersOf(ev.checks) : [];
 
   return (
     <>
@@ -264,11 +329,41 @@ function FullReview({
         {ev && shown && (
           <div className={`verdict v-${shown}`}>
             <div>
-              <div className="vt">
+              <h2 className="vt">
                 {VERDICT[shown].t}
                 {decision ? " — decided by the Head of Operations" : " — recommended"}
-              </div>
-              <div className="vw">{VERDICT[shown].w}</div>
+              </h2>
+              {/** VERDICT[].w explains why the *engine* reached an outcome. Once a
+                *  person has overridden the engine it no longer explains anything,
+                *  so it is not shown: a reject that reads "a blocking requirement
+                *  failed against a verified source" when none did is a fabricated
+                *  justification printed under a named person, on the page an
+                *  auditor reads. Say what the engine said, separately and as its
+                *  own claim. */}
+              {overridden ? (
+                <div className="vw">
+                  Recorded against the person who made it. GreenLight recommended{" "}
+                  <b>{VERDICT[ev.outcome].t}</b> — this decision departs from that, and the
+                  reasoning belongs in the audit trail rather than here.
+                </div>
+              ) : (
+                <div className="vw">{VERDICT[shown].w}</div>
+              )}
+              {!decision && blockers.length > 0 && (
+                <ul className="vblock">
+                  {blockers.map((c) => (
+                    <li key={c.id}>
+                      <span className="rid mono">{c.id}</span>
+                      <span>
+                        {c.label} — {c.status === "fail" ? "fails" : "cannot be evaluated"}. {c.why}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {!decision && blockers.length === 0 && ev.checks.some((c) => c.severity === "blocking") && (
+                <div className="vblock none">No blocking requirement is unmet.</div>
+              )}
               <div className="vsrc">
                 {pack.id}@{pack.version} · {pack.entity} · evaluated {ev.live.length} of{" "}
                 {pack.requirements.length} requirements · {verified} facts independently verified
@@ -286,7 +381,7 @@ function FullReview({
           <div className="callout ok">
             <span>◆</span>
             <div>
-              <b>{r.product} is now in the catalog.</b> The next person who asks for it self-serves.
+              <b>{r.product} is now in the catalog.</b> The next person who asks for it self-serves, and
               the Head of Operations will not see this request again.
             </div>
           </div>
@@ -340,7 +435,7 @@ function FullReview({
 
           <div className="stack">
             {dossier && (
-              <Panel title="Findings" eyebrow="every field carries its provenance">
+              <Panel title="Findings" eyebrow="solid stands alone · dashed does not">
                 <div className="facts">
                   {FACT_ROWS.map(([k, label]) => {
                     const f = facts[k];
@@ -358,9 +453,7 @@ function FullReview({
                         </div>
                         <div className={`v ${none ? "na" : ""}`}>
                           {displayValue(k, f)}
-                          <span className={`prov pv-${f.prov === "claimed" ? "claimed" : f.prov}`}>
-                            {PROV_LABEL[f.prov]}
-                          </span>
+                          <Prov prov={f.prov} label={PROV_LABEL[f.prov]} />
                         </div>
                       </div>
                     );
@@ -417,17 +510,9 @@ function FullReview({
 }
 
 function CheckRow({ c }: { c: Check }) {
-  const m =
-    c.status === "pass"
-      ? ["m-pass", "✓"]
-      : c.status === "fail"
-        ? ["m-fail", "✕"]
-        : c.status === "miss"
-          ? ["m-miss", "?"]
-          : ["m-off", "–"];
   return (
     <div className={`check ${c.status === "off" ? "off" : ""}`}>
-      <span className={`mark ${m[0]}`}>{m[1]}</span>
+      <Mark status={c.status} />
       <div>
         <div className="lbl">
           <span className="rid">{c.id}</span>
@@ -453,7 +538,7 @@ function DpiaPanel({ r, facts }: { r: Req; facts: Record<string, Fact<unknown>> 
     return (
       <Panel title="Privacy screening" eyebrow={sc.packVersion}>
         <div className="check">
-          <span className="mark m-pass">✓</span>
+          <Mark status="pass" />
           <div>
             <div className="lbl">No impact assessment required</div>
             <div className="why">
@@ -470,7 +555,7 @@ function DpiaPanel({ r, facts }: { r: Req; facts: Record<string, Fact<unknown>> 
     <Panel title="Privacy screening" eyebrow={sc.packVersion}>
       {sc.triggers.map((t, i) => (
         <div className="check" key={i}>
-          <span className="mark m-miss">!</span>
+          <Mark status="miss" label="Assessment trigger" />
           <div>
             <div className="lbl">
               <span className="rid">{t.id}</span>

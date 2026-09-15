@@ -258,19 +258,19 @@ const TODAY = "2026-09-14";
 /* ─────────── software catalog — the deflection layer ─────────── */
 const catalog = [
  {name:"Zoom", vendor:"Zoom Communications", seats:180, used:157, approved:"2026-01-22", review:"2027-01-22",
-  entities:["BISTEC Solutions","BISTEC Global (SL)","BISTEC Australia"], kev:0, kevSince:0,
+  entities:["BISTEC Global"], kev:0, kevSince:0,
   owner:"IT Infrastructure", cost:"LKR 2,160,000 / yr"},
  {name:"Confluence", vendor:"Atlassian", seats:142, used:118, approved:"2025-06-18", review:"2027-06-18",
-  entities:["BISTEC Solutions","BISTEC Global (SL)"], kev:13, kevSince:0,
+  entities:["BISTEC Global"], kev:13, kevSince:0,
   owner:"Delivery", cost:"LKR 1,704,000 / yr"},
  {name:"Figma", vendor:"Figma Inc", seats:26, used:26, approved:"2026-02-10", review:"2027-02-10",
-  entities:["BISTEC Solutions"], kev:0, kevSince:0,
+  entities:["BISTEC Global"], kev:0, kevSince:0,
   owner:"Design", cost:"LKR 936,000 / yr"},
  {name:"Slack", vendor:"Salesforce", seats:210, used:187, approved:"2025-11-04", review:"2026-09-14",
-  entities:["BISTEC Solutions","BISTEC Global (SL)"], kev:0, kevSince:0,
+  entities:["BISTEC Global"], kev:0, kevSince:0,
   owner:"IT Infrastructure", cost:"LKR 5,040,000 / yr"},
  {name:"Microsoft 365", vendor:"Microsoft", seats:340, used:311, approved:"2025-03-02", review:"2026-09-30",
-  entities:["BISTEC Solutions","BISTEC Global (SL)","BISTEC Australia","BISTEC Accounting","BISTEC Care"],
+  entities:["BISTEC Global"],
   kev:388, kevSince:6, owner:"IT Infrastructure", cost:"LKR 12,240,000 / yr"}
 ];
 
@@ -296,14 +296,14 @@ function route(product, entity){
 
 /* ─────────── rule pack ─────────── */
 const pack = {
-  id:"software-approval", version:"2.1", entity:"BISTEC Solutions", jurisdiction:"Sri Lanka",
+  id:"software-approval", version:"2.1", entity:"BISTEC Global", jurisdiction:"Sri Lanka",
   rules:[
     {id:"R1", field:"kevEntries",   label:"No actively-exploited vulnerabilities", op:"eq",   value:0,   severity:"blocking", authority:"ISO 27001 A.8.8"},
     {id:"R2", field:"soc2",         label:"SOC 2 Type II report obtainable",       op:"exists",          severity:"blocking", authority:"ISO 27001 A.5.19"},
     {id:"R3", field:"dpa",          label:"Data Processing Agreement available",   op:"exists",          severity:"blocking", authority:"PDPA 2022 · GDPR Art.28"},
     {id:"R4", field:"criticalCves", label:"Critical CVEs at or below threshold",   op:"lte",  value:5,   severity:"warning",  authority:"ISO 27001 A.8.8"},
     {id:"R5", field:"privacyGrade", label:"Privacy grade C or better",             op:"grade",value:"C", severity:"warning",  authority:"ISO 27701"},
-    {id:"R6", field:"annualCost",   label:"Within delegated spend authority",      op:"lte",  value:500000, severity:"warning", authority:"Finance DoA §4.2", breach:"Escalate to the entity signatory for BISTEC Solutions"},
+    {id:"R6", field:"annualCost",   label:"Within delegated spend authority",      op:"lte",  value:500000, severity:"warning", authority:"Finance DoA §4.2", breach:"Escalate to the entity signatory for BISTEC Global"},
     {id:"R7", field:"sso",          label:"SSO / SAML enforcement supported",      op:"true",            severity:"warning",  authority:"ISO 27001 A.5.16"},
     {id:"R8", field:"subprocessors",label:"Sub-processor list disclosed",          op:"exists",          severity:"warning",  authority:"ISO 27701 §7.2.7"}
   ]
@@ -314,7 +314,7 @@ const F=(v,p,s)=>({value:v,prov:p,src:s||""});
 /* ─────────── requests ─────────── */
 const requests = [
 { id:"SR-1050", kind:"software", product:"Zoom", subject:"Zoom — licence for new support hire",
-  requester:"the Support Engineer", team:"Support Team", entity:"BISTEC Solutions", age:"4s", overdue:false,
+  requester:"the Support Engineer", team:"Support Team", entity:"BISTEC Global", age:"4s", overdue:false,
   body:`Hi,
 
 New technician starting Monday on the BDO Australia desk. She needs a Zoom licence for customer calls.
@@ -322,19 +322,19 @@ New technician starting Monday on the BDO Australia desk. She needs a Zoom licen
 the Support Engineer`},
 
 { id:"SR-1051", kind:"software", product:"Confluence", subject:"Confluence — access for two new engineers",
-  requester:"the Delivery Lead", team:"Delivery", entity:"BISTEC Global (SL)", age:"7s", overdue:false,
+  requester:"the Delivery Lead", team:"Delivery", entity:"BISTEC Global", age:"7s", overdue:false,
   body:`Two engineers joined the platform team this week and need Confluence access for the delivery documentation space.
 
 the Delivery Lead`},
 
 { id:"SR-1052", kind:"software", product:"Figma", subject:"Figma — seat for incoming designer",
-  requester:"the Marketing Lead", team:"Marketing", entity:"BISTEC Solutions", age:"22m", overdue:false,
+  requester:"the Marketing Lead", team:"Marketing", entity:"BISTEC Global", age:"22m", overdue:false,
   body:`We have a designer starting on the 21st and need a Figma seat for her.
 
 the Marketing Lead`},
 
 { id:"SR-1045", kind:"software", product:"Slack", subject:"Slack — scheduled re-review",
-  requester:"GreenLight (automatic)", team:"System", entity:"BISTEC Solutions", age:"3h", overdue:false,
+  requester:"GreenLight (automatic)", team:"System", entity:"BISTEC Global", age:"3h", overdue:false,
   body:`Scheduled re-review. Slack was approved on 2025-11-04 with a ten-month review interval.
 
 The catalog entry lapsed today. Until it is renewed, Slack requests no longer self-serve.`,
@@ -356,7 +356,7 @@ The catalog entry lapsed today. Until it is renewed, Slack requests no longer se
     {src:"Software catalog", res:"Existing licence — 187 of 210 seats assigned", kind:"done"}]},
 
 { id:"SR-1042", kind:"software", product:"ScreenConnect", subject:"ConnectWise ScreenConnect — remote support tooling",
-  requester:"the Support Engineer", team:"Support Team", entity:"BISTEC Solutions", age:"2d 4h", overdue:true,
+  requester:"the Support Engineer", team:"Support Team", entity:"BISTEC Global", age:"2d 4h", overdue:true,
   body:`Hi the Head of Operations,
 
 The support team needs a remote-access tool so we can take over customer machines during BDO Australia service desk calls. ScreenConnect is what the outgoing provider used, so the team already knows it.
@@ -390,7 +390,7 @@ the Support Engineer`,
     {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
 
 { id:"SR-1043", kind:"software", product:"Notion", subject:"Notion — team workspace for Marketing",
-  requester:"the Marketing Lead", team:"Marketing", entity:"BISTEC Solutions", age:"1d 2h", overdue:false,
+  requester:"the Marketing Lead", team:"Marketing", entity:"BISTEC Global", age:"1d 2h", overdue:false,
   body:`Hi,
 
 Marketing would like Notion for campaign planning and the content calendar. We're currently running everything out of spreadsheets and it isn't holding up.
@@ -423,7 +423,7 @@ the Marketing Lead`,
     {src:"Software catalog", res:"Capability overlap detected with Confluence", kind:"miss"}]},
 
 { id:"SR-1044", kind:"software", product:"Flowtrace AI", subject:"Flowtrace AI — automated test-case generation",
-  requester:"the Delivery Lead", team:"QA", entity:"BISTEC Global (SL)", age:"6h", overdue:false,
+  requester:"the Delivery Lead", team:"QA", entity:"BISTEC Global", age:"6h", overdue:false,
   body:`Requesting Flowtrace AI for the QA team — it generates regression test cases from Jira tickets. Saw it demoed at a conference.
 
 Small vendor, 4 seats to trial.`,
@@ -450,11 +450,11 @@ Small vendor, 4 seats to trial.`,
     {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
 
 { id:"SR-1046", kind:"software", product:"FortiClient", subject:"Fortinet FortiClient VPN — remote workforce",
-  requester:"the Infrastructure Engineer", team:"IT Infrastructure", entity:"BISTEC Australia", age:"11h", overdue:false,
+  requester:"the Infrastructure Engineer", team:"IT Infrastructure", entity:"BISTEC Global", age:"11h", overdue:false,
   body:`Requesting FortiClient for the Australian team's VPN access. 40 seats.`,
   vendor:"Fortinet", seats:40,
   dataProfile:{ personalData:true, specialCategory:false, subjectCount:40,
-    subjects:"BISTEC Australia employees",
+    subjects:"BISTEC Global employees",
     categories:["Employee identifier","Connection logs","Source IP address"],
     purpose:"VPN access control for the remote workforce",
     retention:"Connection logs retained 12 months",
@@ -476,7 +476,7 @@ Small vendor, 4 seats to trial.`,
     {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
 
 { id:"AR-0318", kind:"iso", subject:"ISO document approval — Asset Management Procedure v4",
-  requester:"the Quality Manager", team:"Quality", entity:"BISTEC Global (SL)", age:"3d 1h", overdue:true,
+  requester:"the Quality Manager", team:"Quality", entity:"BISTEC Global", age:"3d 1h", overdue:true,
   body:`Dear the Head of Operations,
 
 Please find attached the revised Asset Management Procedure (v4) for your approval ahead of the internal audit.
@@ -533,9 +533,7 @@ function fmt(v,field){ return field==="annualCost" ? "LKR "+v.toLocaleString("en
 
 /* ─────────── DPIA — screening, then generation from evidence already gathered ─────────── */
 const REGIME = {
-  "BISTEC Solutions":"PDPA No. 9 of 2022 (Sri Lanka)",
-  "BISTEC Global (SL)":"PDPA No. 9 of 2022 (Sri Lanka)",
-  "BISTEC Australia":"Privacy Act 1988 and the Australian Privacy Principles"
+  "BISTEC Global":"PDPA No. 9 of 2022 (Sri Lanka)"
 };
 const dpiaPack = {id:"dpia-screening", version:"1.0"};
 
@@ -1007,7 +1005,7 @@ function viewIso(r){
       <div class="verdict v-MORE_INFO">
         <div><div class="vt">Returned to requester</div>
           <div class="vw">Two blocking requirements are unmet. This was detected eleven seconds after the email arrived — not three days later.</div>
-          <div class="vsrc">iso-document-approval@1.4 · BISTEC Global (SL)</div></div>
+          <div class="vsrc">iso-document-approval@1.4 · BISTEC Global</div></div>
         <div class="actions"><button class="btn primary" data-send="${r.id}">Send reply</button></div></div>
       <div class="split">
         <div class="panel"><header><h2>The request</h2><span class="eyebrow">${r.age} in queue</span></header>

@@ -6,11 +6,7 @@ notes: >
   least one trigger fires. Mirrors GDPR Art.35(3) and the PDPA obligation.
 
 regimes:
-  BISTEC Solutions: PDPA No. 9 of 2022 (Sri Lanka)
-  BISTEC Global (SL): PDPA No. 9 of 2022 (Sri Lanka)
-  BISTEC Australia: Privacy Act 1988 and the Australian Privacy Principles
-  BISTEC Accounting: PDPA No. 9 of 2022 (Sri Lanka)
-  BISTEC Care: PDPA No. 9 of 2022 (Sri Lanka)
+  BISTEC Global: PDPA No. 9 of 2022 (Sri Lanka)
 
 gate: personalData
 

@@ -114,8 +114,9 @@ export default async function PrivacyPage() {
       <div style={{ marginTop: 16 }}>
         <Callout tone="info">
           <b>Same screening, different answers.</b> FortiClient needs no assessment and Notion does —
-          because the Australian entity keeps its data onshore and the Sri Lankan one does not. The
-          regime follows the entity, which is why this cannot be one global rule.
+          same rule, different processing. What decides it is whose data, how much of it, and
+          whether it leaves the jurisdiction, so the screen has to run per request rather than
+          per product.
         </Callout>
       </div>
     </>

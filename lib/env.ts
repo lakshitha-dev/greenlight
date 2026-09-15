@@ -16,6 +16,8 @@ export type Env = {
   processAnalyzerUrl: string;
   anthropicApiKey: string | null;
   nvdApiKey: string | null;
+  intakeToken: string | null;
+  intakeAllowedDomains: string[];
   isProduction: boolean;
 };
 
@@ -60,6 +62,24 @@ export function readEnv(): Env {
     problems.push(`PROCESS_ANALYZER_URL is not a valid URL (got "${processAnalyzerUrl}").`);
   }
 
+  /** The email intake endpoint is the one route reachable without a session,
+   *  so a half-configured secret is worse than none: it reads as configured.
+   *  The route itself also fails closed on a short token — this reports the
+   *  same problem at boot, where it is cheap to notice. */
+  const intakeToken = process.env.INTAKE_TOKEN ?? "";
+  if (intakeToken && intakeToken.length < 16)
+    problems.push(
+      `INTAKE_TOKEN is set but only ${intakeToken.length} characters. It must be at least 16, ` +
+        "or the email intake endpoint refuses every caller."
+    );
+
+  const intakeAllowedDomains = (process.env.INTAKE_ALLOWED_DOMAINS ?? "bistecglobal.com,bistec.example")
+    .split(",")
+    .map((d) => d.trim().toLowerCase().replace(/^@/, ""))
+    .filter(Boolean);
+  if (!intakeAllowedDomains.length)
+    problems.push("INTAKE_ALLOWED_DOMAINS is set but lists no usable domain.");
+
   if (problems.length) {
     throw new Error(
       "GreenLight cannot start — the environment is not configured:\n\n" +
@@ -74,6 +94,8 @@ export function readEnv(): Env {
     processAnalyzerUrl,
     anthropicApiKey: process.env.ANTHROPIC_API_KEY || null,
     nvdApiKey: process.env.NVD_API_KEY || null,
+    intakeToken: intakeToken || null,
+    intakeAllowedDomains,
     isProduction,
   };
   return cached;

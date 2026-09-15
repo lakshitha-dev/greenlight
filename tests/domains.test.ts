@@ -20,25 +20,25 @@ describe("the engine loads more than one domain", () => {
   });
 
   it("routes to the document pack by domain, not by filename", () => {
-    const p = packFor("BISTEC Global (SL)", "document");
+    const p = packFor("BISTEC Global", "document");
     expect(p.id).toBe("iso-document-approval");
     expect(p.domain).toBe("document");
   });
 
   it("still routes software to the entity's own software pack", () => {
-    expect(packFor("BISTEC Australia", "software").entity).toBe("BISTEC Australia");
-    expect(packFor("BISTEC Australia", "software").domain).toBe("software");
+    expect(packFor("BISTEC Global", "software").entity).toBe("BISTEC Global");
+    expect(packFor("BISTEC Global", "software").domain).toBe("software");
   });
 
   it("never returns a document pack when software was asked for", () => {
-    for (const e of ["BISTEC Solutions", "BISTEC Australia", "BISTEC Atlantis"]) {
+    for (const e of ["BISTEC Global", "BISTEC Atlantis", ""]) {
       expect(packFor(e, "software").domain, e).toBe("software");
     }
   });
 });
 
 describe("assessed requirements", () => {
-  const iso = (): Pack => packFor("BISTEC Global (SL)", "document");
+  const iso = (): Pack => packFor("BISTEC Global", "document");
 
   it("the ISO pack is made of assessed requirements, not measured ones", () => {
     for (const r of iso().requirements) {
@@ -75,7 +75,7 @@ describe("assessed requirements", () => {
 });
 
 describe("the same outcome rules govern both domains", () => {
-  const iso = () => packFor("BISTEC Global (SL)", "document");
+  const iso = () => packFor("BISTEC Global", "document");
 
   const assessments = (overrides: Record<string, unknown> = {}) => ({
     R1: fact(true, "sourced", "A business driver is stated in section 2."),

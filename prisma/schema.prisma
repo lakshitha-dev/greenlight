@@ -28,6 +28,20 @@ model Request {
   routeCause  String?                     // absent | stale | seats | ok
   routeNote   String?
 
+  // how it arrived. An emailed request keeps the message it came from, because
+  // what someone actually wrote outranks what was extracted out of it.
+  source              String  @default("form")   // form | email | scan
+  emailFrom           String?
+  emailReceivedAt     String?
+  rawEmail            String?
+  // Outlook's thread id, and the reason a reply does not become a second
+  // request. Null for every other intake path — Postgres permits repeated
+  // nulls under a unique index, so the paste route simply does not dedupe.
+  emailConversationId String? @unique
+  // what the email did not say, as questions — JSON Gap[]
+  gaps                String?
+  draftReply          String?
+
   // declared processing profile — the only DPIA inputs a human must supply
   personalData Boolean @default(false)
   specialCat   Boolean @default(false)

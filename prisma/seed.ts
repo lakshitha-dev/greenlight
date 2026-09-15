@@ -1,4 +1,4 @@
-/** Seed: one working day of requests across the five BISTEC entities.
+/** Seed: one working day of requests at BISTEC Global.
  *
  *  Catalog seat counts and review dates are set so the gate demonstrates all
  *  three tiers on real data — Slack's review lapses today, which is what makes
@@ -6,6 +6,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../lib/password";
+import { fieldsFromExtraction, draftClarification, type Extraction } from "../lib/email";
 
 const db = new PrismaClient();
 const today = new Date().toISOString().slice(0, 10);
@@ -18,7 +19,7 @@ const catalog = [
     used: 157,
     approved: "2026-01-22",
     review: "2027-01-22",
-    entities: ["BISTEC Solutions", "BISTEC Global (SL)", "BISTEC Australia"],
+    entities: ["BISTEC Global"],
     kev: 0,
     kevSince: 0,
     owner: "IT Infrastructure",
@@ -32,7 +33,7 @@ const catalog = [
     used: 118,
     approved: "2025-06-18",
     review: "2027-06-18",
-    entities: ["BISTEC Solutions", "BISTEC Global (SL)"],
+    entities: ["BISTEC Global"],
     kev: 13,
     kevSince: 0,
     owner: "Delivery",
@@ -46,7 +47,7 @@ const catalog = [
     used: 26,
     approved: "2026-02-10",
     review: "2027-02-10",
-    entities: ["BISTEC Solutions"],
+    entities: ["BISTEC Global"],
     kev: 0,
     kevSince: 0,
     owner: "Design",
@@ -60,7 +61,7 @@ const catalog = [
     used: 187,
     approved: "2025-11-04",
     review: today, // lapses today — the anti-rot case
-    entities: ["BISTEC Solutions", "BISTEC Global (SL)"],
+    entities: ["BISTEC Global"],
     kev: 0,
     kevSince: 0,
     owner: "IT Infrastructure",
@@ -74,13 +75,7 @@ const catalog = [
     used: 311,
     approved: "2025-03-02",
     review: "2026-09-30",
-    entities: [
-      "BISTEC Solutions",
-      "BISTEC Global (SL)",
-      "BISTEC Australia",
-      "BISTEC Accounting",
-      "BISTEC Care",
-    ],
+    entities: ["BISTEC Global"],
     kev: 388,
     kevSince: 6,
     owner: "IT Infrastructure",
@@ -99,8 +94,8 @@ const requests = [
     subject: "Zoom — licence for new support hire",
     requester: "the Support Engineer",
     team: "Support Team",
-    entity: "BISTEC Solutions",
-    body: "Hi,\n\nNew technician starting Monday on the BDO Australia desk. She needs a Zoom licence for customer calls.\n\nSupport Team",
+    entity: "BISTEC Global",
+    body: "Hi,\n\nNew technician starting Monday on the managed service desk. She needs a Zoom licence for customer calls.\n\nSupport Team",
     personalData: false,
   },
   {
@@ -112,7 +107,7 @@ const requests = [
     subject: "Confluence — access for two new engineers",
     requester: "the Delivery Lead",
     team: "Delivery",
-    entity: "BISTEC Global (SL)",
+    entity: "BISTEC Global",
     body: "Two engineers joined the platform team this week and need Confluence access for the delivery documentation space.\n\nDelivery",
     personalData: false,
   },
@@ -125,7 +120,7 @@ const requests = [
     subject: "Figma — seat for incoming designer",
     requester: "the Marketing Lead",
     team: "Marketing",
-    entity: "BISTEC Solutions",
+    entity: "BISTEC Global",
     body: "We have a designer starting on the 21st and need a Figma seat for her.\n\nMarketing",
     personalData: false,
   },
@@ -138,11 +133,11 @@ const requests = [
     subject: "Slack — scheduled re-review",
     requester: "GreenLight (automatic)",
     team: "System",
-    entity: "BISTEC Solutions",
+    entity: "BISTEC Global",
     body: "Scheduled re-review. Slack was approved on 2025-11-04 with a ten-month review interval.\n\nThe catalog entry lapses today. Until it is renewed, Slack requests no longer self-serve.",
     personalData: true,
     subjectCount: 210,
-    subjects: "BISTEC staff across two entities",
+    subjects: "BISTEC staff",
     categories: ["Name", "Work email", "Message content"],
     purpose: "Internal team communication",
     retention: "Per workspace retention policy",
@@ -157,12 +152,12 @@ const requests = [
     subject: "ConnectWise ScreenConnect — remote support tooling",
     requester: "the Support Engineer",
     team: "Support Team",
-    entity: "BISTEC Solutions",
-    body: "Hi,\n\nThe support team needs a remote-access tool so we can take over customer machines during BDO Australia service desk calls. ScreenConnect is what the outgoing provider used, so the team already knows it.\n\nLooking at 12 technician seats. Can we get this approved this week? The desk goes live on the 28th.\n\nThanks,\nSupport Team",
+    entity: "BISTEC Global",
+    body: "Hi,\n\nThe support team needs a remote-access tool so we can take over customer machines during managed service desk calls. ScreenConnect is what the outgoing provider used, so the team already knows it.\n\nLooking at 12 technician seats. Can we get this approved this week? The desk goes live on the 28th.\n\nThanks,\nSupport Team",
     personalData: true,
     subjects: "Customer end-users on supported machines — population not bounded",
     categories: ["Screen contents during support sessions", "Device identifiers", "Session recordings"],
-    purpose: "Remote technical support for the BDO Australia service desk",
+    purpose: "Remote technical support for the managed service desk",
     retention: "Session recordings retained 90 days (vendor default)",
     crossBorder: "true",
     monitoring: true,
@@ -176,7 +171,7 @@ const requests = [
     subject: "Notion — team workspace for Marketing",
     requester: "the Marketing Lead",
     team: "Marketing",
-    entity: "BISTEC Solutions",
+    entity: "BISTEC Global",
     body: "Hi,\n\nMarketing would like Notion for campaign planning and the content calendar. We're currently running everything out of spreadsheets and it isn't holding up.\n\n18 users on the Business plan. Budget is approved by our department.\n\nMarketing",
     personalData: true,
     subjectCount: 4200,
@@ -195,7 +190,7 @@ const requests = [
     subject: "Flowtrace AI — automated test-case generation",
     requester: "the Delivery Lead",
     team: "QA",
-    entity: "BISTEC Global (SL)",
+    entity: "BISTEC Global",
     body: "Requesting Flowtrace AI for the QA team — it generates regression test cases from Jira tickets. Saw it demoed at a conference.\n\nSmall vendor, 4 seats to trial.",
     personalData: true,
     subjects: "Anyone named in a Jira ticket — customers and staff",
@@ -213,11 +208,11 @@ const requests = [
     subject: "Fortinet FortiClient VPN — remote workforce",
     requester: "the Infrastructure Engineer",
     team: "IT Infrastructure",
-    entity: "BISTEC Australia",
-    body: "Requesting FortiClient for the Australian team's VPN access. 40 seats.",
+    entity: "BISTEC Global",
+    body: "Requesting FortiClient for the remote engineering team's VPN access. 40 seats.",
     personalData: true,
     subjectCount: 40,
-    subjects: "BISTEC Australia employees",
+    subjects: "BISTEC Global employees",
     categories: ["Employee identifier", "Connection logs", "Source IP address"],
     purpose: "VPN access control for the remote workforce",
     retention: "Connection logs retained 12 months",
@@ -229,7 +224,7 @@ const requests = [
     subject: "ISO document approval — Asset Management Procedure v4",
     requester: "the Quality Manager",
     team: "Quality",
-    entity: "BISTEC Global (SL)",
+    entity: "BISTEC Global",
     body: "Dear IT,\n\nPlease find attached the revised Asset Management Procedure (v4) for your approval ahead of the internal audit.\n\nAttachment: BG-QMS-PR-014-AssetManagement-v4.docx\n\nRegards,\nQuality",
     personalData: false,
   },
@@ -240,7 +235,7 @@ const requests = [
  *  nothing else. */
 const users = [
   { email: "ops@bistec.example", name: "Head of Operations", role: "approver", entity: null },
-  { email: "support@bistec.example", name: "Support Engineer", role: "requester", entity: "BISTEC Solutions" },
+  { email: "support@bistec.example", name: "Support Engineer", role: "requester", entity: "BISTEC Global" },
   { email: "admin@bistec.example", name: "Platform Administrator", role: "admin", entity: null },
 ];
 const DEMO_PASSWORD = "greenlight";
@@ -266,6 +261,126 @@ async function main() {
         ...rest,
         categories: categories ? JSON.stringify(categories) : null,
         receivedAt: new Date(Date.now() - ages[i++] * 1000),
+      },
+    });
+  }
+
+  /** Two requests that arrived the way requests actually arrive.
+   *
+   *  Built by the same functions the intake route uses rather than hand-written,
+   *  so the demo data cannot drift away from what the code produces — including
+   *  the rule that an inferred legal entity is a question, not a value. */
+  const field = <T,>(value: T, provenance: "stated" | "inferred" | "none", source: string | null) =>
+    ({ value, provenance, source }) as never;
+
+  const emailed: { id: string; age: number; email: { from: string; subject: string; body: string; receivedAt: string; conversationId: string }; x: Extraction }[] = [
+    {
+      id: "SR-1047",
+      age: 5400,
+      email: {
+        from: "Marketing Lead <marketing.lead@bistecglobal.com>",
+        subject: "Canva Pro for the marketing team",
+        body: [
+          "Hi,",
+          "",
+          "Could we get Canva Pro for the marketing team? There are 6 of us and we are",
+          "rebuilding the case-study templates.",
+          "",
+          "Thanks,",
+          "Marketing Lead",
+        ].join("\n"),
+        receivedAt: "Tuesday, 15 September 2026 08:40",
+        conversationId: "AAQkSEED-CANVA-01",
+      },
+      x: {
+        product: field("Canva Pro", "stated", "Could we get Canva Pro"),
+        vendor: field("Canva", "inferred", "the maker of the named product"),
+        seats: field(6, "stated", "There are 6 of us"),
+        team: field("Marketing", "stated", "for the marketing team"),
+        // The email never names an entity. Marketing sits in more than one, so
+        // there is nothing to infer from either — this is the question the
+        // drafted reply goes back with.
+        // One legal entity today, so an email that does not name one leaves
+        // nothing open.
+        entity: field(null, "none", null),
+        purpose: field("Rebuilding case-study templates", "stated", "rebuilding the case-study templates"),
+        // The email never raises the subject. Silence is not a denial, so this is
+        // "none" and becomes the question the drafted reply goes back with.
+        personalData: field(null, "none", null),
+        specialCat: field(null, "none", null),
+      },
+    },
+    {
+      id: "SR-1048",
+      age: 260,
+      email: {
+        from: "Delivery Lead <delivery.lead@bistecglobal.com>",
+        subject: "Linear for the delivery team",
+        body: [
+          "Hi,",
+          "",
+          "We would like Linear for issue tracking on the platform engagements.",
+          "12 seats. No client personal data goes in — it is",
+          "ticket titles and engineering notes only.",
+          "",
+          "Delivery Lead",
+        ].join("\n"),
+        receivedAt: "Tuesday, 15 September 2026 09:55",
+        conversationId: "AAQkSEED-LINEAR-01",
+      },
+      x: {
+        product: field("Linear", "stated", "We would like Linear"),
+        vendor: field("Linear Orbit, Inc.", "inferred", "the maker of the named product"),
+        seats: field(12, "stated", "12 seats"),
+        team: field("Delivery", "stated", "for the delivery team"),
+        entity: field("BISTEC Global", "stated", "the only entity"),
+        purpose: field("Issue tracking for platform engagements", "stated", "issue tracking on the platform engagements"),
+        personalData: field(false, "stated", "No client personal data goes in"),
+        specialCat: field(false, "stated", "ticket titles and engineering notes only"),
+      },
+    },
+  ];
+
+  for (const e of emailed) {
+    const { fields, gaps } = fieldsFromExtraction(e.email, e.x);
+    await db.request.create({
+      data: {
+        id: e.id,
+        kind: "software",
+        product: fields.product,
+        vendor: fields.vendor,
+        seats: fields.seats,
+        subject: fields.subject,
+        requester: fields.requester,
+        team: fields.team,
+        entity: fields.entity,
+        body: fields.body,
+        personalData: fields.personalData,
+        specialCat: fields.specialCat,
+        purpose: e.x.purpose.value,
+        crossBorder: "unknown",
+        source: "email",
+        emailFrom: e.email.from,
+        emailReceivedAt: e.email.receivedAt,
+        emailConversationId: e.email.conversationId,
+        rawEmail: e.email.body,
+        gaps: gaps.length ? JSON.stringify(gaps) : null,
+        draftReply: draftClarification(e.email, gaps) || null,
+        receivedAt: new Date(Date.now() - e.age * 1000),
+      },
+    });
+    await db.auditEvent.create({
+      data: {
+        requestId: e.id,
+        action: "Request received by email",
+        detail: [
+          `From ${e.email.from}`,
+          fields.product ?? "no product named",
+          "read in Claude and pasted back",
+          gaps.length ? `${gaps.length} question(s) to put back` : "nothing left unanswered",
+        ].join(" · "),
+        actor: fields.requester,
+        authority: "email-intake@1.0",
       },
     });
   }
@@ -315,7 +430,8 @@ async function main() {
   for (const u of users) await db.user.create({ data: { ...u, passwordHash } });
 
   console.log(
-    `seeded ${catalog.length} catalog entries, ${requests.length} requests, ${users.length} users`
+    `seeded ${catalog.length} catalog entries, ${requests.length + emailed.length} requests ` +
+      `(${emailed.length} of them by email), ${users.length} users`
   );
 }
 

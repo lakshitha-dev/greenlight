@@ -176,7 +176,7 @@ export function packFor(entity: string, domain: Pack["domain"] = "software"): Pa
   return (
     packs.find((p) => p.entity === entity) ??
     packs.find((p) => p.entity === "all") ??
-    packs.find((p) => p.entity === "BISTEC Solutions") ??
+    packs.find((p) => p.entity === "BISTEC Global") ??
     packs[0] ??
     loadPacks()[0]
   );
@@ -304,3 +304,26 @@ export const VERDICT: Record<Outcome, { t: string; w: string }> = {
     w: "A blocking requirement could not be evaluated — the evidence does not exist publicly, or rests only on the vendor's own claim.",
   },
 };
+
+/** The blocking requirements standing between a request and an approval.
+ *
+ *  A "miss" belongs here alongside a "fail": both leave the requirement unmet,
+ *  and the distinction the reader needs is *why* — it failed against evidence,
+ *  or there was no evidence to fail against. A gap routes to a person exactly
+ *  as a failure does, so hiding it would understate what is in the way. */
+export function blockersOf(checks: Check[]): Check[] {
+  return checks.filter(
+    (c) => c.severity === "blocking" && (c.status === "fail" || c.status === "miss"),
+  );
+}
+
+/** True when a person recorded an outcome the engine did not reach.
+ *
+ *  Exists so the verdict banner can stop printing the engine's reasoning under
+ *  a human's name: VERDICT[x].w explains how the rule pack got to x, and once
+ *  someone has overridden the pack that sentence describes reasoning nobody
+ *  used. Asserting it anyway manufactures a justification on the page an
+ *  auditor reads. */
+export function isOverride(decided: string | undefined, evaluated: string | undefined): boolean {
+  return Boolean(decided && evaluated && decided !== evaluated);
+}

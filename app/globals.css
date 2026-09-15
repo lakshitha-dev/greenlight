@@ -1,63 +1,132 @@
+/** BISTEC Global palette, taken from bistecglobal.com's compiled stylesheet.
+ *
+ *  The one rule that governs this file: --brand is chrome, --signal is status.
+ *  Navy carries nav, buttons, links and focus; brand green means pass/approved
+ *  and nothing else. GreenLight exists to say yes or no, so green has to stay
+ *  diagnostic — the moment it also paints the furniture it stops being read as
+ *  a verdict.
+ *
+ *  Brand green #2cb34a is 2.74:1 on white and fails AA as text (so does the
+ *  brand's own darker #24963e at 3.81). --signal is that hue darkened to clear
+ *  4.5:1; #2cb34a itself survives only in the logo and the deck's accent bar,
+ *  where it is a fill and not a glyph. */
 :root{
-  --ground:#f7f8f8; --surface:#ffffff; --surface-2:#f1f3f3;
-  --line:#e2e6e6; --line-soft:#edf0f0;
-  --ink:#14191a; --ink-2:#3d4749; --muted:#677577; --faint:#93a1a3;
-  --signal:#0f7a4d; --signal-soft:#e6f4ed; --signal-line:#a8d5bf;
+  color-scheme:light;
+  --ground:#f8f9fb; --surface:#ffffff; --surface-2:#f1f3f6;
+  --line:#e2e5eb; --line-soft:#eef1f5; --line-strong:#888f9e;
+  --ink:#111827; --ink-2:#374151; --muted:#4b5563; --faint:#656c7a;
+  --brand:#14377d; --brand-strong:#0f2a61; --brand-soft:#e9edf7; --brand-line:#abbade;
+  --on-brand:#ffffff; --focus:#14377d;
+  --signal:#1e7a32; --signal-soft:#e7f5ea; --signal-line:#a8d9b4; --on-signal:#ffffff;
   --crit:#b42318; --crit-soft:#fdeceb; --crit-line:#f2b8b4;
   --warn:#b54708; --warn-soft:#fdf2e7; --warn-line:#f0c39a;
-  --info:#175cd3; --info-soft:#eaf1fd; --info-line:#b3cbf5;
-  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  /* aqua, deliberately off the navy axis so a blue status pill is never
+     mistaken for chrome next to a navy button */
+  --info:#00707f; --info-soft:#e3f4f7; --info-line:#9ed4de;
+  --sans:"Lato",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  /* Plex Mono stays: this app renders CVE and rule ids a reviewer retypes into
+     a ticket, so 0/O and 1/l/I must not be guessable, and .qrow is a fixed-px
+     grid that needs a pinned advance width. A generic ui-monospace stack
+     resolves to a different face on every OS. */
   --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --rail:246px;
 }
+/** The two dark blocks below must stay identical — one serves the OS
+ *  preference, the other an explicit data-theme. tests/tokens.test.ts fails the
+ *  build if they drift. Edit both or neither.
+ *
+ *  Navy #14377d is 1.72:1 on a dark ground, so --brand inverts to royal-300.
+ *  --on-brand/--on-signal cannot be literal #fff here: white on #409fe0 is
+ *  2.90:1 and white on #4fc96a is 2.12:1, both hard failures. */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --ground:#0b0f10; --surface:#141a1b; --surface-2:#1b2223; --line:#283132; --line-soft:#202829;
-    --ink:#e9eeed; --ink-2:#c2cccc; --muted:#8b9a9b; --faint:#6b7a7b;
-    --signal:#3fbe86; --signal-soft:#122b21; --signal-line:#1f5c43;
-    --crit:#f5817a; --crit-soft:#2e1614; --crit-line:#6b2b25;
-    --warn:#e9a765; --warn-soft:#2b1d10; --warn-line:#6b4520;
-    --info:#7aa9f7; --info-soft:#121e33; --info-line:#2a4a80;
+    color-scheme:dark;
+    --ground:#0b1220; --surface:#111827; --surface-2:#1f2937;
+    --line:#333e50; --line-soft:#232e3e; --line-strong:#5c6a7d;
+    --ink:#f1f3f6; --ink-2:#c8cdd6; --muted:#aab2bf; --faint:#8b94a3;
+    --brand:#409fe0; --brand-strong:#6fb6e8; --brand-soft:#132840; --brand-line:#1f4a75;
+    --on-brand:#06152e; --focus:#63b3e8;
+    --signal:#4fc96a; --signal-soft:#10291a; --signal-line:#1f5c33; --on-signal:#06210e;
+    --crit:#f5817a; --crit-soft:#2c1618; --crit-line:#6b2b2d;
+    --warn:#e9a765; --warn-soft:#2b1e10; --warn-line:#6b4a22;
+    --info:#43cade; --info-soft:#0c2a30; --info-line:#1d5a66;
   }
 }
 :root[data-theme="dark"]{
-  --ground:#0b0f10; --surface:#141a1b; --surface-2:#1b2223; --line:#283132; --line-soft:#202829;
-  --ink:#e9eeed; --ink-2:#c2cccc; --muted:#8b9a9b; --faint:#6b7a7b;
-  --signal:#3fbe86; --signal-soft:#122b21; --signal-line:#1f5c43;
-  --crit:#f5817a; --crit-soft:#2e1614; --crit-line:#6b2b25;
-  --warn:#e9a765; --warn-soft:#2b1d10; --warn-line:#6b4520;
-  --info:#7aa9f7; --info-soft:#121e33; --info-line:#2a4a80;
+  color-scheme:dark;
+  --ground:#0b1220; --surface:#111827; --surface-2:#1f2937;
+  --line:#333e50; --line-soft:#232e3e; --line-strong:#5c6a7d;
+  --ink:#f1f3f6; --ink-2:#c8cdd6; --muted:#aab2bf; --faint:#8b94a3;
+  --brand:#409fe0; --brand-strong:#6fb6e8; --brand-soft:#132840; --brand-line:#1f4a75;
+  --on-brand:#06152e; --focus:#63b3e8;
+  --signal:#4fc96a; --signal-soft:#10291a; --signal-line:#1f5c33; --on-signal:#06210e;
+  --crit:#f5817a; --crit-soft:#2c1618; --crit-line:#6b2b2d;
+  --warn:#e9a765; --warn-soft:#2b1e10; --warn-line:#6b4a22;
+  --info:#43cade; --info-soft:#0c2a30; --info-line:#1d5a66;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-h1,h2,h3{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-.012em}
+/** Lato ships 100/300/400/700/900 — no 500 and no 600. Every weight in this
+ *  file is one Lato actually has, so what is declared is what renders. Tracking
+ *  eases from -.012em because Lato Bold is already tighter than Plex Sans 600. */
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.008em}
 p{margin:0}
 button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
-:focus-visible{outline:2px solid var(--signal);outline-offset:2px;border-radius:3px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+/* micro-labels take their new emphasis from contrast (--faint went from 2.4:1
+   to 4.75:1), so the weight comes back off rather than jumping 600 → Lato 700 */
+.eyebrow{font-size:10.5px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+/** Visually hidden, still announced. Every status glyph in this app (✓ ✕ ? –)
+ *  was previously unlabelled, which meant whether a blocking requirement passed
+ *  reached a screen reader as "check mark" or as nothing at all. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 
 /* shell */
 .shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);min-height:100vh}
 .rail{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px;padding:18px 12px;position:sticky;top:0;height:100vh;overflow-y:auto}
-.brand{display:flex;align-items:center;gap:9px;padding:4px 8px 16px}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 3px var(--signal-soft);flex:none}
-.brand b{font-size:15.5px;letter-spacing:-.02em}
-.brand span{display:block;font-size:10.5px;color:var(--faint);letter-spacing:.04em}
-.navitem{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:7px 9px;border-radius:6px;color:var(--muted);font-size:13.5px;font-weight:500}
+/** Company lockup above, product beneath. The subtitle is "Approval console"
+ *  and not "BISTEC Global · Ops" on purpose — with the real lockup present, the
+ *  old wording printed the company name twice inside 40 vertical pixels.
+ *
+ *  .product scopes the type so the tagline rule cannot leak onto the product
+ *  name; the previous `.brand span` selector matched the wrapper too and left
+ *  "GreenLight" inheriting --faint. */
+.brand{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:4px 8px 18px}
+.lockup{display:block;flex:none;height:auto;max-width:100%}
+.brand .lockup{width:168px}
+.lockup-dark{display:none}
+.product b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.product span{display:block;font-size:10.5px;color:var(--faint);letter-spacing:.04em}
+/** The lockup's "BISTEC" ends in navy, which is 1.72:1 on the dark rail. The
+ *  dark file knocks that word to near-white and leaves the colour mark and the
+ *  green "Global" untouched. Two <img> tags rather than a CSS content: swap —
+ *  display:none also hides the unused one from assistive tech. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .lockup-light{display:none}
+  :root:not([data-theme="light"]) .lockup-dark{display:block}
+}
+:root[data-theme="dark"] .lockup-light{display:none}
+:root[data-theme="dark"] .lockup-dark{display:block}
+.navitem{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:7px 9px;border-radius:6px;color:var(--muted);font-size:13.5px;font-weight:400}
 .navitem:hover{background:var(--surface-2);color:var(--ink)}
-.navitem[aria-current="true"]{background:var(--surface-2);color:var(--ink);font-weight:600}
+/* "page", not "true" — aria-current="true" is invalid on a link and is not
+   announced as the current page. Navy carries the active row, plus an inset
+   rule so the state is a shape and not only a colour. */
+.navitem[aria-current="page"]{background:var(--brand-soft);color:var(--brand-strong);font-weight:700;box-shadow:inset 2px 0 0 var(--brand)}
 .navitem .ct{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint)}
 .navsec{padding:16px 9px 6px}
 .railfoot{margin-top:auto;padding:12px 9px 0;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--faint);line-height:1.45}
 
-main{min-width:0;padding:26px 30px 64px;max-width:1220px}
+/* margin-inline:auto — without it a 2560px display renders the rail, 1220px of
+   content, and ~1090px of empty ground off to one side */
+main{min-width:0;padding:26px 30px 64px;max-width:1220px;margin-inline:auto;width:100%}
 .topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:18px;margin-bottom:20px;border-bottom:1px solid var(--line)}
 .topbar h1{font-size:22px}
 .topbar .sub{color:var(--muted);font-size:13px;margin-top:3px}
 
 /* pills + chips */
-.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:600;border:1px solid;white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:700;border:1px solid;white-space:nowrap}
 .p-ok{color:var(--signal);background:var(--signal-soft);border-color:var(--signal-line)}
 .p-crit{color:var(--crit);background:var(--crit-soft);border-color:var(--crit-line)}
 .p-warn{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
@@ -77,12 +146,16 @@ main{min-width:0;padding:26px 30px 64px;max-width:1220px}
 .t0 .bar{background:var(--signal)} .t1 .bar{background:var(--info)} .t2 .bar{background:var(--warn)}
 .tier .n{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1.1}
 .t0 .n{color:var(--signal)} .t1 .n{color:var(--info)} .t2 .n{color:var(--warn)}
-.tier .tl{font-size:12.8px;font-weight:600;margin-top:3px}
+.tier .tl{font-size:12.8px;font-weight:700;margin-top:3px}
 .tier .td{font-size:11.8px;color:var(--muted);margin-top:2px;line-height:1.45}
 
 /* queue */
-.qgroup{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);padding:14px 16px 8px;background:var(--surface-2);border-bottom:1px solid var(--line-soft)}
+.qgroup{font-size:11px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);padding:14px 16px 8px;background:var(--surface-2);border-bottom:1px solid var(--line-soft)}
 .queue{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+/* overflow:hidden above clips descendant outlines, so a row's focus ring was
+   cut off on the first and last row — exactly where tabbing starts. Paint it
+   inside the clip instead. */
+.qrow:focus-visible{outline-offset:-2px;border-radius:0}
 .qrow{display:grid;grid-template-columns:minmax(0,1fr) 148px 172px 96px;gap:14px;align-items:center;padding:11px 16px;width:100%;text-align:left;border-bottom:1px solid var(--line-soft);position:relative}
 .qrow:last-child{border-bottom:none}
 .qrow:hover{background:var(--surface-2)}
@@ -91,10 +164,10 @@ main{min-width:0;padding:26px 30px 64px;max-width:1220px}
 .qrow.sev-warn::before{background:var(--warn)}
 .qrow.sev-ok::before{background:var(--signal)}
 .qrow.sev-info::before{background:var(--info)}
-.qsub{font-weight:600;font-size:14px;margin-bottom:2px}
+.qsub{font-weight:700;font-size:14px;margin-bottom:2px}
 .qmeta{font-size:12px;color:var(--muted);display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 .qage{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
-.qage b{display:block;color:var(--crit);font-weight:600}
+.qage b{display:block;color:var(--crit);font-weight:600} /* mono: inherits var(--mono) from .qage */
 
 /* panels */
 .split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;align-items:start}
@@ -107,8 +180,8 @@ main{min-width:0;padding:26px 30px 64px;max-width:1220px}
 .reqhead{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:18px 20px;display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap;align-items:flex-start}
 .reqhead h1{font-size:19px;margin-bottom:5px}
 .reqmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
-.backlink{font-size:12.5px;color:var(--muted);font-weight:500;margin-bottom:12px;display:inline-block}
-.backlink:hover{color:var(--ink)}
+.backlink{font-size:12.5px;color:var(--muted);font-weight:400;margin-bottom:12px;display:inline-block}
+.backlink:hover{color:var(--brand)}
 .email{font-size:13.2px;line-height:1.62;color:var(--ink-2);white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:7px;padding:13px 15px}
 
 /* research */
@@ -119,11 +192,17 @@ main{min-width:0;padding:26px 30px 64px;max-width:1220px}
 .rstep.done .ico{border-color:var(--signal-line);background:var(--signal-soft);color:var(--signal)}
 .rstep.hit .ico{border-color:var(--crit-line);background:var(--crit-soft);color:var(--crit)}
 .rstep.miss .ico{border-color:var(--warn-line);background:var(--warn-soft);color:var(--warn)}
-.rstep .ico.spin{border-top-color:var(--signal);animation:sp .7s linear infinite}
+.rstep .ico.spin{border-top-color:var(--brand);animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.rstep .src{font-size:13px;font-weight:500}
+.rstep .src{font-size:13px;font-weight:400}
 .rstep .res{font-size:12.2px;color:var(--muted);margin-top:2px}
-@media (prefers-reduced-motion:reduce){.rstep .ico.spin{animation:none}}
+/* .spinner is listed here too — it was added later and missed this query, so a
+   reduced-motion user got a spinning element on every page transition and every
+   action. Both fall back to a static ring that still reads as busy. */
+@media (prefers-reduced-motion:reduce){
+  .rstep .ico.spin,.spinner{animation:none}
+  .spinner{border-color:var(--brand)}
+}
 
 /* facts */
 .facts{display:flex;flex-direction:column}
@@ -131,23 +210,46 @@ main{min-width:0;padding:26px 30px 64px;max-width:1220px}
 .fact:last-child{border-bottom:none}
 .fact .k{font-size:12.5px;color:var(--muted)}
 .fact .v{font-size:13.2px;font-weight:600;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
-.fact .v.na{color:var(--faint);font-weight:500;font-style:italic;font-family:var(--sans)}
-.prov{font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;border-radius:3px;border:1px solid;margin-left:7px;vertical-align:1px}
+.fact .v.na{color:var(--faint);font-weight:400;font-style:italic;font-family:var(--sans)}
+
+/** Provenance is the integrity backbone: verified/sourced can satisfy a
+ *  blocking requirement, claimed/none cannot. That boundary used to be carried
+ *  by hue alone at 9.5px, where "sourced" and "claimed" misread as each other
+ *  despite being opposites.
+ *
+ *  One rule now carries it, and it survives greyscale, colour-blindness and a
+ *  printed page: SOLID border = the evidence stands on its own.
+ *                DASHED border = it does not.
+ *  The leading glyph repeats the same split for anyone scanning shape. */
+.prov{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;border-radius:3px;border:1px solid;margin-left:7px;vertical-align:1px;white-space:nowrap}
+.prov::before{margin-right:3px;font-weight:400}
+.pv-verified,.pv-sourced{border-style:solid}
+.pv-claimed,.pv-none{border-style:dashed}
 .pv-verified{color:var(--signal);background:var(--signal-soft);border-color:var(--signal-line)}
+.pv-verified::before{content:"\25C6"}
 .pv-sourced{color:var(--info);background:var(--info-soft);border-color:var(--info-line)}
+.pv-sourced::before{content:"\25C7"}
 .pv-claimed{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
+.pv-claimed::before{content:"\25CB"}
 .pv-none{color:var(--muted);background:var(--surface-2);border-color:var(--line)}
+.pv-none::before{content:"\2014"}
+/* the legend that teaches the rule, rendered at the point of use */
+.provkey{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:10.5px;color:var(--muted)}
+.provkey .prov{margin-left:0}
 
 /* checks */
 .check{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:11px;padding:10px 0;border-bottom:1px solid var(--line-soft);align-items:start}
 .check:last-child{border-bottom:none}
-.check.off{opacity:.42}
+/* was opacity:.42 — a hard contrast failure on real body text. A requirement
+   Operations waived is a policy statement and has to stay readable. */
+.check.off{color:var(--muted)}
+.check.off .lbl{font-weight:400}
 .mark{width:17px;height:17px;border-radius:4px;display:grid;place-items:center;font-size:10px;font-weight:700;margin-top:1px;border:1px solid}
 .m-pass{color:var(--signal);background:var(--signal-soft);border-color:var(--signal-line)}
 .m-fail{color:var(--crit);background:var(--crit-soft);border-color:var(--crit-line)}
 .m-miss{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
 .m-off{color:var(--faint);background:var(--surface-2);border-color:var(--line)}
-.check .lbl{font-size:13.2px;font-weight:500;line-height:1.42}
+.check .lbl{font-size:13.2px;font-weight:400;line-height:1.42}
 .check .why{font-size:12px;color:var(--muted);margin-top:3px}
 .check .rid{font-family:var(--mono);font-size:11px;color:var(--faint);margin-right:6px}
 
@@ -162,12 +264,23 @@ main{min-width:0;padding:26px 30px 64px;max-width:1220px}
 .v-REJECT .vt{color:var(--crit)} .v-MORE_INFO .vt{color:var(--info)}
 .verdict .vw{font-size:12.8px;color:var(--ink-2);max-width:62ch}
 .verdict .vsrc{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+/* the named blockers, directly under the verdict that rests on them */
+.vblock{margin:9px 0 0;padding:9px 0 0;border-top:1px solid currentColor;border-color:inherit;list-style:none;display:flex;flex-direction:column;gap:5px;max-width:62ch}
+.vblock li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;font-size:12.4px;color:var(--ink-2);line-height:1.45}
+.vblock .rid{font-size:11px;color:var(--muted)}
+.vblock.none{font-size:12.4px;color:var(--ink-2)}
 
 .actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink)}
+.btn{padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:700;color:var(--ink)}
 .btn:hover{background:var(--surface-2)}
-.btn.primary{background:var(--signal);border-color:var(--signal);color:#fff}
-.btn.primary:hover{filter:brightness(1.07)}
+/* the primary button is chrome, so it is navy — this is the change that stops
+   green meaning both "our brand" and "approved" on the same screen */
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+/* --brand-strong is darker in light mode and lighter in dark, so hover raises
+   contrast in both directions — which brightness(1.07) could not do */
+.btn.primary:hover{background:var(--brand-strong);border-color:var(--brand-strong)}
+/* a navy ring on a navy fill needs a gap of surface to be seen at all */
+.btn.primary:focus-visible{box-shadow:0 0 0 4px var(--surface)}
 .btn.danger{color:var(--crit);border-color:var(--crit-line);background:var(--crit-soft)}
 .btn.sm{padding:5px 10px;font-size:12px}
 
@@ -179,26 +292,28 @@ main{min-width:0;padding:26px 30px 64px;max-width:1220px}
 /* self-service receipt */
 .receipt{background:var(--surface);border:1px solid var(--signal-line);border-radius:9px;overflow:hidden}
 .receipt .rhead{background:var(--signal-soft);padding:20px 22px;border-bottom:1px solid var(--signal-line);display:flex;gap:14px;align-items:center}
-.receipt .tick{width:34px;height:34px;border-radius:50%;background:var(--signal);color:#fff;display:grid;place-items:center;font-size:16px;font-weight:700;flex:none}
+.receipt .tick{width:34px;height:34px;border-radius:50%;background:var(--signal);color:var(--on-signal);display:grid;place-items:center;font-size:16px;font-weight:700;flex:none}
 .receipt .rhead h2{font-size:17px;color:var(--signal);margin-bottom:2px}
 .receipt .rhead p{font-size:12.8px;color:var(--ink-2)}
 .receipt .rbody{padding:18px 22px}
 .kv{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;padding:8px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
 .kv:last-child{border-bottom:none}
 .kv .k{font-size:12.5px;color:var(--muted)}
-.kv .v{font-size:13.2px;font-weight:600;text-align:right}
+.kv .v{font-size:13.2px;font-weight:700;text-align:right}
 
 /* rule editor */
 .rule{display:grid;grid-template-columns:minmax(0,1fr) 128px 104px;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-soft);align-items:center}
 .rule:last-child{border-bottom:none}
-.rule .rl{font-size:13.2px;font-weight:500}
+.rule .rl{font-size:13.2px;font-weight:400}
 .rule .ra{font-size:11.5px;color:var(--faint);font-family:var(--mono);margin-top:2px}
-select,input[type=number]{font:inherit;font-size:12.5px;padding:5px 8px;border-radius:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+/* --line-strong, not --line: a control's boundary is the only thing marking it
+   as a control, and --line is 1.26:1 against the surface */
+select,input[type=number]{font:inherit;font-size:12.5px;padding:5px 8px;border-radius:5px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);width:100%}
 input[type=number]{font-family:var(--mono);text-align:right}
 
 /* table */
 .tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.tbl th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:400;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
 .tbl td{padding:10px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
 .tbl tr:last-child td{border-bottom:none}
 .scroll{overflow-x:auto}
@@ -214,7 +329,12 @@ input[type=number]{font-family:var(--mono);text-align:right}
 @media (max-width:900px){
   .shell{grid-template-columns:1fr}
   .rail{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:none;border-bottom:1px solid var(--line);padding:12px 16px;gap:4px}
-  .brand{padding:0 12px 0 0} .navsec,.railfoot{display:none}
+  /* the rail becomes a horizontal bar here, so the brand block lies down with
+     it and the tagline drops rather than stacking three lines deep */
+  .brand{flex-direction:row;align-items:center;gap:10px;padding:0 12px 0 0}
+  .brand .lockup{width:140px}
+  .product span{display:none}
+  .navsec,.railfoot{display:none}
   main{padding:20px 16px 48px}
   .split{grid-template-columns:1fr}
   .tiers{grid-template-columns:1fr}
@@ -227,13 +347,49 @@ input[type=number]{font-family:var(--mono);text-align:right}
 /* ── additions for the Next.js build ── */
 a{color:inherit;text-decoration:none}
 .qrow{display:grid;cursor:pointer}
-.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--signal);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:7px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:7px}
 .banner{display:flex;gap:11px;padding:10px 14px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);font-size:12.5px;color:var(--muted);align-items:center}
 .banner b{color:var(--ink)}
-textarea,input[type=text]{font:inherit;font-size:13px;width:100%;padding:9px 11px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--sans);line-height:1.55}
+textarea,input[type=text]{font:inherit;font-size:13px;width:100%;padding:9px 11px;border-radius:6px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);font-family:var(--sans);line-height:1.55}
 textarea{min-height:150px;resize:vertical}
-label.fl{display:block;font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+label.fl{display:block;font-size:11.5px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
 .field{margin-bottom:14px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:900px){.grid2{grid-template-columns:1fr}}
 .btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* ── print ──────────────────────────────────────────────────────────────────
+   The DPIA and a decided request are what an auditor asks for on paper. The
+   first line is the one that matters most: without it the dark-mode token block
+   applies to print media too, and anyone whose OS is in dark mode prints white
+   text on black. */
+@media print{
+  :root,:root[data-theme="dark"],:root:not([data-theme="light"]){
+    color-scheme:light;
+    --ground:#fff; --surface:#fff; --surface-2:#f1f3f6;
+    --line:#c8cdd6; --line-soft:#e2e5eb; --line-strong:#888f9e;
+    --ink:#111827; --ink-2:#374151; --muted:#4b5563; --faint:#5b6270;
+    --brand:#14377d; --brand-strong:#0f2a61; --brand-soft:#e9edf7; --brand-line:#abbade;
+    --on-brand:#fff; --focus:#14377d;
+    --signal:#1e7a32; --signal-soft:#e7f5ea; --signal-line:#a8d9b4; --on-signal:#fff;
+    --crit:#b42318; --crit-soft:#fdeceb; --crit-line:#f2b8b4;
+    --warn:#b54708; --warn-soft:#fdf2e7; --warn-line:#f0c39a;
+    --info:#00707f; --info-soft:#e3f4f7; --info-line:#9ed4de;
+  }
+  .rail,.backlink,.actions,.btn,.printhide{display:none!important}
+  .shell{display:block}
+  main{max-width:none;padding:0;margin:0}
+  .split,.grid2,.tiers{grid-template-columns:1fr}
+  .panel,.receipt,.verdict,.routing{break-inside:avoid;box-shadow:none}
+  .tbl thead{display:table-header-group}
+  .tbl tr,.fact,.check,.kv{break-inside:avoid}
+  .scroll{overflow:visible}
+  /* an evidence pack is only evidence if the sources can be re-checked, and a
+     printed link with no href is a dead end */
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:9px;color:#4b5563;word-break:break-all}
+  .printonly{display:block}
+  .printmeta{display:flex;flex-direction:column;gap:3px;margin-bottom:16px;padding-bottom:10px;
+    border-bottom:2px solid var(--brand);font-size:10.5px;color:var(--muted);line-height:1.45}
+  .printmeta b{font-size:12px;color:var(--ink);letter-spacing:.02em}
+}
+.printonly{display:none}

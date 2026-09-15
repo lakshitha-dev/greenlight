@@ -42,7 +42,7 @@ async function main() {
 
   step(1, "a request arrives");
   say(`${r.id} · ${product} · ${r.seats} seats`);
-  say(`from ${r.requester}, ${r.team} · ${r.entity}`);
+  say(`from ${r.requester}, ${r.team} · ${r.entity || "entity not established"}`);
   say();
   for (const line of r.body.split("\n").slice(0, 4)) say(`  ${line}`);
 

@@ -2,6 +2,8 @@
 
 **Approvals that arrive ready to approve.**
 
+**Live:** https://greenlight-umber.vercel.app · **Source:** https://github.com/lakshitha-dev/greenlight
+
 An approval console for BISTEC Global. Most software requests are for tools the
 company already owns — those never reach an approver. The rest are researched
 against live security and privacy sources, checked against versioned rule packs,
@@ -64,7 +66,7 @@ Reset the demo at any time with `npm run seed`.
 ## Verifying it
 
 ```bash
-npm run verify     # typecheck, then 202 tests, then a production build
+npm run verify     # typecheck, then 265 tests, then a production build
 npm test           # the suite alone, ~1s, no network
 npm run test:coverage
 ```
@@ -209,10 +211,9 @@ file changes company policy for every decision made after it — no code change,
 no deploy. Every verdict names the rule and the pack version that produced it.
 
 ```
-rules/software-approval.bistec-solutions.yaml   @2.1   software · PDPA No. 9 of 2022
-rules/software-approval.bistec-australia.yaml   @1.3   software · Privacy Act 1988 + APPs
-rules/iso-document-approval.yaml                @1.4   document
-rules/dpia-screening.yaml                       @1.0   privacy screening
+rules/software-approval.bistec-global.yaml   @2.1   software · PDPA No. 9 of 2022
+rules/iso-document-approval.yaml             @1.4   document
+rules/dpia-screening.yaml                    @1.0   privacy screening
 ```
 
 **Adding an approval domain is a YAML file, not code.** A pack declares its
@@ -230,9 +231,10 @@ still cannot satisfy a blocking requirement. `tests/domains.test.ts` proves this
 by evaluating a leave-approval pack that exists only inside the test file — no
 branch anywhere in the codebase knows its name.
 
-The Australian pack carries a requirement the Sri Lankan one does not (APP 8
-residency). Same software, different entity, different verdict — which is why
-this cannot be one global rule.
+Packs are keyed by entity as well as domain. BISTEC Global is the only legal
+entity today, so there is one software pack — but `packFor(entity)` still
+selects on it, which means a second entity under a different law is another
+file rather than a branch in the code.
 
 **The separation is the design:** the model gathers facts and their provenance,
 the rule pack derives the verdict, the human approves. No step can overrule the
@@ -303,17 +305,24 @@ app/
   page.tsx                 queue + catalog gate
   request/[id]/page.tsx    branches by tier: receipt / spend split / full review
   dpia/[id]/page.tsx       generated assessment
-  catalog, rules, privacy, audit, intake
+  catalog, rules, privacy, audit, skill
+  intake/                  the form, and intake/email for a pasted message
   estate/page.tsx          approved vs running
   api/research, api/decide, api/scan, api/policy/sync, api/estate/raise
+  api/findings             compliance pasted back from the Skill
+  api/intake/email         Power Automate posts here; guarded by a shared secret
 lib/
   catalog.ts               the gate
   rulepack.ts              YAML loader + evaluator
   dpia.ts                  screening + risk register
   research.ts              orchestrator
+  email.ts                 sender filter, extraction contract, gaps, drafted reply
+  intake-token.ts          the shared secret — split out so email.ts stays
+                           importable by the browser
   estate.ts                reconciliation + policy sync
   sources/                 kev · nvd · tosdr · osv · claude · analyzer
 rules/                     policy as versioned files
+skills/                    software-compliance-research · email-request-triage
 prisma/                    schema + seed
 ```
 

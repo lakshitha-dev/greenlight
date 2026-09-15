@@ -34,7 +34,7 @@ export const POST = handler("raise", async (req: Request) => {
           subject: `${product} — found running without approval`,
           requester: "GreenLight (endpoint scan)",
           team: "IT Infrastructure",
-          entity: "BISTEC Solutions",
+          entity: "BISTEC Global",
           body:
             `A process-analyzer scan found ${processName} running on an endpoint with no matching ` +
             `catalog entry.\n\nPublisher: ${publisher ?? "unsigned or unknown"}\n\n` +

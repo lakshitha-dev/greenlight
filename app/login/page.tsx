@@ -38,11 +38,26 @@ export default async function LoginPage({
 
   return (
     <div style={{ maxWidth: 420, margin: "0 auto", padding: "72px 0" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
-        <span className="dot" />
-        <div>
-          <b style={{ fontSize: 17, letterSpacing: "-.02em" }}>GreenLight</b>
-          <div style={{ fontSize: 11.5, color: "var(--faint)" }}>BISTEC Global · Ops</div>
+      {/** Same lockup as the rail, a touch larger — this is the first thing
+        *  anyone sees and there is room for it here. */}
+      <div style={{ marginBottom: 28 }}>
+        <img
+          className="lockup lockup-light"
+          src="/brand/bistec-lockup.png"
+          width={180}
+          height={49}
+          alt="BISTEC Global"
+        />
+        <img
+          className="lockup lockup-dark"
+          src="/brand/bistec-lockup-dark.png"
+          width={180}
+          height={49}
+          alt="BISTEC Global"
+        />
+        <div className="product" style={{ marginTop: 10 }}>
+          <b style={{ fontSize: 17 }}>GreenLight</b>
+          <span>Approval console</span>
         </div>
       </div>
 

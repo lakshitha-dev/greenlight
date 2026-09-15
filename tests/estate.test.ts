@@ -9,7 +9,7 @@ import { describe, it, expect } from "vitest";
 import { reconcile, origin, syncPolicy, processNamesOf, mappingIsCorrupt, entryIsValid } from "@/lib/estate";
 import { catalogEntry, request, decision, proc, PAST, TODAY } from "./factories";
 
-const ENTITY = "BISTEC Solutions";
+const ENTITY = "BISTEC Global";
 const noRequests: never[] = [];
 
 describe("origin — is this a business decision at all", () => {

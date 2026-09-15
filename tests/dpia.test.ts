@@ -55,24 +55,23 @@ describe("screen — when an assessment is required", () => {
   });
 
   it("names a regime and a pack version on every screening", () => {
-    const s = screen(request({ entity: "BISTEC Australia" }));
+    const s = screen(request({ entity: "BISTEC Global" }));
     expect(s.regime).toBeTruthy();
     expect(s.packVersion).toMatch(/dpia-screening@/);
   });
 });
 
 describe("the regime follows the entity", () => {
-  it("applies Australian law to the Australian entity", () => {
-    expect(regimeFor("BISTEC Australia")).toMatch(/Privacy Act 1988/);
+  /** One entity today, so this reads thin — but the mapping is what decides
+   *  which law a DPIA is written against, and it is keyed by entity precisely
+   *  so a second one is a line of YAML rather than a code change. */
+  it("applies Sri Lankan law to BISTEC Global", () => {
+    expect(regimeFor("BISTEC Global")).toMatch(/PDPA/);
   });
 
-  it("applies Sri Lankan law to the Sri Lankan entities", () => {
-    expect(regimeFor("BISTEC Solutions")).toMatch(/PDPA/);
-    expect(regimeFor("BISTEC Global (SL)")).toMatch(/PDPA/);
-  });
-
-  it("falls back rather than throwing for an unknown entity", () => {
+  it("falls back rather than throwing for an entity with no entry", () => {
     expect(regimeFor("BISTEC Atlantis")).toBeTruthy();
+    expect(regimeFor("BISTEC Atlantis")).not.toMatch(/PDPA/);
   });
 });
 

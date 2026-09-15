@@ -4,8 +4,13 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { hasKey } from "@/lib/research";
 import { auth, ROLE_LABEL, signOut, type Role } from "@/lib/auth";
+import { NavLink } from "@/components/NavLink";
 
 export const metadata: Metadata = {
+  /** metadataBase makes og:image absolute. Without it Next emits a relative URL
+   *  that several unfurlers reject, and warns at build. Port 3001 matches the
+   *  dev/start scripts. */
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3001"),
   title: "GreenLight",
   description: "Approval console — BISTEC Global",
 };
@@ -28,9 +33,13 @@ function Document({ children }: { children: React.ReactNode }) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/** Lato is the BISTEC typeface. It ships 100/300/400/700/900 — asking
+          *  for 500 or 600 returns nothing and the browser silently rounds, so
+          *  only weights Lato has are requested and only those are declared in
+          *  globals.css. Plex Mono stays for ids and dates. */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Lato:wght@400;700;900&display=swap"
         />
       </head>
       <body>{children}</body>
@@ -66,23 +75,36 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <Document>
       <div className="shell">
-        <nav className="rail">
+        <nav className="rail" aria-label="Primary">
             <Link href="/" className="brand">
-              <span className="dot" />
-              <span>
+              {/** Two files rather than one: the light lockup ends "BISTEC" in
+                *  navy, which is 1.72:1 on the dark rail. display:none keeps the
+                *  unused one out of the accessibility tree too. */}
+              <img
+                className="lockup lockup-light"
+                src="/brand/bistec-lockup.png"
+                width={168}
+                height={46}
+                alt="BISTEC Global"
+              />
+              <img
+                className="lockup lockup-dark"
+                src="/brand/bistec-lockup-dark.png"
+                width={168}
+                height={46}
+                alt="BISTEC Global"
+              />
+              <span className="product">
                 <b>GreenLight</b>
-                <span>BISTEC Global · Ops</span>
+                <span>Approval console</span>
               </span>
             </Link>
 
             {["Decisions", "Governance"].map((section) => (
               <div key={section} style={{ display: "contents" }}>
-                <div className="navsec eyebrow">{section}</div>
+                <h2 className="navsec eyebrow">{section}</h2>
                 {NAV.filter((n) => n.section === section).map((n) => (
-                  <Link key={n.href} href={n.href} className="navitem">
-                    {n.label}
-                    {counts[n.href] !== undefined && <span className="ct">{counts[n.href]}</span>}
-                  </Link>
+                  <NavLink key={n.href} href={n.href} label={n.label} count={counts[n.href]} />
                 ))}
               </div>
             ))}
