@@ -10,6 +10,7 @@ import { facts, fact, missing } from "./factories";
 function pack(requirements: Partial<Requirement>[]): Pack {
   return {
     id: "test-pack",
+    domain: "software",
     version: "1.0",
     entity: "BISTEC Solutions",
     file: "test.yaml",

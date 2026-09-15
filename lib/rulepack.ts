@@ -14,20 +14,39 @@ export type Severity = "blocking" | "warning" | "off";
 export type Status = "pass" | "fail" | "miss" | "off";
 export type Outcome = "APPROVE" | "CONDITIONS" | "REJECT" | "MORE_INFO";
 
+/** Two kinds of requirement.
+ *
+ *  A *measured* one compares a gathered fact to a threshold — "no actively
+ *  exploited vulnerabilities", "privacy grade C or better". It names a field
+ *  and an operator.
+ *
+ *  An *assessed* one cannot be reduced to a comparison — "a business
+ *  justification is stated", "a risk owner is named". Someone has to read the
+ *  document and judge. It names neither, and its answer is looked up by
+ *  requirement id.
+ *
+ *  Both resolve to the same Fact type, so provenance rules apply identically:
+ *  an assessment nobody made is a miss, and one resting on a vendor's own word
+ *  still cannot satisfy a blocking requirement. */
 export type Requirement = {
   id: string;
-  field: string;
+  field?: string;
   label: string;
-  op: "eq" | "lte" | "gte" | "exists" | "isTrue" | "grade";
+  op?: "eq" | "lte" | "gte" | "exists" | "isTrue" | "grade";
   value?: number | string;
   severity: Severity;
   authority: string;
   breach?: string;
+  hint?: string;
 };
+
+export const isAssessed = (r: Requirement): boolean => !r.op;
 
 export type Pack = {
   id: string;
   version: string;
+  /** What this pack adjudicates. Adding a domain is a YAML file, not code. */
+  domain: "software" | "document";
   entity: string;
   jurisdiction?: string;
   regime?: string;
@@ -78,19 +97,32 @@ function validatePack(raw: unknown, file: string): Pack {
     if (!r.id) fail("a requirement has no 'id'");
     if (seen.has(id)) fail(`duplicate requirement id '${id}'`);
     seen.add(id);
-    if (!r.field) fail(`requirement ${id} has no 'field'`);
     if (!r.label) fail(`requirement ${id} has no 'label'`);
-    if (!VALID_OPS.has(String(r.op)))
-      fail(`requirement ${id} has unknown operator '${r.op}' (expected one of ${[...VALID_OPS].join(", ")})`);
+
+    // an assessed requirement declares neither field nor operator; a measured
+    // one must declare both, or it would silently never be checked
+    const assessed = r.op === undefined;
+    if (assessed) {
+      if (r.field) fail(`requirement ${id} names a field but no operator — add an 'op', or drop the field if a person assesses it`);
+    } else {
+      if (!r.field) fail(`requirement ${id} has an operator but no 'field'`);
+      if (!VALID_OPS.has(String(r.op)))
+        fail(`requirement ${id} has unknown operator '${r.op}' (expected one of ${[...VALID_OPS].join(", ")})`);
+    }
     if (!VALID_SEVERITIES.has(String(r.severity)))
       fail(`requirement ${id} has unknown severity '${r.severity}'`);
-    if ((r.op === "lte" || r.op === "gte" || r.op === "eq") && typeof r.value !== "number")
+    if (!assessed && (r.op === "lte" || r.op === "gte" || r.op === "eq") && typeof r.value !== "number")
       fail(`requirement ${id} uses '${r.op}' and needs a numeric 'value'`);
-    if (r.op === "grade" && !GRADES[String(r.value)])
+    if (!assessed && r.op === "grade" && !GRADES[String(r.value)])
       fail(`requirement ${id} uses 'grade' and needs a value of A–E (got '${r.value}')`);
   }
 
-  return { ...(p as object), version: String(p.version), file } as Pack;
+  return {
+    ...(p as object),
+    version: String(p.version),
+    domain: p.domain === "document" ? "document" : "software",
+    file,
+  } as Pack;
 }
 
 /** Read once. This used to run readdirSync plus N synchronous readFileSync
@@ -110,7 +142,7 @@ export function loadPacks(): Pack[] {
   }
 
   const packs = files
-    .filter((f) => f.startsWith("software-approval") && f.endsWith(".yaml"))
+    .filter((f) => f.endsWith(".yaml") && f !== "dpia-screening.yaml")
     .map((f) => {
       let parsed: unknown;
       try {
@@ -124,9 +156,7 @@ export function loadPacks(): Pack[] {
     });
 
   if (packs.length === 0)
-    throw new Error(
-      `No software-approval rule packs found in ${RULES_DIR}. Expected at least one file named software-approval*.yaml.`
-    );
+    throw new Error(`No rule packs found in ${RULES_DIR}. Expected at least one *.yaml.`);
 
   packCache = packs;
   return packs;
@@ -141,12 +171,14 @@ export function clearPackCache(): void {
  *  here rather than hidden, because it is a policy decision. Total by
  *  construction: loadPacks throws rather than returning an empty list, so
  *  there is always something to fall back to. */
-export function packFor(entity: string): Pack {
-  const packs = loadPacks();
+export function packFor(entity: string, domain: Pack["domain"] = "software"): Pack {
+  const packs = loadPacks().filter((p) => p.domain === domain);
   return (
     packs.find((p) => p.entity === entity) ??
+    packs.find((p) => p.entity === "all") ??
     packs.find((p) => p.entity === "BISTEC Solutions") ??
-    packs[0]
+    packs[0] ??
+    loadPacks()[0]
   );
 }
 
@@ -155,17 +187,35 @@ export function evaluate(facts: Record<string, Fact<unknown>>, pack: Pack): Eval
     if (r.severity === "off")
       return { ...r, status: "off", why: "Requirement disabled by Operations." };
 
-    const f = facts[r.field];
+    // measured requirements read the field they name; assessed ones read an
+    // answer recorded against the requirement id
+    const key = r.field ?? r.id;
+    const f = facts[key];
     if (!f || f.value === null || f.prov === "none")
       return {
         ...r,
         status: "miss",
-        why: "Not found in any source. This is a finding, not a failure of the search.",
+        why: isAssessed(r)
+          ? `Not assessed. ${r.hint ?? "Someone has to read the document and judge this."}`
+          : "Not found in any source. This is a finding, not a failure of the search.",
       };
 
     let ok = false;
     let why = "";
     const v = f.value;
+
+    // an assessed requirement is simply met or not, with the assessor's reason
+    if (isAssessed(r)) {
+      const met = v === true;
+      const reason = f.src || (met ? "Assessed as met." : "Assessed as not met.");
+      if (met && r.severity === "blocking" && f.prov === "claimed")
+        return {
+          ...r,
+          status: "miss",
+          why: "Asserted by the submitter with nothing independent behind it. A claim cannot satisfy a blocking requirement.",
+        };
+      return { ...r, status: met ? "pass" : "fail", why: reason };
+    }
 
     switch (r.op) {
       case "eq":
@@ -232,7 +282,7 @@ export function evaluate(facts: Record<string, Fact<unknown>>, pack: Pack): Eval
   return { checks, live, warns, outcome, pack };
 }
 
-function show(field: string, v: unknown): string {
+function show(field: string | undefined, v: unknown): string {
   return field === "annualCost" ? "LKR " + Number(v).toLocaleString("en-LK") : String(v);
 }
 

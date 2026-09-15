@@ -24,7 +24,7 @@ export default async function RequestPage({ params }: { params: Promise<{ id: st
   ]);
   if (!r) notFound();
 
-  if (r.kind === "iso") return <IsoView r={r} />;
+  if (r.kind === "iso") return <IsoView r={r} dossier={r.dossier} />;
 
   const rt = routeRequest(r.product, r.entity, catalog);
   if (rt.tier === 0) return <SelfService r={r} rt={rt} />;
@@ -508,16 +508,41 @@ function DpiaPanel({ r, facts }: { r: Req; facts: Record<string, Fact<unknown>> 
 
 /* ── ISO ─────────────────────────────────────────────────────────────────── */
 
-const ISO_CHECKS = [
-  { id: "R1", label: "Business justification stated", status: "fail", severity: "blocking", why: "No business outcome or driver given for the revision. Required before IT sign-off." },
-  { id: "R2", label: "Risk owner named", status: "fail", severity: "blocking", why: "Document lists no accountable owner for the asset register." },
-  { id: "R3", label: "ISO clause reference", status: "pass", severity: "warning", why: "Cites ISO 27001 A.5.9 in the header." },
-  { id: "R4", label: "Change summary against previous version", status: "pass", severity: "warning", why: "Revision history table present, v3 → v4 deltas listed." },
-  { id: "R5", label: "Review date within 12 months", status: "pass", severity: "blocking", why: "Next review 2027-03-01." },
-];
+/** The reply names exactly the requirements that failed, in the words the
+ *  engine produced — so what the requester is told and what the audit trail
+ *  records cannot drift apart. */
+function draftReply(blocked: Check[], all: Check[]): string {
+  const passed = all.filter((c) => c.status === "pass").map((c) => c.label.toLowerCase());
+  return [
+    "Dear colleague,",
+    "",
+    "Thank you for submitting the Asset Management Procedure v4. Before I can sign",
+    `off, ${blocked.length === 1 ? "one item is" : `${blocked.length} items are`} required under our document approval standard:`,
+    "",
+    ...blocked.map((b) => `  • ${b.label} (${b.id}) — ${b.why}`),
+    "",
+    passed.length ? `The ${passed.join(", ")} are all in order.` : "",
+    "",
+    "Regards,",
+    "the Head of Operations",
+  ]
+    .filter((line, i, a) => !(line === "" && a[i - 1] === ""))
+    .join("\n");
+}
 
-function IsoView({ r }: { r: Req }) {
-  const blocked = ISO_CHECKS.filter((c) => c.severity === "blocking" && c.status === "fail");
+function IsoView({
+  r,
+  dossier,
+}: {
+  r: Req;
+  dossier: { facts: string } | null;
+}) {
+  /** Identical engine, identical provenance rules — the only difference is
+   *  which YAML file governs, and that is a field in the pack. */
+  const pack = packFor(r.entity, "document");
+  const facts = expect<Record<string, Fact<unknown>>>(dossier?.facts, isObject, {});
+  const ev = evaluate(facts, pack);
+  const blocked = ev.checks.filter((c) => c.severity === "blocking" && c.status === "fail");
   return (
     <>
       <Back />
@@ -527,10 +552,13 @@ function IsoView({ r }: { r: Req }) {
           <div>
             <div className="vt">Returned to requester</div>
             <div className="vw">
-              Two blocking requirements are unmet. This was detected seconds after the email arrived
-              — not three days later.
+              {blocked.length} blocking {blocked.length === 1 ? "requirement is" : "requirements are"}{" "}
+              unmet. This was detected seconds after the email arrived — not three days later.
             </div>
-            <div className="vsrc">iso-document-approval@1.4 · {r.entity}</div>
+            <div className="vsrc">
+              {pack.id}@{pack.version} · {r.entity} · evaluated {ev.live.length} of{" "}
+              {pack.requirements.length} requirements
+            </div>
           </div>
           <AckButton label="Send reply" done="Reply sent" />
         </div>
@@ -539,37 +567,13 @@ function IsoView({ r }: { r: Req }) {
             <div className="email">{r.body}</div>
           </Panel>
           <div className="stack">
-            <Panel title="Rule pack check" eyebrow="iso-document-approval@1.4">
-              {ISO_CHECKS.map((c) => (
-                <div className="check" key={c.id}>
-                  <span className={`mark ${c.status === "pass" ? "m-pass" : "m-fail"}`}>
-                    {c.status === "pass" ? "✓" : "✕"}
-                  </span>
-                  <div>
-                    <div className="lbl">
-                      <span className="rid">{c.id}</span>
-                      {c.label}
-                    </div>
-                    <div className="why">{c.why}</div>
-                  </div>
-                  <span className={`pill ${c.severity === "blocking" ? "p-crit" : "p-warn"}`}>
-                    {c.severity}
-                  </span>
-                </div>
+            <Panel title="Rule pack check" eyebrow={`${pack.id}@${pack.version}`}>
+              {ev.checks.map((c) => (
+                <CheckRow key={c.id} c={c} />
               ))}
             </Panel>
             <Panel title="Drafted reply" eyebrow="human presses send">
-              <div className="email">{`Dear colleague,
-
-Thank you for submitting the Asset Management Procedure v4. Before I can sign off, two items are required under our document approval standard:
-
-  • ${blocked[0].label} (${blocked[0].id}) — please state the business driver for this revision.
-  • ${blocked[1].label} (${blocked[1].id}) — the asset register needs a named accountable owner.
-
-The ISO clause reference, revision history and review date are all in order.
-
-Regards,
-the Head of Operations`}</div>
+              <div className="email">{draftReply(blocked, ev.checks)}</div>
             </Panel>
           </div>
         </div>

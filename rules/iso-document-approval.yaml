@@ -1,5 +1,6 @@
 id: iso-document-approval
 version: "1.4"
+domain: document
 entity: all
 owner: Head of Operations & IT
 notes: Applied to ISO document approvals arriving by email.

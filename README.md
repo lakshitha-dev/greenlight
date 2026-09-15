@@ -47,10 +47,15 @@ ANTHROPIC_API_KEY=sk-ant-...    # compliance research (SOC 2, DPA, residency, pr
 NVD_API_KEY=...                 # raises the NIST rate limit; not required
 ```
 
-Without `ANTHROPIC_API_KEY` the app is fully functional: vulnerability and
-privacy data come from the structured sources, and compliance fields are
-recorded as **not found** rather than assumed. That routes more requests to
-*More information required*, which is the honest answer, not a degraded one.
+Without a Claude credential, GreenLight can still tell you what is being
+exploited — but it cannot tell you whether a vendor may hold your data. Every
+compliance field is recorded as **not found**, and because two of those are
+blocking requirements, essentially every new tool lands on *More information
+required*. The queue still moves; the decisions do not.
+
+That is deliberate. An absent SOC 2 report and an unverified one must look
+different, and only Claude can tell them apart — so when Claude is absent, the
+system declines to decide rather than degrading quietly.
 
 Reset the demo at any time with `npm run seed`.
 
@@ -59,7 +64,7 @@ Reset the demo at any time with `npm run seed`.
 ## Verifying it
 
 ```bash
-npm run verify     # typecheck, then 186 tests, then a production build
+npm run verify     # typecheck, then 202 tests, then a production build
 npm test           # the suite alone, ~1s, no network
 npm run test:coverage
 ```
@@ -169,11 +174,26 @@ file changes company policy for every decision made after it — no code change,
 no deploy. Every verdict names the rule and the pack version that produced it.
 
 ```
-rules/software-approval.bistec-solutions.yaml   @2.1   PDPA No. 9 of 2022
-rules/software-approval.bistec-australia.yaml   @1.3   Privacy Act 1988 + APPs
-rules/dpia-screening.yaml                       @1.0
-rules/iso-document-approval.yaml                @1.4
+rules/software-approval.bistec-solutions.yaml   @2.1   software · PDPA No. 9 of 2022
+rules/software-approval.bistec-australia.yaml   @1.3   software · Privacy Act 1988 + APPs
+rules/iso-document-approval.yaml                @1.4   document
+rules/dpia-screening.yaml                       @1.0   privacy screening
 ```
+
+**Adding an approval domain is a YAML file, not code.** A pack declares its
+`domain`, and requirements come in two kinds:
+
+- **measured** — names a field and an operator, compared to a gathered fact
+  (`kevEntries eq 0`, `privacyGrade grade C`)
+- **assessed** — names neither, because no comparison settles it. "Is a business
+  justification stated?" needs someone to read the document. The answer is
+  recorded against the requirement id.
+
+Both resolve to the same `Fact` type, so the provenance rules apply identically:
+an assessment nobody made is a miss, and one resting on the submitter's own word
+still cannot satisfy a blocking requirement. `tests/domains.test.ts` proves this
+by evaluating a leave-approval pack that exists only inside the test file — no
+branch anywhere in the codebase knows its name.
 
 The Australian pack carries a requirement the Sri Lankan one does not (APP 8
 residency). Same software, different entity, different verdict — which is why

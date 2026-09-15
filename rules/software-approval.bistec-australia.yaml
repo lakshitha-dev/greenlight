@@ -1,4 +1,5 @@
 id: software-approval
+domain: software
 version: "1.3"
 entity: BISTEC Australia
 jurisdiction: Australia

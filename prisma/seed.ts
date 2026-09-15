@@ -285,6 +285,32 @@ async function main() {
     });
   }
 
+  /** The ISO document's assessments, recorded against requirement ids. An
+   *  assessed requirement resolves to the same Fact type a measured one does,
+   *  so the identical engine, provenance rules and audit trail apply. */
+  const isoAssessments = {
+    R1: { value: false, prov: "sourced", src: "No business outcome or driver is given for the revision." },
+    R2: { value: false, prov: "sourced", src: "The document names no accountable owner for the asset register." },
+    R3: { value: true,  prov: "sourced", src: "Cites ISO 27001 A.5.9 in the header." },
+    R4: { value: true,  prov: "sourced", src: "Revision history table present, v3 to v4 deltas listed." },
+    R5: { value: true,  prov: "sourced", src: "Next review 2027-03-01, within twelve months." },
+  };
+  await db.dossier.create({
+    data: {
+      requestId: "AR-0318",
+      facts: JSON.stringify(isoAssessments),
+      sources: JSON.stringify([
+        {
+          source: "Document review",
+          result: "Assessed against iso-document-approval@1.4 — two blocking requirements unmet.",
+          kind: "hit",
+        },
+      ]),
+      model: "assessed by Quality",
+      elapsedMs: 0,
+    },
+  });
+
   const passwordHash = await hashPassword(DEMO_PASSWORD);
   for (const u of users) await db.user.create({ data: { ...u, passwordHash } });
 
