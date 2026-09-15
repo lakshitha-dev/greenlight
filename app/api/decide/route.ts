@@ -20,7 +20,7 @@ export const POST = handler("decide", async (req: Request) => {
   if (!r) return fail(404, `No request with id ${requestId}.`);
 
   const pack = packFor(r.entity);
-  const actor = "Sajith";
+  const actor = "the Head of Operations";
   const today = new Date().toISOString().slice(0, 10);
   const nextReview = new Date();
   nextReview.setFullYear(nextReview.getFullYear() + 1);

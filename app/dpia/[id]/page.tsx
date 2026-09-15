@@ -177,11 +177,11 @@ export default async function DpiaPage({ params }: { params: Promise<{ id: strin
                 k="Prior consultation"
                 v={w === "High" ? "Required before processing" : "Not required"}
               />
-              <KV k="Reviewer" v="Dinusha Weerasinghe · Quality" />
+              <KV k="Reviewer" v="the Quality Manager · Quality" />
               <div style={{ marginTop: 14 }} className="actions">
                 <AckButton
                   label="Send to Quality for sign-off"
-                  done="Sent to Quality · Dinusha Weerasinghe"
+                  done="Sent to Quality · the Quality Manager"
                 />
               </div>
             </Panel>

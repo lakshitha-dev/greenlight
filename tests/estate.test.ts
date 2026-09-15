@@ -14,7 +14,7 @@ const noRequests: never[] = [];
 
 describe("origin — is this a business decision at all", () => {
   it("treats software under a user profile as deliberately installed", () => {
-    expect(origin(proc({ path: "C:\\Users\\sajith\\AppData\\Local\\Slack\\slack.exe" }))).toBe("installed");
+    expect(origin(proc({ path: "C:\\Users\\someone\\AppData\\Local\\Slack\\slack.exe" }))).toBe("installed");
   });
 
   it("treats a hardware vendor's service as system, not shadow IT", () => {

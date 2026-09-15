@@ -59,7 +59,6 @@ const Back = () => (
 
 function SelfService({ r, rt }: { r: Req; rt: Route }) {
   const c = rt.entry!;
-  const first = r.requester.split(" ")[0];
   const checks: [string, string, string][] = [
     ["C1", "Product is in the software catalog", `${c.name} · approved ${c.approved} · owner ${c.owner}`],
     ["C2", "Assessment still current", `Next review ${c.review}. No new actively-exploited vulnerabilities since approval.`],
@@ -99,7 +98,7 @@ function SelfService({ r, rt }: { r: Req; rt: Route }) {
                 <span className="tick">✓</span>
                 <div>
                   <h2>Access granted</h2>
-                  <p>What {first} saw, moments after sending the request.</p>
+                  <p>What the requester saw, moments after sending the request.</p>
                 </div>
               </div>
               <div className="rbody">
@@ -114,8 +113,8 @@ function SelfService({ r, rt }: { r: Req; rt: Route }) {
               <span>◆</span>
               <div>
                 <b>We already have this.</b> The security question was answered on {c.approved} and
-                the answer is still good. Asking it again would have cost {first} three days and
-                Sajith four minutes, and changed nothing.
+                the answer is still good. Asking it again would have cost the requester three days and
+                the Head of Operations four minutes, and changed nothing.
               </div>
             </div>
             <div className="callout info">
@@ -191,7 +190,7 @@ function SpendOnly({ r, rt }: { r: Req; rt: Route }) {
             <div className="callout info">
               <span>◆</span>
               <div>
-                <b>Today both questions land on Sajith.</b> Only one of them is his.
+                <b>Today both questions land on the Head of Operations.</b> Only one of them is his.
               </div>
             </div>
           </div>
@@ -264,7 +263,7 @@ function FullReview({
             <div>
               <div className="vt">
                 {VERDICT[shown].t}
-                {decision ? " — decided by Sajith" : " — recommended"}
+                {decision ? " — decided by the Head of Operations" : " — recommended"}
               </div>
               <div className="vw">{VERDICT[shown].w}</div>
               <div className="vsrc">
@@ -285,7 +284,7 @@ function FullReview({
             <span>◆</span>
             <div>
               <b>{r.product} is now in the catalog.</b> The next person who asks for it self-serves.
-              Sajith will not see this request again.
+              the Head of Operations will not see this request again.
             </div>
           </div>
         )}
@@ -538,7 +537,7 @@ function IsoView({ r }: { r: Req }) {
               ))}
             </Panel>
             <Panel title="Drafted reply" eyebrow="human presses send">
-              <div className="email">{`Dear ${r.requester.split(" ")[0]},
+              <div className="email">{`Dear colleague,
 
 Thank you for submitting the Asset Management Procedure v4. Before I can sign off, two items are required under our document approval standard:
 
@@ -548,7 +547,7 @@ Thank you for submitting the Asset Management Procedure v4. Before I can sign of
 The ISO clause reference, revision history and review date are all in order.
 
 Regards,
-Sajith`}</div>
+the Head of Operations`}</div>
             </Panel>
           </div>
         </div>

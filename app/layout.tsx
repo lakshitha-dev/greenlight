@@ -66,7 +66,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             ))}
 
             <div className="railfoot">
-              Signed in as <b>Sajith</b>
+              Signed in as <b>the Head of Operations</b>
               <br />
               Head of Operations &amp; IT
               <br />

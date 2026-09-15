@@ -102,7 +102,7 @@ export function decision(o: Partial<Decision> = {}): Decision {
     id: "dec-1",
     requestId: "SR-1000",
     outcome: "APPROVE",
-    actor: "Sajith",
+    actor: "the Head of Operations",
     comment: null,
     packId: "software-approval",
     packVersion: "2.1",

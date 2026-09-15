@@ -54,7 +54,7 @@ requirements:
     value: 500000
     severity: warning
     authority: Finance DoA §4.2
-    breach: Escalate to Yohan — signatory, BISTEC Solutions
+    breach: Escalate to the entity signatory for BISTEC Solutions
 
   - id: R7
     field: sso

@@ -245,7 +245,7 @@ input[type=number]{font-family:var(--mono);text-align:right}
     <button class="navitem" data-nav="audit">Audit trail <span class="ct" id="ct-audit">0</span></button>
     <button class="navitem" data-nav="dash">Dashboard</button>
     <div class="railfoot">
-      Signed in as <b>Sajith</b><br>Head of Operations &amp; IT<br>
+      Signed in as <b>the Head of Operations</b><br>Head of Operations &amp; IT<br>
       <span class="mono" style="font-size:10.5px">Approver · all entities</span>
     </div>
   </nav>
@@ -303,7 +303,7 @@ const pack = {
     {id:"R3", field:"dpa",          label:"Data Processing Agreement available",   op:"exists",          severity:"blocking", authority:"PDPA 2022 · GDPR Art.28"},
     {id:"R4", field:"criticalCves", label:"Critical CVEs at or below threshold",   op:"lte",  value:5,   severity:"warning",  authority:"ISO 27001 A.8.8"},
     {id:"R5", field:"privacyGrade", label:"Privacy grade C or better",             op:"grade",value:"C", severity:"warning",  authority:"ISO 27701"},
-    {id:"R6", field:"annualCost",   label:"Within delegated spend authority",      op:"lte",  value:500000, severity:"warning", authority:"Finance DoA §4.2", breach:"Escalate to Yohan — signatory, BISTEC Solutions"},
+    {id:"R6", field:"annualCost",   label:"Within delegated spend authority",      op:"lte",  value:500000, severity:"warning", authority:"Finance DoA §4.2", breach:"Escalate to the entity signatory for BISTEC Solutions"},
     {id:"R7", field:"sso",          label:"SSO / SAML enforcement supported",      op:"true",            severity:"warning",  authority:"ISO 27001 A.5.16"},
     {id:"R8", field:"subprocessors",label:"Sub-processor list disclosed",          op:"exists",          severity:"warning",  authority:"ISO 27701 §7.2.7"}
   ]
@@ -314,24 +314,24 @@ const F=(v,p,s)=>({value:v,prov:p,src:s||""});
 /* ─────────── requests ─────────── */
 const requests = [
 { id:"SR-1050", kind:"software", product:"Zoom", subject:"Zoom — licence for new support hire",
-  requester:"Prabath Senanayake", team:"Support Team", entity:"BISTEC Solutions", age:"4s", overdue:false,
+  requester:"the Support Engineer", team:"Support Team", entity:"BISTEC Solutions", age:"4s", overdue:false,
   body:`Hi,
 
 New technician starting Monday on the BDO Australia desk. She needs a Zoom licence for customer calls.
 
-Prabath`},
+the Support Engineer`},
 
 { id:"SR-1051", kind:"software", product:"Confluence", subject:"Confluence — access for two new engineers",
-  requester:"Nilantha Bandara", team:"Delivery", entity:"BISTEC Global (SL)", age:"7s", overdue:false,
+  requester:"the Delivery Lead", team:"Delivery", entity:"BISTEC Global (SL)", age:"7s", overdue:false,
   body:`Two engineers joined the platform team this week and need Confluence access for the delivery documentation space.
 
-Nilantha`},
+the Delivery Lead`},
 
 { id:"SR-1052", kind:"software", product:"Figma", subject:"Figma — seat for incoming designer",
-  requester:"Anuka Perera", team:"Marketing", entity:"BISTEC Solutions", age:"22m", overdue:false,
+  requester:"the Marketing Lead", team:"Marketing", entity:"BISTEC Solutions", age:"22m", overdue:false,
   body:`We have a designer starting on the 21st and need a Figma seat for her.
 
-Anuka`},
+the Marketing Lead`},
 
 { id:"SR-1045", kind:"software", product:"Slack", subject:"Slack — scheduled re-review",
   requester:"GreenLight (automatic)", team:"System", entity:"BISTEC Solutions", age:"3h", overdue:false,
@@ -356,15 +356,15 @@ The catalog entry lapsed today. Until it is renewed, Slack requests no longer se
     {src:"Software catalog", res:"Existing licence — 187 of 210 seats assigned", kind:"done"}]},
 
 { id:"SR-1042", kind:"software", product:"ScreenConnect", subject:"ConnectWise ScreenConnect — remote support tooling",
-  requester:"Prabath Senanayake", team:"Support Team", entity:"BISTEC Solutions", age:"2d 4h", overdue:true,
-  body:`Hi Sajith,
+  requester:"the Support Engineer", team:"Support Team", entity:"BISTEC Solutions", age:"2d 4h", overdue:true,
+  body:`Hi the Head of Operations,
 
 The support team needs a remote-access tool so we can take over customer machines during BDO Australia service desk calls. ScreenConnect is what the outgoing provider used, so the team already knows it.
 
 Looking at 12 technician seats. Can we get this approved this week? The desk goes live on the 28th.
 
 Thanks,
-Prabath`,
+the Support Engineer`,
   vendor:"ConnectWise", seats:12,
   dataProfile:{ personalData:true, specialCategory:false, subjectCount:null,
     subjects:"Customer end-users on supported machines — population not bounded",
@@ -390,14 +390,14 @@ Prabath`,
     {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
 
 { id:"SR-1043", kind:"software", product:"Notion", subject:"Notion — team workspace for Marketing",
-  requester:"Anuka Perera", team:"Marketing", entity:"BISTEC Solutions", age:"1d 2h", overdue:false,
+  requester:"the Marketing Lead", team:"Marketing", entity:"BISTEC Solutions", age:"1d 2h", overdue:false,
   body:`Hi,
 
 Marketing would like Notion for campaign planning and the content calendar. We're currently running everything out of spreadsheets and it isn't holding up.
 
 18 users on the Business plan. Budget is approved by our department.
 
-Anuka`,
+the Marketing Lead`,
   vendor:"Notion Labs", seats:18,
   dataProfile:{ personalData:true, specialCategory:false, subjectCount:4200,
     subjects:"Marketing contacts and prospects",
@@ -423,7 +423,7 @@ Anuka`,
     {src:"Software catalog", res:"Capability overlap detected with Confluence", kind:"miss"}]},
 
 { id:"SR-1044", kind:"software", product:"Flowtrace AI", subject:"Flowtrace AI — automated test-case generation",
-  requester:"Nilantha Bandara", team:"QA", entity:"BISTEC Global (SL)", age:"6h", overdue:false,
+  requester:"the Delivery Lead", team:"QA", entity:"BISTEC Global (SL)", age:"6h", overdue:false,
   body:`Requesting Flowtrace AI for the QA team — it generates regression test cases from Jira tickets. Saw it demoed at a conference.
 
 Small vendor, 4 seats to trial.`,
@@ -450,7 +450,7 @@ Small vendor, 4 seats to trial.`,
     {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
 
 { id:"SR-1046", kind:"software", product:"FortiClient", subject:"Fortinet FortiClient VPN — remote workforce",
-  requester:"Ishara Fonseka", team:"IT Infrastructure", entity:"BISTEC Australia", age:"11h", overdue:false,
+  requester:"the Infrastructure Engineer", team:"IT Infrastructure", entity:"BISTEC Australia", age:"11h", overdue:false,
   body:`Requesting FortiClient for the Australian team's VPN access. 40 seats.`,
   vendor:"Fortinet", seats:40,
   dataProfile:{ personalData:true, specialCategory:false, subjectCount:40,
@@ -476,15 +476,15 @@ Small vendor, 4 seats to trial.`,
     {src:"Software catalog", res:"Not previously assessed", kind:"done"}]},
 
 { id:"AR-0318", kind:"iso", subject:"ISO document approval — Asset Management Procedure v4",
-  requester:"Dinusha Weerasinghe", team:"Quality", entity:"BISTEC Global (SL)", age:"3d 1h", overdue:true,
-  body:`Dear Sajith,
+  requester:"the Quality Manager", team:"Quality", entity:"BISTEC Global (SL)", age:"3d 1h", overdue:true,
+  body:`Dear the Head of Operations,
 
 Please find attached the revised Asset Management Procedure (v4) for your approval ahead of the internal audit.
 
 Attachment: BG-QMS-PR-014-AssetManagement-v4.docx
 
 Regards,
-Dinusha`,
+the Quality Manager`,
   isoChecks:[
     {id:"R1", label:"Business justification stated", status:"fail", why:"No business outcome or driver given for the revision. Required before IT sign-off.", severity:"blocking"},
     {id:"R2", label:"Risk owner named", status:"fail", why:"Document lists no accountable owner for the asset register.", severity:"blocking"},
@@ -621,7 +621,7 @@ let state={view:"queue", req:null, researched:{}, decisions:{}, audit:[], packVe
 const el=document.getElementById("view");
 function logAudit(action,detail,ref){
   state.audit.unshift({ts:new Date().toISOString().replace("T"," ").slice(0,19),action,detail,ref,
-    actor:"Sajith",pack:`${pack.id}@${state.packVersion}`});
+    actor:"the Head of Operations",pack:`${pack.id}@${state.packVersion}`});
   const n=document.getElementById("ct-audit"); if(n) n.textContent=state.audit.length;
 }
 function go(v,id){ state.view=v; state.req=id||null; render(); window.scrollTo(0,0); }
@@ -678,7 +678,7 @@ function viewQueue(){
           <div class="td">Security already settled. Only the seat purchase is open — routed to the budget owner, not Ops.</div></div></div>
         <div class="tier t2"><span class="bar"></span><div>
           <div class="n">${t2.length}</div><div class="tl">Full review</div>
-          <div class="td">Not in catalog, or the entry no longer holds. These need Sajith.</div></div></div>
+          <div class="td">Not in catalog, or the entry no longer holds. These need the Head of Operations.</div></div></div>
       </div>
     </div>
 
@@ -689,7 +689,7 @@ function viewQueue(){
     </div>
 
     <div style="margin-top:16px" class="callout ok"><span>◆</span><div>
-      <b>Every approval shrinks the next queue.</b> When Sajith approves something new, it enters the catalog — and every future request for it self-serves. The decision he makes today is one he never makes again.</div></div>`;
+      <b>Every approval shrinks the next queue.</b> When the Head of Operations approves something new, it enters the catalog — and every future request for it self-serves. The decision he makes today is one he never makes again.</div></div>`;
 }
 
 /* ─────────── request router ─────────── */
@@ -748,7 +748,7 @@ function viewSelfService(r,rt){
             <div class="kv"><span class="k">Approval required</span><span class="v" style="color:var(--signal)">None</span></div>
             <div class="kv"><span class="k">Time to access</span><span class="v mono">${r.age}</span></div>
           </div></div>
-        <div class="callout ok"><span>◆</span><div><b>We already have this.</b> The security question was answered on ${c.approved} and the answer is still good. Asking it again would have cost ${r.requester.split(" ")[0]} three days and Sajith four minutes, and changed nothing.</div></div>
+        <div class="callout ok"><span>◆</span><div><b>We already have this.</b> The security question was answered on ${c.approved} and the answer is still good. Asking it again would have cost ${r.requester.split(" ")[0]} three days and the Head of Operations four minutes, and changed nothing.</div></div>
         <div class="callout info"><span>◆</span><div><b>Automatic does not mean unrecorded.</b> This provisioning is in the audit trail with the catalog version that authorised it — the evidence an ISO auditor asks for.</div></div>
       </div>
     </div>
@@ -788,7 +788,7 @@ function viewSpendOnly(r,rt){
             <div class="kv"><span class="k">Internal owner</span><span class="v">${c.owner}</span></div>
             <div class="kv"><span class="k">Next review</span><span class="v mono">${c.review}</span></div>
           </div></div>
-        <div class="callout info"><span>◆</span><div><b>Today both questions land on Sajith.</b> Only one of them is his.</div></div>
+        <div class="callout info"><span>◆</span><div><b>Today both questions land on the Head of Operations.</b> Only one of them is his.</div></div>
       </div>
     </div>
   </div>`;
@@ -827,7 +827,7 @@ function viewFullReview(r,rt){
   const gate = rt.cause==="stale" ? `
     <div class="callout"><span>◆</span><div><b>${r.product} is in the catalog — and that was not enough.</b>
       ${rt.fails.map(f=>f).join(" ")} A catalog that never expires is just an allowlist, so this one does.</div></div>`
-    : `<div class="callout info"><span>◆</span><div><b>Not in the catalog.</b> No prior assessment exists, so this is the expensive path — and the one Sajith should actually be spending his attention on.</div></div>`;
+    : `<div class="callout info"><span>◆</span><div><b>Not in the catalog.</b> No prior assessment exists, so this is the expensive path — and the one the Head of Operations should actually be spending his attention on.</div></div>`;
 
   return `<button class="backlink" data-nav="queue">← Request queue</button>
     <div class="stack">
@@ -836,7 +836,7 @@ function viewFullReview(r,rt){
       ${gate}
       ${done&&ev?`
         <div class="verdict v-${decided||ev.outcome}">
-          <div><div class="vt">${VERDICT[decided||ev.outcome].t}${decided?" — decided by Sajith":" — recommended"}</div>
+          <div><div class="vt">${VERDICT[decided||ev.outcome].t}${decided?" — decided by the Head of Operations":" — recommended"}</div>
             <div class="vw">${VERDICT[decided||ev.outcome].w}</div>
             <div class="vsrc">${pack.id}@${state.packVersion} · ${pack.entity} · evaluated ${ev.live.length} of ${pack.rules.length} requirements</div></div>
           ${!decided?`<div class="actions">
@@ -847,7 +847,7 @@ function viewFullReview(r,rt){
           :`<span class="pill p-ok">Decision recorded · added to catalog</span>`}
         </div>`:""}
       ${decided==="APPROVE"||decided==="CONDITIONS"?`<div class="callout ok"><span>◆</span><div>
-        <b>${r.product} has entered the catalog.</b> The next person who asks for it self-serves. Sajith will not see this request again.</div></div>`:""}
+        <b>${r.product} has entered the catalog.</b> The next person who asks for it self-serves. the Head of Operations will not see this request again.</div></div>`:""}
       ${r.duplicate&&done?`<div class="callout"><span>◆</span><div><b>Duplicate capability.</b> ${r.duplicate}</div></div>`:""}
       <div class="split">
         <div class="stack">
@@ -957,7 +957,7 @@ function viewDpia(){
             <div class="kv"><span class="k">Highest residual risk</span><span class="v"><span class="pill ${rc(worst)}">${worst}</span></span></div>
             <div class="kv"><span class="k">Regime</span><span class="v">${REGIME[r.entity]||"—"}</span></div>
             <div class="kv"><span class="k">Prior consultation</span><span class="v">${worst==="High"?"Required before processing":"Not required"}</span></div>
-            <div class="kv"><span class="k">Reviewer</span><span class="v">Dinusha Weerasinghe · Quality</span></div>
+            <div class="kv"><span class="k">Reviewer</span><span class="v">the Quality Manager · Quality</span></div>
             <div class="kv"><span class="k">Next review</span><span class="v mono">2027-09-14</span></div>
             <div style="margin-top:14px" class="actions">
               <button class="btn primary" data-dpia-sign="${r.id}">Send to Quality for sign-off</button></div>
@@ -1021,7 +1021,7 @@ function viewIso(r){
                 <span class="pill ${c.severity==="blocking"?"p-crit":"p-warn"}">${c.severity}</span></div>`;}).join("")}
           </div></div>
           <div class="panel"><header><h2>Drafted reply</h2><span class="eyebrow">human presses send</span></header>
-            <div class="body"><div class="email">Dear Dinusha,
+            <div class="body"><div class="email">Dear the Quality Manager,
 
 Thank you for submitting the Asset Management Procedure v4. Before I can sign off, two items are required under our document approval standard:
 
@@ -1031,7 +1031,7 @@ Thank you for submitting the Asset Management Procedure v4. Before I can sign of
 The ISO clause reference, revision history and review date are all in order.
 
 Regards,
-Sajith</div></div></div>
+the Head of Operations</div></div></div>
         </div>
       </div>
     </div>`;
@@ -1164,7 +1164,7 @@ document.addEventListener("click",e=>{
   if(sign){ const r=requests.find(x=>x.id===sign.dataset.dpiaSign);
     const w=worstResidual(dpiaRisks(r));
     logAudit("DPIA sent for sign-off",`${r.product} · residual ${w} · ${REGIME[r.entity]}`,`DPIA-${r.id.split("-")[1]}`);
-    sign.outerHTML=`<span class="pill p-ok">Sent to Quality · Dinusha Weerasinghe</span>`; return; }
+    sign.outerHTML=`<span class="pill p-ok">Sent to Quality · the Quality Manager</span>`; return; }
   if(e.target.id==="run") return runResearch();
   const dec=e.target.closest("[data-decide]"); if(dec) return decide(dec.dataset.decide);
   const send=e.target.closest("[data-send]");
@@ -1207,7 +1207,7 @@ function runResearch(){
 function decide(outcome){
   const r=requests.find(x=>x.id===state.req);
   state.decisions[r.id]=outcome;
-  logAudit("Decision recorded",`${r.product} — ${VERDICT[outcome].t} by Sajith`,r.id);
+  logAudit("Decision recorded",`${r.product} — ${VERDICT[outcome].t} by the Head of Operations`,r.id);
   if(outcome==="APPROVE"||outcome==="CONDITIONS"){
     logAudit("Added to software catalog",`${r.product} · future requests self-serve · review in 12 months`,r.id);
   }

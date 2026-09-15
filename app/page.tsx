@@ -72,7 +72,7 @@ export default async function Queue() {
             not Ops.
           </Tier>
           <Tier n={t2.length} cls="t2" title="Full review">
-            Not in catalog, or the entry no longer holds. These need Sajith.
+            Not in catalog, or the entry no longer holds. These need the Head of Operations.
           </Tier>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default async function Queue() {
       <div style={{ marginTop: 16 }} className="callout ok">
         <span>◆</span>
         <div>
-          <b>Every approval shrinks the next queue.</b> When Sajith approves something new it enters
+          <b>Every approval shrinks the next queue.</b> When the Head of Operations approves something new it enters
           the catalog — and every future request for it self-serves. The decision he makes today is
           one he never makes again.
         </div>
