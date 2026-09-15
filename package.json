@@ -15,10 +15,12 @@
     "typecheck": "tsc --noEmit",
     "verify": "npm run typecheck && npm run test && npm run build",
     "db:migrate": "prisma migrate deploy",
-    "check:ai": "tsx scripts/check-credential.ts"
+    "check:ai": "tsx scripts/check-credential.ts",
+    "mcp": "tsx mcp/server.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.72.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@prisma/client": "^6.0.0",
     "next": "^15.0.0",
     "next-auth": "^5.0.0-beta.32",

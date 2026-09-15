@@ -167,6 +167,41 @@ Set `ANTHROPIC_API_KEY` (or deploy behind Vercel AI Gateway) and the same step
 runs automatically instead. Nothing else changes — the rule pack cannot tell
 which path produced a fact, and does not need to.
 
+## Claude over MCP
+
+The copy-paste route works and keeps a person on the judgement step. But the
+carrying is not the judgement — it is just carrying. An MCP server removes it:
+
+```bash
+npm run mcp
+```
+
+Then point Claude at it (`mcp/claude_desktop_config.example.json`) and ask it to
+work the queue. Four tools:
+
+| Tool | Does |
+|---|---|
+| `list_requests_needing_evidence` | What is waiting, and which requirement each one is missing |
+| `get_request` | One request in full — facts, provenance, requirement by requirement |
+| `run_security_sources` | CISA KEV, NIST NVD, ToSDR, OSV — no credential, so never research these by hand |
+| `record_findings` | Writes what was established, with a provenance on every field |
+
+**There is deliberately no tool that approves anything.** An approval is the act
+the audit trail exists to evidence; it needs a person with the authority to make
+it, and giving a model that authority would make the trail worthless.
+
+Everything else still holds across the boundary. Recording a DPA as `claimed`
+over MCP produces the same refusal it produces in the UI:
+
+```
+R3  Data Processing Agreement available
+    Vendor asserts this, but no independent evidence was found.
+    A vendor claim cannot satisfy a blocking requirement.
+```
+
+Every MCP write lands in the audit trail attributed to `Claude (MCP)`, so who
+gathered evidence and who decided on it stay separable.
+
 ## Rule packs
 
 Policy lives in `rules/*.yaml`, owned by Operations, not engineering. Editing a
