@@ -1,0 +1,55 @@
+name: Claude PR review
+
+# Reviews every pull request automatically. The review is advisory — it posts
+# comments, it does not approve, block or merge anything. That mirrors how
+# GreenLight itself works: it makes a decision possible, a person makes it.
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Review this pull request. GreenLight decides whether software is
+            approved for use inside a company, so weight the review accordingly:
+
+            - Correctness in lib/rulepack.ts, lib/catalog.ts, lib/dpia.ts and
+              lib/estate.ts above everything else. A bug there means a wrong
+              approval, not a broken page.
+            - Any change that could let an unverified or vendor-claimed fact
+              satisfy a blocking requirement.
+            - Any path where an unreachable source could be reported as a clean
+              result rather than as unavailable.
+            - Decisions or catalog writes that escape the audit trail, or that
+              are no longer inside a transaction with their audit event.
+            - Unvalidated request bodies, and stored JSON parsed without a
+              shape check.
+            - Missing test coverage for a changed business rule.
+
+            Be specific and terse. Say when something is fine rather than
+            inventing findings.
+
+            The PR branch is already checked out.
+            Use `gh pr comment` for top-level feedback.
+            Use `mcp__github_inline_comment__create_inline_comment` (with
+            `confirmed: true`) for specific lines.
+            Only post GitHub comments — do not return the review as a message.
+
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"

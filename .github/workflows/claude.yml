@@ -1,0 +1,31 @@
+name: Claude
+
+# Responds when someone writes @claude in an issue, a pull request, or a
+# review comment. Nothing runs unless a person asks for it.
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+  issues:
+    types: [opened, assigned]
+
+jobs:
+  claude:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read         # read the repository
+      pull-requests: write   # post comments and inline annotations
+      issues: write          # reply on issues
+      id-token: write        # OIDC token for authentication
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          trigger_phrase: "@claude"
