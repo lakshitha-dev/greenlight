@@ -18,6 +18,7 @@ const NAV = [
   { href: "/estate", label: "Endpoint estate", section: "Decisions" },
   { href: "/privacy", label: "Privacy assessments", section: "Governance" },
   { href: "/rules", label: "Rule packs", section: "Governance" },
+  { href: "/skill", label: "Claude skills", section: "Governance" },
   { href: "/audit", label: "Audit trail", section: "Governance" },
 ];
 
