@@ -104,303 +104,257 @@ b{font-weight:700;color:var(--ink)}
 <!-- 1 ─────────────────────────────────────────────────────────── -->
 <section class="slide on">
   <div class="eyebrow">HeartForge 2026 · BISTEC Global</div>
-  <h1 style="margin-bottom:.28em">GreenLight</h1>
-  <p class="lede" style="max-width:34ch">Approvals that arrive ready to approve.</p>
-  <p style="margin-top:1.1em;max-width:52ch">
-    Every software request in the company lands on one desk as an email.
-    GreenLight reads it, answers what can be answered, and hands a person a
-    finished dossier. <b>It never approves anything.</b>
+  <h1 style="margin-bottom:.26em">GreenLight</h1>
+  <p class="lede" style="max-width:36ch">Approvals that arrive ready to approve.</p>
+  <p style="margin-top:1em;max-width:54ch">
+    Every software request in the company lands on one desk — and before anyone can say yes,
+    somebody has to research the vendor by hand. <b>That is the task this removes.</b>
   </p>
-  <div class="grid g3" style="margin-top:1.8em;max-width:56em">
-    <div class="card"><h3>The recurring task</h3><p>Researching a vendor by hand, two to three hours per tool, every week.</p></div>
-    <div class="card"><h3>Built with Claude</h3><p>Two Skills and an MCP server. No API key needed — a subscription is enough.</p></div>
-    <div class="card"><h3>Applies to</h3><p>All departments raise requests. Operations decides.</p></div>
+  <div class="grid g3" style="margin-top:1.7em;max-width:56em">
+    <div class="card"><h3>The recurring task</h3><p>Two to three hours of vendor research per tool, plus the days it waits in a queue. Every week.</p></div>
+    <div class="card"><h3>Built with Claude</h3><p>Two Claude Skills do the reading a person used to do — on an ordinary subscription, no API key.</p></div>
+    <div class="card"><h3>Who it is for</h3><p>Every department raises software requests. Operations decides. So: all of them.</p></div>
   </div>
-  <p class="tiny" style="margin-top:2em">
-    Lakshitha · <span class="mono">greenlight-umber.vercel.app</span> · <span class="mono">github.com/lakshitha-dev/greenlight</span>
+  <p class="tiny" style="margin-top:1.9em">
+    Lakshitha &nbsp;·&nbsp; <span class="mono">greenlight-umber.vercel.app</span>
   </p>
 </section>
 
 <!-- 2 ─────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">Today</div>
-  <h2>Every software request in the company lands on one desk.</h2>
-  <div class="grid g3">
-    <div class="card"><h3>It waits</h3><p>Every operational request needs IT sign-off. They queue.</p></div>
-    <div class="card warn"><h3>It's unusable when opened</h3><p>No justification, no security answer, no cost, no legal position.</p></div>
-    <div class="card bad"><h3>The approver becomes the researcher</h3><p>Two to three hours of vendor research, per tool, by hand.</p></div>
-  </div>
-  <p style="margin-top:1.4em">
-    <b>Nobody did anything wrong.</b> The requester didn't know what to include.
-    The approver wasn't slow — they were buried.
+  <div class="eyebrow">Why I built it</div>
+  <h1>Last month the support team asked to install a remote-access tool.</h1>
+  <p class="lede">
+    When GreenLight checked, it was already on the public list of software
+    <b class="cri">being actively broken into right now</b>.
   </p>
-  <p class="tiny">Elapsed time is an estimate and is marked as one throughout. The
-    missing-justification case is real: it happened to an ISO approval last month.</p>
+  <p class="lede" style="margin-top:.6em">Nobody at BISTEC could have known.</p>
+  <p style="margin-top:1.3em;max-width:56ch">
+    <b>And nobody did anything wrong.</b> The requester had no reason to check. The approver had
+    no way to find out. The gap was not in the people — it was that answering the question
+    properly takes hours nobody has.
+  </p>
+  <p class="tiny" style="margin-top:1.6em">
+    Checked live against CISA's Known Exploited Vulnerabilities catalogue at the moment of asking.
+    The figures are whatever the catalogue says that day — which is exactly the point.
+  </p>
 </section>
 
 <!-- 3 ─────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">Where it starts</div>
-  <h2>The request is an email. So GreenLight reads email.</h2>
-  <p class="lede">
-    Nobody at BISTEC fills in a form. They write to the Head of Operations —
-    which meant someone still had to read the message and retype it.
+  <div class="eyebrow">The recurring task</div>
+  <h2>One request. Nearly a week.</h2>
+  <div class="rows" style="margin-top:.3em">
+    <div class="row"><span class="k wrn">3 days</span> It waits in the inbox. Every operational request in the company arrives at the same desk.</div>
+    <div class="row"><span class="k wrn">1–2 days</span> It comes back incomplete — no justification, no cost, no security answer. The reply goes to the bottom of the queue.</div>
+    <div class="row"><span class="k cri">2–3 hrs</span> The approver becomes the researcher. Is this vendor safe? What does it cost? Are we allowed to use it here?</div>
+  </div>
+  <p style="margin-top:1.5em">
+    <b>Then multiply that by every tool, every week.</b> One person is the bottleneck for the
+    whole company, and the work that makes them the bottleneck is the same work every time.
   </p>
-  <div class="grid g2" style="margin-top:1.2em">
+  <p class="tiny">
+    Elapsed times are estimates and are marked as estimates throughout this deck. The
+    missing-justification case is real — it happened to an ISO approval last month.
+  </p>
+</section>
+
+<!-- 4 ─────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">What changes</div>
+  <h2>The same request, before and after.</h2>
+  <div class="grid g2" style="margin-top:.9em">
     <div class="card">
-      <h3>What arrives</h3>
-      <p class="mono" style="font-size:.78em;line-height:1.75;white-space:pre-wrap">Could we get Canva Pro for the
+      <h3>What the approver used to open</h3>
+      <p class="mono" style="font-size:.78em;line-height:1.7;white-space:pre-wrap;margin-top:.6em">Could we get Canva Pro for the
 marketing team? There are 6 of us
 and we are rebuilding the case-study
 templates.
 
 Thanks,
 Marketing Lead</p>
+      <p style="margin-top:.9em"><b>And nothing else.</b></p>
     </div>
     <div class="card ok">
-      <h3>What GreenLight files</h3>
+      <h3>What the approver opens now</h3>
       <div class="rows">
-        <div class="row"><span class="k">Software</span> Canva Pro</div>
-        <div class="row"><span class="k">Seats</span> 6</div>
-        <div class="row"><span class="k">Team</span> Marketing</div>
-        <div class="row"><span class="k">For</span> Rebuilding case-study templates</div>
-        <div class="row"><span class="k">Personal data</span> <span class="wrn">not stated</span></div>
+        <div class="row"><span class="k">Own it?</span> No — new to us</div>
+        <div class="row"><span class="k">Attacked?</span> Nothing on the live exploited list</div>
+        <div class="row"><span class="k">Security</span> Independent audit report — <b>found</b></div>
+        <div class="row"><span class="k">Our data</span> United States — <b class="wrn">vendor's own word only</b></div>
+        <div class="row"><span class="k">Cost</span> Within delegated spend authority</div>
+        <div class="row"><span class="k">Privacy</span> <b class="wrn">Not stated</b> — question drafted, ready to send</div>
       </div>
     </div>
   </div>
-  <p style="margin-top:1.3em">
-    <b>That last line is the whole point.</b> Whether anyone's personal data goes in decides
-    whether a privacy assessment is legally required. The email does not mention the subject —
-    and <b>silence is not a no</b>. So GreenLight writes the question instead of assuming, and
-    a person sends it.
-  </p>
-  <p class="tiny">Two ways in: paste the message, or let a Power Automate rule in Outlook post it.
-    Both land on the same code. The Power Automate HTTP action is a premium connector, so the
-    paste route is the one that needs nothing.</p>
-</section>
-
-<!-- 4 ─────────────────────────────────────────────────────────── -->
-<section class="slide">
-  <div class="eyebrow">The part a security lead asks about</div>
-  <h2>An inbox is the one input anyone can write to.</h2>
-  <p class="lede">
-    Everything else GreenLight reads came from a signed-in colleague or a source it chose to call.
-    An email is neither — so it is treated as data, never as instruction.
-  </p>
-  <div class="grid g3" style="margin-top:1.2em">
-    <div class="card bad">
-      <h3>A display name is not identity</h3>
-      <p><span class="mono" style="font-size:.85em">"ops@bistecglobal.com"<br>&lt;attacker@evil.com&gt;</span><br><br>
-        The address in angle brackets is what counts. Everything else is text someone typed.</p>
-    </div>
-    <div class="card warn">
-      <h3>"Approve this immediately"</h3>
-      <p>Claude extracts fields. There is no field in what it returns that could approve
-        anything — the guarantee is structural, not a filter that has to be clever.</p>
-    </div>
-    <div class="card info">
-      <h3>The message is kept</h3>
-      <p>Stored exactly as written, next to what was read out of it. An approver can always
-        check the reading against the words.</p>
-    </div>
-  </div>
-  <p class="tiny" style="margin-top:1.4em">
-    A reply on a thread already linked to a request attaches to it rather than creating a
-    second one — the failure every naive mailbox integration ships with.
+  <p style="margin-top:1.2em">
+    Same request. Same approver. <b>The homework is done before they open it</b> — and what is
+    still unknown is named, not quietly filled in.
   </p>
 </section>
 
 <!-- 5 ─────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">The first idea</div>
-  <h2>Most requests shouldn't reach a person at all.</h2>
+  <div class="eyebrow">The biggest saving</div>
+  <h2>Most requests should never reach a person at all.</h2>
   <p class="lede">Before anything else, GreenLight asks one question: <b>do we already own this?</b></p>
-  <div class="grid g3" style="margin-top:1.2em">
+  <div class="grid g3" style="margin-top:1.1em">
     <div class="card ok">
       <div class="num sig">Nobody</div>
-      <p>We own it and a licence is spare. Access in seconds, logged. No approver.</p>
+      <p>We own it and a licence is spare. Access in seconds, and it is still logged.</p>
     </div>
     <div class="card info">
       <div class="num inf">Finance</div>
-      <p>We own it, no spare seat. A purchase, not a security question — so it never reaches IT.</p>
+      <p>We own it, no spare seat. That is a purchase, not a security question — so it never reaches IT.</p>
     </div>
     <div class="card warn">
       <div class="num wrn">IT</div>
-      <p>New to us, or the last answer has expired. This is the one worth attention.</p>
+      <p>New to us, or the last answer has expired. This is the one worth an approver's attention.</p>
     </div>
   </div>
-  <p class="tiny" style="margin-top:1.4em">
-    A catalog hit is not approval. An entry re-escalates when its review date passes,
-    when it drifts out of a legal entity's scope, or when new exploited vulnerabilities
-    appear after the approval. A catalog that never expires is just an allowlist.
+  <p style="margin-top:1.3em">
+    On one working day of real traffic, <b>3 of 11 requests were settled before anyone read them</b> —
+    and of the four asking for software we already own, <b>three needed no security review at all</b>.
   </p>
 </section>
 
 <!-- 6 ─────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">What Claude does</div>
-  <h2>The question no database can answer.</h2>
+  <div class="eyebrow">Where Claude does the work</div>
+  <h2>The questions you cannot look up.</h2>
   <div class="grid g2">
     <div class="card">
-      <h3>Machines answer this</h3>
-      <p class="dim" style="margin-bottom:.7em">Is anyone attacking it right now? How many critical CVEs? What's the privacy grade?</p>
-      <span class="chip">CISA KEV</span> <span class="chip">NIST NVD</span>
-      <span class="chip">ToSDR</span> <span class="chip">OSV.dev</span>
+      <h3>A database can answer these</h3>
+      <p class="dim" style="margin-bottom:.7em">Is anyone attacking it right now? How many serious flaws? What is its privacy record?</p>
+      <span class="chip">CISA</span> <span class="chip">NIST</span> <span class="chip">ToSDR</span> <span class="chip">OSV</span>
       <p style="margin-top:.9em;font-size:.92em"><b>Four sources, about one second.</b></p>
     </div>
     <div class="card ok">
-      <h3>Only Claude answers this</h3>
-      <p style="margin-bottom:.7em">Does this vendor hold a current SOC 2? Is there a DPA? Where does our data actually go? Does SSO exist on the tier we're buying?</p>
-      <p><b>There is no API for any of it.</b> It lives as prose on trust centres and
-        legal pages, in a different shape for every vendor.</p>
+      <h3>Only Claude can answer these</h3>
+      <p style="margin-bottom:.7em">Does this vendor hold a current security audit? Will they sign a data agreement? Where does our data physically sit? Who else do they hand it to?</p>
+      <p><b>There is no database for any of it.</b> It lives as prose on legal pages, in a different shape for every vendor.</p>
     </div>
   </div>
   <p style="margin-top:1.3em">
-    Claude reads those pages and returns <b>typed facts with a source URL for each one</b> —
-    and states plainly what it could not find.
+    <b>That reading is the recurring task.</b> It is what took two to three hours a time — and it
+    is the part Claude takes off the desk.
   </p>
 </section>
 
 <!-- 7 ─────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">The rule that makes it trustworthy</div>
-  <h2>Every fact carries where it came from.</h2>
-  <div class="rows" style="margin-bottom:1.3em">
-    <div class="row"><span class="k">1</span><span><span class="pill p-ok">verified</span> &nbsp;from a structured source anyone can re-query</span></div>
-    <div class="row"><span class="k">2</span><span><span class="pill p-inf">sourced</span> &nbsp;found on an identifiable page, URL kept</span></div>
-    <div class="row"><span class="k">3</span><span><span class="pill p-wrn">claimed</span> &nbsp;the vendor says so about itself, nothing confirms it</span></div>
-    <div class="row"><span class="k">4</span><span><span class="pill p-bad">not found</span> &nbsp;could not be established</span></div>
+  <div class="eyebrow">Why you can trust it</div>
+  <h2>It tells you what it doesn't know.</h2>
+  <p class="lede" style="max-width:48ch">
+    The thing everyone fears about an AI tool is confident nonsense. This one is built so it
+    cannot produce any.
+  </p>
+  <div class="rows" style="margin-top:1.1em;margin-bottom:1.2em">
+    <div class="row"><span class="pill p-ok">checked</span>&nbsp; we queried a source anyone else can query too</div>
+    <div class="row"><span class="pill p-inf">found</span>&nbsp; it is written on a page, and the page is kept</div>
+    <div class="row"><span class="pill p-wrn">their word</span>&nbsp; the vendor says so about itself, nothing confirms it</div>
+    <div class="row"><span class="pill p-bad">not found</span>&nbsp; we could not establish it, and we say so</div>
   </div>
   <div class="grid g2">
-    <div class="card bad">
-      <h3>A vendor's word is not evidence</h3>
-      <p>A <b>claimed</b> fact cannot satisfy a blocking requirement — however it arrived.</p>
-    </div>
-    <div class="card info">
-      <h3>Not found is a finding</h3>
-      <p>A requirement that can't be evaluated returns <b>more information required</b>. Never a guess.</p>
-    </div>
+    <div class="card bad"><h3>A vendor's word is not evidence</h3><p>A vendor's own claim <b>cannot satisfy a requirement that blocks</b>, however it arrived.</p></div>
+    <div class="card info"><h3>"Not found" is an answer</h3><p>A question it cannot settle comes back as <b>more information required</b>. Never a guess.</p></div>
   </div>
-  <p class="tiny" style="margin-top:1.3em">
-    This is the failure mode that sinks AI tools: confident synthesis of things nobody verified.
-    GreenLight is built so it structurally cannot happen.
-  </p>
 </section>
 
 <!-- 8 ─────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">Policy</div>
-  <h2>The rules are a file Operations owns. Not code.</h2>
-  <div class="grid g2">
-    <div class="card">
-      <h3>Software approval <span class="chip" style="margin-left:6px">BISTEC Global</span></h3>
-      <p class="dim mono" style="font-size:.85em">software-approval@2.1</p>
-      <p style="margin-top:.6em">PDPA No. 9 of 2022. Eight requirements — SOC&nbsp;2, DPA, residency, SSO, exploited CVEs.</p>
-    </div>
-    <div class="card">
-      <h3>ISO document approval <span class="chip" style="margin-left:6px">same engine</span></h3>
-      <p class="dim mono" style="font-size:.85em">iso-document-approval@1.0</p>
-      <p style="margin-top:.6em">Nothing to research. Five requirements a person judges — and the engine cannot tell the difference.</p>
-    </div>
+  <div class="eyebrow">After you stop watching</div>
+  <h2>Approvals expire by themselves.</h2>
+  <div class="rows" style="margin-top:.3em">
+    <div class="row"><span class="k">→</span> Slack's approval <b>ran out this morning</b>. It dropped off the list of what may run on company machines, on its own.</div>
+    <div class="row"><span class="k">→</span> Microsoft 365 — <b class="cri">six new actively-exploited vulnerabilities</b> published since it was approved. It stops self-serving until someone looks again.</div>
+    <div class="row"><span class="k">→</span> <b>No ticket. No restart. Nobody notified</b> — because nobody needed to be.</div>
   </div>
-  <p style="margin-top:1.4em">
-    Change a rule and <b>nothing is deployed</b> — you edit a YAML file and bump its version.
-    Every decision is stamped with the version that governed it, so an auditor asking
-    <i>"what were the rules in March?"</i> gets an answer rather than a git archaeology exercise.
+  <div class="card warn" style="margin-top:1.4em">
+    <h3>And it finds what nobody approved</h3>
+    <p>GreenLight compares what was approved against what is actually installed on company machines — so software that arrived without asking shows up.</p>
+  </div>
+  <p class="tiny" style="margin-top:1.2em">
+    Two products covering 550 seats were withheld automatically this morning — one because its
+    approval expired, one because it came under attack after we approved it.
   </p>
-  <p class="tiny">One legal entity today, and policy is keyed by entity — a second is another file,
-    not a code change. Proven by a test: the engine evaluates a leave-approval pack that exists
-    only inside the test file.</p>
 </section>
 
 <!-- 9 ─────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">The part I'd show a security lead</div>
-  <h2>Approvals expire. On their own.</h2>
-  <div class="rows">
-    <div class="row"><span class="k">→</span><span>Slack was approved in November with a ten-month review interval.</span></div>
-    <div class="row"><span class="k">→</span><span>That interval <b>ran out today</b>.</span></div>
-    <div class="row"><span class="k">→</span><span>So <span class="mono">slack.exe</span> <b class="cri">dropped off the endpoint allow list by itself</b> — no ticket, no restart, nobody notified.</span></div>
-  </div>
-  <div class="card warn" style="margin-top:1.5em">
-    <h3>And Microsoft 365 is being watched</h3>
-    <p>Six new actively-exploited vulnerabilities have been published <b>since it was approved</b>.
-      It stops self-serving until someone looks again.</p>
-  </div>
-  <p class="tiny" style="margin-top:1.3em">
-    The same validity rule governs both the approval queue and what endpoints are permitted to run,
-    so policy and enforcement cannot disagree.
+  <div class="eyebrow">Who owns the policy</div>
+  <h2>Operations changes the rules. Not a developer.</h2>
+  <p class="lede" style="max-width:50ch">
+    The rules are a file Operations owns — nineteen requirements across software approval, ISO
+    documents and privacy screening.
   </p>
+  <p style="margin-top:1.1em;max-width:58ch">
+    Change one and <b>nothing is deployed and no ticket is raised</b>. Every decision is stamped
+    with the version of the rules that governed it, so an auditor asking <i>"what were the rules
+    in March?"</i> gets an answer rather than an archaeology exercise.
+  </p>
+  <div class="card info" style="margin-top:1.3em">
+    <h3>ISO audits are due early next year</h3>
+    <p>The evidence file builds itself — every decision, who made it, when, and under which version of our own policy. Including the ones nobody had to touch.</p>
+  </div>
 </section>
 
-<!-- 10 ─────────────────────────────────────────────────────────── -->
-<section class="slide">
-  <div class="eyebrow">Why the queue shrinks</div>
-  <h1 style="max-width:26ch">Every decision made today is one that is never made again.</h1>
-  <p class="lede">Approve something new and it joins the catalog. The next person who
-    asks for it gets it in seconds, and the approver never sees the request.</p>
-  <p class="tiny" style="margin-top:2em">
-    A person still decides — GreenLight never approves anything. What it removes is the
-    research, the chasing, and every request that should never have been asked twice.
-  </p>
-</section>
-
-<!-- 11 ─────────────────────────────────────────────────────────── -->
+<!-- 10 ────────────────────────────────────────────────────────── -->
 <section class="slide">
   <div class="eyebrow">What it's worth</div>
   <h2>Honestly, split in two.</h2>
-  <div class="grid g2">
+  <div class="grid g2" style="margin-top:.7em">
     <div class="card ok">
-      <h3 class="sig">Demonstrable today</h3>
+      <h3 class="sig">We can show this today</h3>
       <div class="rows">
-        <div class="row"><span class="k">·</span><span>Exploited software caught <b>before</b> anyone installs it</span></div>
-        <div class="row"><span class="k">·</span><span>Approvals that revoke themselves when they expire</span></div>
-        <div class="row"><span class="k">·</span><span>Unapproved software found running on real machines</span></div>
-        <div class="row"><span class="k">·</span><span>An ISO audit trail that builds itself — every decision, who, when, under which policy version</span></div>
-        <div class="row"><span class="k">·</span><span><b>898 seats</b> tracked; the unused ones are money</span></div>
+        <div class="row"><span class="k">·</span> <b>898 licence seats</b> tracked — <b>99 sitting unused</b></div>
+        <div class="row"><span class="k">·</span> <b>LKR 2.16m a year</b> in seats nobody has opened</div>
+        <div class="row"><span class="k">·</span> <b>3 of 11</b> requests settled before anyone read them</div>
+        <div class="row"><span class="k">·</span> Software under active attack caught <b>before</b> it is installed</div>
+        <div class="row"><span class="k">·</span> An audit file that assembles itself</div>
       </div>
     </div>
     <div class="card">
       <h3 class="wrn">Still to be measured</h3>
       <div class="rows">
-        <div class="row"><span class="k">1</span><span>How many software requests arrive in a week?</span></div>
-        <div class="row"><span class="k">2</span><span>What share come back incomplete?</span></div>
-        <div class="row"><span class="k">3</span><span>How long does that round trip really take?</span></div>
+        <div class="row"><span class="k">1</span> How many software requests arrive in a week?</div>
+        <div class="row"><span class="k">2</span> What share of them come back incomplete?</div>
+        <div class="row"><span class="k">3</span> How long does that round trip actually take?</div>
       </div>
-      <p style="margin-top:1em" class="dim">Ten minutes with Operations turns the time
-        savings from an estimate into evidence. Until then I'm presenting them as estimates.</p>
+      <p class="dim" style="margin-top:1em">Ten minutes with Operations turns the time saved from an estimate into evidence. Until then I am calling it an estimate.</p>
     </div>
   </div>
+  <p class="tiny" style="margin-top:1.2em">
+    It is running now, not a mockup — <span class="mono">greenlight-umber.vercel.app</span>. Sign in and try it.
+  </p>
+</section>
+
+<!-- 11 ────────────────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">Applicable departments</div>
+  <h2>Every department asks. One department decides.</h2>
+  <div class="grid g3" style="margin-top:1.1em">
+    <div class="card"><h3>Everyone raises requests</h3><p>Delivery, QA, Marketing, Support, Infrastructure and Quality all ask for software. They get an answer in seconds or a clear question back.</p></div>
+    <div class="card ok"><h3>Operations decides</h3><p>The approver, and the only role that can. They stop being the research desk and go back to being the decision.</p></div>
+    <div class="card info"><h3>Finance, Legal and IT</h3><p>Spend that needs a budget owner, privacy law that needs an assessment, and what is permitted to run on company machines.</p></div>
+  </div>
+  <p style="margin-top:1.4em">
+    That is why this is submitted as <b>All</b> — the queue belongs to Operations, but the
+    request belongs to everyone.
+  </p>
 </section>
 
 <!-- 12 ────────────────────────────────────────────────────────── -->
 <section class="slide">
-  <div class="eyebrow">It's not a mockup</div>
-  <h2>Built to be used, not demonstrated.</h2>
-  <div class="grid g3">
-    <div class="card"><div class="num">265</div><p>tests, weighted at the rules where a bug means a wrong approval. Three are regressions for defects that actually happened.</p></div>
-    <div class="card"><div class="num">4</div><p>live security sources, queried in about a second. No API key, no mock data.</p></div>
-    <div class="card"><div class="num">3</div><p>roles. A requester pressing Approve is refused and told why.</p></div>
-  </div>
-  <div class="grid g2" style="margin-top:1.2em">
-    <div class="card info"><h3>Deployed and running</h3><p>Postgres, sign-in, CI on every push. Not a laptop demo.</p></div>
-    <div class="card ok"><h3>Built with Claude</h3><p>Claude does the research the app can't. The Skill ships with it, so it runs on an ordinary subscription.</p></div>
-  </div>
-</section>
-
-<!-- 13 ────────────────────────────────────────────────────────── -->
-<section class="slide">
   <div class="eyebrow">GreenLight</div>
   <h1 style="max-width:24ch">GreenLight never approves anything.</h1>
   <h1 class="sig" style="max-width:24ch;margin-top:-.2em">It makes sure a person can.</h1>
-  <p class="tiny" style="margin-top:2.6em">
-    BISTEC Global &nbsp;·&nbsp; Approval console
-  </p>
+  <p class="tiny" style="margin-top:2.4em">BISTEC Global &nbsp;·&nbsp; <span class="mono">greenlight-umber.vercel.app</span></p>
 </section>
 
 <div class="nav">
   <button id="prev" aria-label="Previous slide">←</button>
-  <span id="count">1 / 13</span>
+  <span id="count">1 / 12</span>
   <button id="next" aria-label="Next slide">→</button>
 </div>
 
