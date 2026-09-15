@@ -1,0 +1,16 @@
+# Normalise line endings in the repository.
+#
+# Without this, files authored on Windows land as CRLF and git warns on every
+# add. It also had a real consequence here: .gitignore was written with CRLF,
+# and git does not strip the trailing \r from a pattern — so every rule in it
+# silently matched nothing, and .env was staged for commit.
+* text=auto eol=lf
+
+# Binary — never touch these
+*.png binary
+*.jpg binary
+*.ico binary
+*.db  binary
+
+# Diagrams are XML but large and machine-generated; keep them out of diffs
+*.drawio -diff
