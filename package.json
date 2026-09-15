@@ -16,7 +16,8 @@
     "verify": "npm run typecheck && npm run test && npm run build",
     "db:migrate": "prisma migrate deploy",
     "check:ai": "tsx scripts/check-credential.ts",
-    "mcp": "tsx mcp/server.ts"
+    "mcp": "tsx mcp/server.ts",
+    "walkthrough": "tsx scripts/walkthrough.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.72.0",
