@@ -15,10 +15,23 @@ GreenLight never approves anything. It makes sure a human can.
 
 ```bash
 npm install
-npx prisma generate && npx prisma db push
-npm run seed
-npm run dev          # http://localhost:3001
+cp .env.example .env     # then fill in DATABASE_URL, DIRECT_DATABASE_URL, AUTH_SECRET
+npm run setup            # generate client, run migrations, seed
+npm run dev              # http://localhost:3001
 ```
+
+Sign in with one of the seeded accounts — password `greenlight` for all three:
+
+| Account | Role | Can |
+|---|---|---|
+| `support@bistec.example` | Requester | raise and research |
+| `ops@bistec.example` | Approver | **decide** |
+| `admin@bistec.example` | Administrator | everything |
+
+The role is not decoration: a requester pressing Approve gets a 403 naming
+their role. A decision is the act the audit trail exists to evidence, so it
+needs a named person with the authority to make it — every event records who,
+when, and which version of policy governed it.
 
 > **Port note.** GreenLight runs on **3001** because `process-analyzer`
 > hardcodes 3000 with no `PORT` fallback, and that repo is not ours to change.
@@ -46,7 +59,7 @@ Reset the demo at any time with `npm run seed`.
 ## Verifying it
 
 ```bash
-npm run verify     # typecheck, then 153 tests, then a production build
+npm run verify     # typecheck, then 167 tests, then a production build
 npm test           # the suite alone, ~1s, no network
 npm run test:coverage
 ```

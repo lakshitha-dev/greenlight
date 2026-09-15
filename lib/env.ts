@@ -12,6 +12,7 @@
 
 export type Env = {
   databaseUrl: string;
+  directUrl: string | null;
   processAnalyzerUrl: string;
   anthropicApiKey: string | null;
   nvdApiKey: string | null;
@@ -44,6 +45,14 @@ export function readEnv(): Env {
     );
   }
 
+  // Only migrations use the direct URL, so its absence is not fatal at
+  // runtime — but a pooled URL with no direct counterpart means `prisma
+  // migrate` will fail later, and saying so now is cheaper than finding out
+  // mid-deploy.
+  const directUrl = process.env.DIRECT_DATABASE_URL ?? "";
+  if (directUrl && !/^postgres(ql)?:\/\//.test(directUrl))
+    problems.push("DIRECT_DATABASE_URL is set but is not a postgres:// URL.");
+
   const processAnalyzerUrl = process.env.PROCESS_ANALYZER_URL ?? "http://localhost:3000";
   try {
     new URL(processAnalyzerUrl);
@@ -61,6 +70,7 @@ export function readEnv(): Env {
 
   cached = {
     databaseUrl,
+    directUrl: directUrl || null,
     processAnalyzerUrl,
     anthropicApiKey: process.env.ANTHROPIC_API_KEY || null,
     nvdApiKey: process.env.NVD_API_KEY || null,

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { fetchScan, PA_URL } from "@/lib/sources/analyzer";
 import { logEvent } from "@/lib/audit";
+import { currentActor } from "@/lib/auth";
 import { handler, fail } from "@/lib/api";
 import { hostname } from "node:os";
 
@@ -24,6 +25,8 @@ export const maxDuration = 120;
 /** Pulls a live scan from process-analyzer and stores it. Returns 503 rather
  *  than throwing when the analyzer is not running, so the UI can say so. */
 export const POST = handler("scan", async () => {
+  const me = await currentActor();
+  if (!me) return fail(401, "Sign in to ingest a scan.");
   const scan = await fetchScan();
 
   if (!scan || !Array.isArray(scan.processes))

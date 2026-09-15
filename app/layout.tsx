@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { hasKey } from "@/lib/research";
+import { auth, ROLE_LABEL, signOut, type Role } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "GreenLight",
@@ -20,18 +21,7 @@ const NAV = [
   { href: "/audit", label: "Audit trail", section: "Governance" },
 ];
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [queue, catalog, events] = await Promise.all([
-    db.request.count(),
-    db.catalogEntry.count(),
-    db.auditEvent.count(),
-  ]);
-  const counts: Record<string, string | number> = {
-    "/": queue,
-    "/catalog": catalog,
-    "/audit": events,
-  };
-
+function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -42,9 +32,40 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
         />
       </head>
-      <body>
-        <div className="shell">
-          <nav className="rail">
+      <body>{children}</body>
+    </html>
+  );
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+
+  /** Signed out — the sign-in page gets the document and nothing else. Reading
+   *  the counts here would query the database for someone with no session. */
+  if (!session?.user) {
+    return (
+      <Document>
+        <main style={{ padding: "0 24px" }}>{children}</main>
+      </Document>
+    );
+  }
+
+  const [queue, catalog, events] = await Promise.all([
+    db.request.count(),
+    db.catalogEntry.count(),
+    db.auditEvent.count(),
+  ]);
+
+  const counts: Record<string, string | number> = {
+    "/": queue,
+    "/catalog": catalog,
+    "/audit": events,
+  };
+
+  return (
+    <Document>
+      <div className="shell">
+        <nav className="rail">
             <Link href="/" className="brand">
               <span className="dot" />
               <span>
@@ -66,23 +87,40 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             ))}
 
             <div className="railfoot">
-              Signed in as <b>the Head of Operations</b>
-              <br />
-              Head of Operations &amp; IT
+              Signed in as <b>{session.user.name}</b>
               <br />
               <span className="mono" style={{ fontSize: "10.5px" }}>
-                Approver · all entities
+                {ROLE_LABEL[session.user.role as Role]}
+                {session.user.entity ? ` · ${session.user.entity}` : " · all entities"}
               </span>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/login" });
+                }}
+              >
+                <button
+                  type="submit"
+                  style={{
+                    marginTop: 8,
+                    fontSize: 11.5,
+                    color: "var(--muted)",
+                    textDecoration: "underline",
+                    padding: 0,
+                  }}
+                >
+                  Sign out
+                </button>
+              </form>
               <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid var(--line-soft)" }}>
                 <span className={`pill ${hasKey() ? "p-ok" : "p-mute"}`}>
                   {hasKey() ? "Synthesis on" : "Sources only"}
                 </span>
               </div>
             </div>
-          </nav>
-          <main>{children}</main>
-        </div>
-      </body>
-    </html>
+        </nav>
+        <main>{children}</main>
+      </div>
+    </Document>
   );
 }

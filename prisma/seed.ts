@@ -5,6 +5,7 @@
  *  it re-escalate rather than self-serve. */
 
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "../lib/password";
 
 const db = new PrismaClient();
 const today = new Date().toISOString().slice(0, 10);
@@ -234,7 +235,18 @@ const requests = [
   },
 ];
 
+/** Three accounts, one per role, so the difference between them is
+ *  demonstrable. A shared password is acceptable for seeded demo data and for
+ *  nothing else. */
+const users = [
+  { email: "ops@bistec.example", name: "Head of Operations", role: "approver", entity: null },
+  { email: "support@bistec.example", name: "Support Engineer", role: "requester", entity: "BISTEC Solutions" },
+  { email: "admin@bistec.example", name: "Platform Administrator", role: "admin", entity: null },
+];
+const DEMO_PASSWORD = "greenlight";
+
 async function main() {
+  await db.user.deleteMany();
   await db.auditEvent.deleteMany();
   await db.decision.deleteMany();
   await db.dossier.deleteMany();
@@ -273,7 +285,12 @@ async function main() {
     });
   }
 
-  console.log(`seeded ${catalog.length} catalog entries, ${requests.length} requests`);
+  const passwordHash = await hashPassword(DEMO_PASSWORD);
+  for (const u of users) await db.user.create({ data: { ...u, passwordHash } });
+
+  console.log(
+    `seeded ${catalog.length} catalog entries, ${requests.length} requests, ${users.length} users`
+  );
 }
 
 main()

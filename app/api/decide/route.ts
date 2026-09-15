@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { packFor, VERDICT, type Outcome } from "@/lib/rulepack";
 import { syncPolicy } from "@/lib/estate";
 import { handler, readBody, fail } from "@/lib/api";
+import { currentActor, atLeast } from "@/lib/auth";
 
 const Body = z.object({
   requestId: z.string().min(1, "is required"),
@@ -16,11 +17,18 @@ export const POST = handler("decide", async (req: Request) => {
   if (!parsed.ok) return parsed.response;
   const { requestId, outcome, comment } = parsed.data;
 
+  /** A decision is the act the audit trail exists to evidence, so it needs a
+   *  named person with the authority to make it. */
+  const me = await currentActor();
+  if (!me) return fail(401, "Sign in to record a decision.");
+  if (!atLeast(me.role, "approver"))
+    return fail(403, `Deciding requires the approver role. Your account is ${me.role}.`);
+
   const r = await db.request.findUnique({ where: { id: requestId } });
   if (!r) return fail(404, `No request with id ${requestId}.`);
 
   const pack = packFor(r.entity);
-  const actor = "the Head of Operations";
+  const actor = me.name;
   const today = new Date().toISOString().slice(0, 10);
   const nextReview = new Date();
   nextReview.setFullYear(nextReview.getFullYear() + 1);

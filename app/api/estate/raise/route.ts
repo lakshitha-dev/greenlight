@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { withUniqueId } from "@/lib/ids";
-import { handler, readBody } from "@/lib/api";
+import { currentActor } from "@/lib/auth";
+import { handler, readBody, fail } from "@/lib/api";
 
 const Body = z.object({
   processName: z.string().min(1, "is required").max(260),
@@ -14,6 +15,9 @@ const Body = z.object({
 export const POST = handler("raise", async (req: Request) => {
   const parsed = await readBody(req, Body);
   if (!parsed.ok) return parsed.response;
+
+  const me = await currentActor();
+  if (!me) return fail(401, "Sign in to raise a request.");
   const { processName, publisher } = parsed.data;
 
   const product = processName.replace(/\.exe$/i, "");

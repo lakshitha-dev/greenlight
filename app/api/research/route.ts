@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { research } from "@/lib/research";
 import { packFor, evaluate, VERDICT } from "@/lib/rulepack";
+import { currentActor } from "@/lib/auth";
 import { handler, readBody, fail } from "@/lib/api";
 
 export const maxDuration = 120;
@@ -12,6 +13,9 @@ const Body = z.object({ requestId: z.string().min(1, "is required") });
 export const POST = handler("research", async (req: Request) => {
   const parsed = await readBody(req, Body);
   if (!parsed.ok) return parsed.response;
+
+  const me = await currentActor();
+  if (!me) return fail(401, "Sign in to run research.");
 
   const r = await db.request.findUnique({ where: { id: parsed.data.requestId } });
   if (!r) return fail(404, `No request with id ${parsed.data.requestId}.`);

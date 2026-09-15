@@ -3,8 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  // pooled — the app opens a connection per serverless invocation
+  url       = env("DATABASE_URL")
+  // direct — migrations cannot run through a connection pooler
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model Request {
@@ -104,4 +107,23 @@ model AuditEvent {
   actor     String
   authority String                        // rulepack@version that governed the step
   createdAt DateTime @default(now())
+}
+
+/** People who sign in.
+ *
+ *  Roles are deliberately coarse. `requester` can raise and research; only an
+ *  `approver` can decide, because a decision is the act the audit trail exists
+ *  to evidence. `admin` additionally edits policy.
+ *
+ *  Passwords are scrypt hashes from node:crypto — no native module, which
+ *  matters because bcrypt needs a compiler on Windows. Swapping the credentials
+ *  provider for Entra ID replaces this table, not the rest of the app. */
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("requester") // requester | approver | admin
+  entity       String?
+  createdAt    DateTime @default(now())
 }
