@@ -20,10 +20,11 @@
 
 $ErrorActionPreference = 'Stop'
 
-$Root  = Split-Path -Parent $PSScriptRoot
-$Name  = 'Lakshitha_All'
-$Stage = Join-Path $env:TEMP $Name
-$Zip   = Join-Path (Split-Path -Parent $Root) "$Name.zip"
+$Root    = Split-Path -Parent $PSScriptRoot
+$Name    = 'Lakshitha_All'
+$Stage   = Join-Path $env:TEMP $Name
+$Zip     = Join-Path (Split-Path -Parent $Root) "$Name.zip"
+$LiveUrl = 'https://greenlight-umber.vercel.app'
 
 Write-Host "building $Name.zip from $Root"
 
@@ -56,6 +57,17 @@ foreach ($skill in 'software-compliance-research', 'email-request-triage') {
 
 # supporting diagrams
 Copy-Item (Join-Path $Root 'docs\*.drawio') "$Stage\Diagrams\"
+
+# One double-click from opening the archive to seeing the thing running, which
+# is the most persuasive artefact in the submission.
+#
+# The address is in the filename on purpose. A .url is occasionally stripped by
+# corporate mail and download scanners — the one real weakness of the format —
+# and a file called Live-Demo.url then leaves nothing behind. This way a reader
+# can still type it straight out of the file listing. CRLF and ASCII are what
+# Explorer expects of a .url.
+$shortcut = Join-Path $Stage ("Live Demo - " + ($LiveUrl -replace '^https?://', '') + ".url")
+"[InternetShortcut]`r`nURL=$LiveUrl`r`n" | Set-Content -Path $shortcut -Encoding Ascii -NoNewline
 
 # ── assert no secret got in ────────────────────────────────────────────────
 $leaked = Get-ChildItem $Stage -Recurse -Force -File |

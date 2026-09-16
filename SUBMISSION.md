@@ -22,6 +22,7 @@ Sign in with any seeded account, password `greenlight`:
 
 | File | What it is |
 |---|---|
+| `Live Demo - …vercel.app.url` | Double-click to open the running app in a browser |
 | `Presentation-Deck.pptx` | **Presentation deck** — 12 slides, PowerPoint, with speaker notes |
 | `Presentation-Deck.html` | The same deck, interactive. Open in a browser, arrow keys to advance |
 | `Solution/` | **The solution** — the two Claude Skills, and what the rest of it is |
